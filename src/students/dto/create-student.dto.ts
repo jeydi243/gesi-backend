@@ -1,19 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
-type Name = { [key: string]: string };
+import { IsEmail, IsNotEmpty } from 'class-validator';
+
+export type Name = { first: string; last: string; middle?: string };
 export class CreateStudentDto {
   @ApiProperty({
     description: 'Name of the student',
     examples: [
-      'Kadiongo Ilunga Epaphrodite or ',
-      { firstName: 'Kadiongo', lastName: 'Ilunga', middleName: 'Epaphrodite' },
+      'Kadiongo Kazadi Jospin',
+      { firstName: 'Kadiongo', lastName: 'Kazadi', middleName: 'Jospin' },
     ],
     required: true,
   })
   name: string | Name;
 
   @ApiProperty()
-  age: number;
+  gender: string;
 
+  @IsEmail()
+  @ApiProperty()
+  personalEmail: string;
+
+  @IsNotEmpty()
   @ApiProperty()
   birthDate: string;
 }
