@@ -17,7 +17,7 @@ export class StudentsController {
 
   @Post()
   create(@Body() createStudentDto: CreateStudentDto) {
-    return this.studentsService.create(createStudentDto);
+    return this.studentsService.add(createStudentDto);
   }
 
   @Get()

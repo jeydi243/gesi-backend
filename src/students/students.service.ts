@@ -3,25 +3,19 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { Student, StudentDocument } from './student.schema';
+import { Student, StudentDocument } from './schemas/student.schema';
 
 @Injectable()
 export class StudentsService {
   constructor(
     @InjectModel(Student.name) private studentModel: Model<StudentDocument>,
   ) {}
-  async create(createStudentDto: CreateStudentDto): Promise<Student | any> {
+  async add(createStudentDto: CreateStudentDto): Promise<Student | any> {
+    console.info('Le DTo donne ', createStudentDto);
     const createdStudent = new this.studentModel(createStudentDto);
-    return createdStudent
-      .validate()
-      .then((result) => {
-        console.log(result);
-        return createdStudent.save();
-      })
-      .catch((err) => {
-        console.log(err);
-        return err;
-      });
+    return createdStudent.save(function (err) {
+      console.log('Des erreurs sont survenues', err);
+    });
   }
 
   findAll() {
@@ -33,6 +27,7 @@ export class StudentsService {
   }
 
   update(id: number, updateStudentDto: UpdateStudentDto) {
+    console.log('Field of student that are update', updateStudentDto);
     return `This action updates a #${id} student`;
   }
 
