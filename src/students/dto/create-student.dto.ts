@@ -1,11 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, MaxLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 
-export type Name = { first: string; last: string; middle?: string };
+export type Name = { first: string; last?: string; middle?: string };
 export class CreateStudentDto {
   @MaxLength(25, {
     message: '$value est trop long',
   })
+  @MinLength(6, { message: '$value est trop court' })
   @ApiProperty({
     description: "Nom de l'etudiant sous la forme 'last middle first'",
     examples: [
@@ -34,8 +35,12 @@ export class CreateStudentDto {
 
   @ApiProperty({
     description: 'Peut contenir un ou plusieurs numéro de téléphone',
+    example: ['+243897949336', '+22500000001'],
+    isArray: true,
+    minItems: 1,
+    maxItems: 5,
   })
-  telephone: number[] | string[] | string;
+  telephone: [number] | [string];
 
   @ApiProperty()
   birthDate: Date;

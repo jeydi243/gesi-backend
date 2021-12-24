@@ -11,19 +11,39 @@ export class StudentsService {
     @InjectModel(Student.name) private studentModel: Model<StudentDocument>,
   ) {}
   async add(createStudentDto: CreateStudentDto): Promise<Student | any> {
-    console.info('Le DTo donne ', createStudentDto);
     const createdStudent = new this.studentModel(createStudentDto);
-    return createdStudent.save(function (err) {
-      console.log('Des erreurs sont survenues', err);
+    return createdStudent.save(function (err, student) {
+      if (err) {
+        return err;
+      }
+      console.log('Newly created student', student);
+      return student;
     });
   }
 
-  findAll() {
-    return `This action returns all students`;
+  async findAll(): Promise<Student[] | any> {
+    return this.studentModel
+      .find()
+      .then(function (students: Student[]) {
+        console.log('We found students', students);
+        return students;
+      })
+      .catch(function (err: any) {
+        console.log('Une erreur est survenue', err);
+        return err;
+      });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} student`;
+  async findOne(id: number): Promise<Student | any> {
+    return this.studentModel
+      .findOne({ _id: id }, { name: 1, email: 1, telephone: 1, matricule: 1 })
+      .then((result: Student) => {
+        console.log('Find one student with id = ', result.id);
+      })
+      .catch((err) => {
+        console.log("Can't find student with id = ", id, '\n', err);
+      });
+    // return `This action returns a #${id} student`;
   }
 
   update(id: number, updateStudentDto: UpdateStudentDto) {

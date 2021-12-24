@@ -7,25 +7,38 @@ export type StudentDocument = Student & Document;
 
 @Schema({ autoIndex: true, timestamps: true })
 export class Student {
-  @Prop({ required: false, type: S.Types.ObjectId, auto: true })
-  id: number;
-
-  @Prop({ required: false })
+  @Prop({ required: false, type: S.Types.ObjectId })
   matricule: number;
 
-  @Prop({ required: true, minlength: 6, maxlength: 20, type: String })
+  @Prop({ required: false, auto: true })
+  id: number;
+
+  @Prop({
+    required: true,
+    minlength: 6,
+    maxlength: 20,
+    type: String,
+    set: (v: any) => {
+      if (typeof v === 'string') {
+        return v.toLowerCase();
+      }
+    },
+  })
   name: string | Name;
 
   @Prop({
     required: true,
+    type: [String],
     validate: {
-      validator: function (v: any) {
-        return validator.isMobilePhone(v);
+      validator: function (value: string[]) {
+        return value.every((tel: string) => {
+          return /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(tel);
+        });
       },
-      message: (props) => `${props} n'est pas un numero valide!`,
+      message: (props) => `${props.value} n'est pas un numero valide!`,
     },
   })
-  telephone: number[] | string[];
+  telephone: string[];
 
   @Prop({
     required: true,
@@ -37,6 +50,17 @@ export class Student {
     },
   })
   email: string;
+
+  @Prop({
+    type: String,
+    required: true,
+    set: (v: any) => {
+      if (typeof v === 'string') {
+        return v.toLowerCase();
+      }
+    },
+  })
+  gender: string;
 
   @Prop({
     required: true,
@@ -57,7 +81,7 @@ export class Student {
       return v.toISOString();
     },
     set: (v: any) => {
-      if (v instanceof String) {
+      if (typeof v == 'string') {
         return new Date(v as string);
       } else if (v instanceof Date) {
         return v;
@@ -76,7 +100,7 @@ export class Student {
   @Prop({
     type: [{ type: S.Types.ObjectId, ref: 'Responsable' }],
   })
-  responsables: Responsable[];
+  responsables: [Responsable];
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);
