@@ -3,6 +3,7 @@ import { Document, Schema as S } from 'mongoose';
 import { Name } from '../dto/create-student.dto';
 import validator from 'validator';
 import { Responsable } from './responsable.schema';
+import { HighSchool } from './highschool.schema';
 export type StudentDocument = Student & Document;
 
 @Schema({ autoIndex: true, timestamps: true })
@@ -137,7 +138,7 @@ export class Student {
   niveau: string;
 
   @Prop({ type: [{ type: S.Types.ObjectId, ref: 'HighSchool' }] })
-  highSchool: Map<string, string>;
+  highSchool: HighSchool;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);

@@ -41,4 +41,4 @@ export class Responsable {
   birthDate: string;
 }
 
-export const StudentSchema = SchemaFactory.createForClass(Responsable);
+export const ResponsableSchema = SchemaFactory.createForClass(Responsable);

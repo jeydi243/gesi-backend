@@ -3,6 +3,24 @@ import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 
 export type Name = { first: string; last?: string; middle?: string };
 export class CreateStudentDto {
+  listLevel: Array<string> = [
+    'Prépa',
+    'Bac',
+    'Bac+1',
+    'Bac+2',
+    'Bac+3',
+    'Bac+4',
+    'Bac+5',
+    'Bac+6',
+  ];
+  listState: Array<string> = [
+    'Candidat',
+    'Etudiant',
+    'Diplomé',
+    'Abandon',
+    'Renvoi',
+  ];
+
   @MaxLength(25, {
     message: '$value est trop long',
   })
@@ -64,7 +82,7 @@ export class CreateStudentDto {
     nullable: false,
     required: true,
   })
-  niveau: string;
+  level: string;
 
   @ApiProperty({
     description: 'Les informations concernant une personne référente',
