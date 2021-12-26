@@ -40,8 +40,44 @@ export class CreateStudentDto {
     minItems: 1,
     maxItems: 5,
   })
-  telephone: [number] | [string];
+  telephone: number[] | string[];
 
-  @ApiProperty()
+  @ApiProperty({
+    description: "Date de naissance de l'étudiant",
+    required: true,
+  })
   birthDate: Date;
+
+  @ApiProperty({
+    description: "Le statut actuel de l'etudiant",
+    example: 'Diplomé',
+    default: 'Candidat',
+    required: true,
+    type: String,
+  })
+  statut: string;
+
+  @ApiProperty({
+    description: "Le niveau actuel de l'etudiant",
+    example: 'G2',
+    default: 'G3',
+    nullable: false,
+    required: true,
+  })
+  niveau: string;
+
+  @ApiProperty({
+    description: 'Les informations concernant une personne référente',
+    type: 'object',
+  })
+  responsable: Map<string, any>;
+
+  @ApiProperty({
+    type: Map,
+    description:
+      "L'établissement secondaire ou le diplome secondaire a été obtenue",
+    example: 'Ecole Maadini',
+    required: true,
+  })
+  highSchool: Map<string, any>;
 }

@@ -37,11 +37,13 @@ export class StudentsService {
   async findOne(id: number): Promise<Student | any> {
     return this.studentModel
       .findOne({ _id: id }, { name: 1, email: 1, telephone: 1, matricule: 1 })
-      .then((result: Student) => {
-        console.log('Find one student with id = ', result.id);
+      .then((student: Student) => {
+        console.log('Find one student with id = ', student.id);
+        return student;
       })
       .catch((err) => {
         console.log("Can't find student with id = ", id, '\n', err);
+        return err;
       });
     // return `This action returns a #${id} student`;
   }

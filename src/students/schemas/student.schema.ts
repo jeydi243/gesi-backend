@@ -95,12 +95,49 @@ export class Student {
   birthDate: Date;
 
   @Prop({ type: String, required: true, default: 'Congo (RDC)' })
-  cityzenship: Date;
+  cityzenship: string;
 
   @Prop({
     type: [{ type: S.Types.ObjectId, ref: 'Responsable' }],
   })
-  responsables: [Responsable];
+  responsables: Responsable[];
+
+  @Prop({
+    type: String,
+    required: true,
+    default: 'Candidat',
+    validate: {
+      validator: function (value: string) {
+        const listStatut: string[] = [
+          'Candidat',
+          'Etudiant',
+          'Diplomé',
+          'Abandon',
+          'Renvoi',
+        ];
+        return listStatut.includes(value);
+      },
+      message: (props) => `${props.value} n'est pas valide!`,
+    },
+  })
+  statut: string;
+
+  @Prop({
+    type: String,
+    required: true,
+    default: 'Prépa',
+    validate: {
+      validator: function (value: string) {
+        const listNiveau: string[] = ['Prépa', 'G1', 'G2', 'G3'];
+        return listNiveau.includes(value);
+      },
+      message: (props) => `${props.value} n'est pas valide!`,
+    },
+  })
+  niveau: string;
+
+  @Prop({ type: [{ type: S.Types.ObjectId, ref: 'HighSchool' }] })
+  highSchool: Map<string, string>;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);
