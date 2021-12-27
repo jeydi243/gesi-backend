@@ -10,6 +10,7 @@ import {
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { CreateResponsableDto } from './dto/create-responsable.dto';
 
 @Controller('students')
 export class StudentsController {
@@ -38,5 +39,19 @@ export class StudentsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.studentsService.remove(id);
+  }
+  @Post('/responsable')
+  addResponsable(
+    @Param('idStudent') idStudent: string,
+    @Body() respoDto: CreateResponsableDto,
+  ) {
+    return this.studentsService
+      .addResponsable(idStudent, respoDto)
+      .then((result) => {
+        console.log(`add responsable to student with id ${idStudent}`);
+      })
+      .catch((err) => {
+        return err;
+      });
   }
 }

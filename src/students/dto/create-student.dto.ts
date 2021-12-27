@@ -85,10 +85,11 @@ export class CreateStudentDto {
   level: string;
 
   @ApiProperty({
-    description: 'Les informations concernant une personne référente',
-    type: 'object',
+    description:
+      'Les informations concernant une ou plusieurs personne référente',
+    type: Array,
   })
-  responsable: Map<string, any>;
+  responsables: Map<string, any>[];
 
   @ApiProperty({
     type: Map,

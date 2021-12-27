@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, NativeError } from 'mongoose';
+import { CreateResponsableDto } from './dto/create-responsable.dto';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Responsable, ResponsableDocument } from './schemas/responsable.schema';
@@ -15,6 +16,7 @@ export class StudentsService {
   ) {}
   async add(createStudentDto: CreateStudentDto): Promise<Student | any> {
     const createdStudent = new this.studentModel(createStudentDto);
+
     return createdStudent.save(function (err, student) {
       if (err) {
         return err;
@@ -51,22 +53,24 @@ export class StudentsService {
     // return `This action returns a #${id} student`;
   }
 
-  updateOne(id: string, updateStudentDto: UpdateStudentDto) {
+  async updateOne(id: string, updateStudentDto: UpdateStudentDto) {
     // return this.studentModel.updateOne({ _id: id }, updateStudentDto);
-    return this.studentModel
-      .findByIdAndUpdate({ _id: id }, updateStudentDto, {
-        new: true,
-        returnDocument: 'after',
-        lean: true,
-      })
-      .then((student: Student) => {
-        console.log('The student has been updated: ', student);
-        return student;
-      })
-      .catch((err) => {
-        console.error(err.message);
-        return err;
-      });
+    try {
+      const student = await this.studentModel.findByIdAndUpdate(
+        { _id: id },
+        updateStudentDto,
+        {
+          new: true,
+          returnDocument: 'after',
+          lean: true,
+        },
+      );
+      console.log('The student has been updated: ', student);
+      return student;
+    } catch (err) {
+      console.error(err.message);
+      return err;
+    }
   }
 
   remove(id: string) {
@@ -81,5 +85,32 @@ export class StudentsService {
         return true;
       },
     );
+  }
+  addResponsable(idStudent: string, respoDto: CreateResponsableDto) {
+    const createdResponsable = new this.responsableModel(respoDto);
+    // this.studentModel
+    //   .findByIdAndUpdate(
+    //     { _id: idStudent },
+    //     { $push: { responsables: createdResponsable } },
+    //     { new: true },
+    //   )
+    //   .then((results) => {
+    //     console.log(results);
+    //   })
+    //   .catch((err) => {
+    //     console.error(err.message);
+    //   });
+    return createdResponsable
+      .save()
+      .then((result) => {
+        return this.studentModel.findByIdAndUpdate(
+          { _id: idStudent },
+          { $push: { responsables: createdResponsable } },
+          { new: true },
+        );
+      })
+      .catch((err) => {
+        return err;
+      });
   }
 }

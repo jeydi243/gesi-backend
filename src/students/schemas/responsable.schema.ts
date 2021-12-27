@@ -36,9 +36,6 @@ export class Responsable {
     },
   })
   email: string;
-
-  @Prop({ type: Date, required: true })
-  birthDate: string;
 }
 
 export const ResponsableSchema = SchemaFactory.createForClass(Responsable);
