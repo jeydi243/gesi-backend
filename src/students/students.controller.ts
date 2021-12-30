@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { CreateResponsableDto } from './dto/create-responsable.dto';
+import { UpdateResponsableDto } from './dto/update-responsable.dto';
 
 @Controller('students')
 export class StudentsController {
@@ -40,18 +42,48 @@ export class StudentsController {
   remove(@Param('id') id: string) {
     return this.studentsService.remove(id);
   }
-  @Post('/responsable')
-  addResponsable(
-    @Param('idStudent') idStudent: string,
+
+  //section des responsables
+  @Post('/:id/responsables')
+  async addResponsable(
+    @Param('id') idStudent: string,
     @Body() respoDto: CreateResponsableDto,
   ) {
     return this.studentsService
       .addResponsable(idStudent, respoDto)
       .then((result) => {
-        console.log(`add responsable to student with id ${idStudent}`);
+        console.log(
+          `add responsable to student with id ${idStudent}, result: `,
+          result,
+        );
+        return result;
       })
       .catch((err) => {
         return err;
       });
+  }
+
+  @Get('/:id/responsables')
+  async getResponsables(@Param('id') idStudent: string) {
+    return this.studentsService.getResponsables(idStudent);
+  }
+
+  @Get('/:idStudent/responsables/:idResponsable')
+  async getResponsable(
+    @Param('id') idStudent: string,
+    @Param('idResponsable') idResponsable: string,
+  ) {
+    return this.studentsService.getResponsable(idStudent, idResponsable);
+  }
+  @Patch('/:id/responsables/:idResponsable')
+  async updateResponsable(
+    @Param('id') idStudent: string,
+    @Param('idResponsable') idResponsable: string,
+    @Body() updateResponsableDto: UpdateResponsableDto,
+  ) {
+    return this.studentsService.updateResponsable(
+      idResponsable,
+      updateResponsableDto,
+    );
   }
 }

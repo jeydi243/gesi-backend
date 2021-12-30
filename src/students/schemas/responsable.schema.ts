@@ -15,13 +15,12 @@ export class Responsable {
   @Prop({
     required: true,
     validate: {
-      validator: function (v: any) {
-        return validator.isMobilePhone(v);
+      validator: function (v: string[]) {
+        return v.every((tel: string) => {
+          return /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(tel);
+        });
       },
       message: (props) => `${props} n'est pas un numero valide!`,
-    },
-    set: (v: any) => {
-      return v.replace(/\D/g, '');
     },
   })
   telephone: number[] | string[];

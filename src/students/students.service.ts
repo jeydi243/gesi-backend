@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, NativeError } from 'mongoose';
 import { CreateResponsableDto } from './dto/create-responsable.dto';
 import { CreateStudentDto } from './dto/create-student.dto';
+import { UpdateResponsableDto } from './dto/update-responsable.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Responsable, ResponsableDocument } from './schemas/responsable.schema';
 import { Student, StudentDocument } from './schemas/student.schema';
@@ -86,7 +87,7 @@ export class StudentsService {
       },
     );
   }
-  addResponsable(idStudent: string, respoDto: CreateResponsableDto) {
+  async addResponsable(idStudent: string, respoDto: CreateResponsableDto) {
     const createdResponsable = new this.responsableModel(respoDto);
     // this.studentModel
     //   .findByIdAndUpdate(
@@ -103,6 +104,7 @@ export class StudentsService {
     return createdResponsable
       .save()
       .then((result) => {
+        console.log(result);
         return this.studentModel.findByIdAndUpdate(
           { _id: idStudent },
           { $push: { responsables: createdResponsable } },
@@ -112,5 +114,50 @@ export class StudentsService {
       .catch((err) => {
         return err;
       });
+  }
+
+  async getResponsables(idStudent: string) {
+    return this.studentModel
+      .findOne({ _id: idStudent }, { responsables: 1 })
+      .then((student: Student) => {
+        console.log('Get all responsables for student with id: ', idStudent);
+
+        return this.responsableModel.find({
+          _id: { $in: student.responsables },
+        });
+      })
+      .catch((err) => {
+        console.log("Can't get studend's responsables ", idStudent, '\n', err);
+        return err;
+      });
+  }
+  async getResponsable(idStudent: string, idResponsable: string) {
+    return this.studentModel
+      .findOne({ _id: idStudent }, { responsables: 1 })
+      .then((student: Student) => {
+        console.log('Get responsable with id: ', idResponsable);
+
+        return this.responsableModel.findOne({
+          _id: idResponsable,
+        });
+      })
+      .catch((err) => {
+        console.log("Can't get studend's responsables ", idStudent, '\n', err);
+        return err;
+      });
+  }
+  async updateResponsable(
+    idResponsable: string,
+    updateResponsableDto: UpdateResponsableDto,
+  ) {
+    return this.responsableModel.findByIdAndUpdate(
+      { _id: idResponsable },
+      updateResponsableDto,
+      {
+        new: true,
+        returnDocument: 'after',
+        lean: true,
+      },
+    );
   }
 }
