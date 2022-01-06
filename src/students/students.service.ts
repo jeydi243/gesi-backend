@@ -31,7 +31,7 @@ export class StudentsService {
     return this.studentModel
       .find()
       .then(function (students: Student[]) {
-        console.log('We found students', students);
+        // console.log('We found students', students);
         return students;
       })
       .catch(function (err: any) {
