@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { StudentsModule } from './students/students.module';
 import { ProfessorsModule } from './professors/professors.module';
 import { EventGateway } from './event.gateway';
+import { UserModule } from './user/user.module';
 import * as helmet from 'helmet';
 
 @Module({
@@ -12,6 +13,7 @@ import * as helmet from 'helmet';
     StudentsModule,
     ProfessorsModule,
     MongooseModule.forRoot('mongodb://localhost/gesi'),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, EventGateway],
