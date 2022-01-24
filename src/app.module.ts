@@ -12,8 +12,8 @@ import * as helmet from 'helmet';
   imports: [
     StudentsModule,
     ProfessorsModule,
-    MongooseModule.forRoot('mongodb://localhost/gesi'),
     UserModule,
+    MongooseModule.forRoot('mongodb://localhost/gesi'),
   ],
   controllers: [AppController],
   providers: [AppService, EventGateway],
