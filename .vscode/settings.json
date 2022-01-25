@@ -1,6 +1,6 @@
 {
-  "files.autoSave": "afterDelay",
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 200,
-  "prettier.jsxBracketSameLine": true
+  "prettier.jsxBracketSameLine": true,
+  "files.autoSave": "afterDelay"
 }

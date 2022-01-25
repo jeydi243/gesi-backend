@@ -10,14 +10,25 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './schemas/user.schema';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+  register(
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<CreateUserDto | null> {
+    return this.userService.register(createUserDto);
+  }
+  @Post()
+  logout(@Body() userDto: CreateUserDto) {
+    return this.userService.logout(userDto);
+  }
+  @Post()
+  async login(@Body() userDto: CreateUserDto): Promise<User> {
+    return this.userService.login(userDto);
   }
 
   @Get()
@@ -37,6 +48,6 @@ export class UserController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+    return this.userService.remove(id);
   }
 }
