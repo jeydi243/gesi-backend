@@ -25,11 +25,7 @@ export class User {
   @Prop()
   password: string;
 
-  @Prop({
-    // set: async function (v: any) {
-    //   return await this.bcrypt.genSalt();
-    // },
-  })
+  @Prop()
   salt: string;
 
   @Prop({ type: S.Types.ObjectId, enum: UserRole })

@@ -4,19 +4,20 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppService } from './app.service';
 import { StudentsModule } from './students/students.module';
 import { ProfessorsModule } from './professors/professors.module';
-import { EventGateway } from './event.gateway';
-import { UserModule } from './user/user.module';
+import { UsersModule } from './user/users.module';
 import * as helmet from 'helmet';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    MongooseModule.forRoot('mongodb://localhost/gesi'),
     StudentsModule,
     ProfessorsModule,
-    UserModule,
-    MongooseModule.forRoot('mongodb://localhost/gesi'),
+    UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService, EventGateway],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
