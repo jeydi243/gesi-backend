@@ -24,7 +24,20 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Gesi est une application de gestion d'une université (Institut supérieure). \
+Les fonctionalités sont (Tenant compte du role de l'utilisateur):
+  ### Etudiants
+    - [x] Créer
+    - [x] Mettre à jour
+    - [x] Supprimer(Soft delete)
+  ### Professeurs
+    - [ ] Créer
+    - [ ] Mettre à jour
+    - [ ] Supprimer (Soft Delete)
+    - [ ] Affecter un cours
+    - [ ] Retirer un cours
+    - [ ] Affecter la gestion d'une filière
+
 
 ## Installation
 
@@ -32,12 +45,9 @@
 $ npm install
 ```
 
-## Running the app
+## Lancer l'application
 
 ```bash
-# development
-$ npm run start
-
 # watch mode
 $ npm run start:dev
 
@@ -60,14 +70,14 @@ $ npm run test:cov
 
 ## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Gesi est un projet open source sous license MIT. [read more here](https://gesi.app/support).
 
-## Stay in touch
+## Rester connecté
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - [Jeydi](https://twitter.com/jeydi243)
+- Website - [https://gesi.app](https://gesi.app/)
+- Twitter - [@gesi](https://twitter.com/gesi)
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+Gesi is [MIT licensed](LICENSE).
