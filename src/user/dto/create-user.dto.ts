@@ -31,5 +31,5 @@ export class CreateUserDto {
     required: true,
     type: String,
   })
-  roleUserID: string;
+  idOfRole: string;
 }

@@ -4,5 +4,6 @@
   "prettier.jsxBracketSameLine": true,
   // "editor.fontFamily": "K2D Light Italic",
   "scm.inputFontFamily": "k2d",
+  "better-comments.multilineComments": true,
   "files.autoSave": "afterDelay"
 }

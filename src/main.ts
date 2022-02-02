@@ -2,13 +2,11 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
-import { JwtAuthGuard } from './user/guards/jwt.guard';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { logger: ['error', 'warn', 'log'] });
   app.use(cookieParser());
   app.enableCors();
-  app.useGlobalGuards(new JwtAuthGuard());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

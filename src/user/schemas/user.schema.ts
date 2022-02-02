@@ -29,7 +29,7 @@ export class User {
   salt: string;
 
   @Prop({ type: S.Types.ObjectId, enum: UserRole })
-  roleUserID: string;
+  idOfRole: string;
 
   @Prop({ enum: UserRole })
   role: string;

@@ -15,4 +15,8 @@ export class LoginDto {
   @IsNotEmpty()
   @ApiProperty({ required: true, type: String })
   password: string;
+
+  @IsNotEmpty()
+  @ApiProperty({ required: true, type: Boolean, default: false })
+  stay_connected: boolean;
 }
