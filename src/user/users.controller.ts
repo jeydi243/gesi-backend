@@ -17,14 +17,19 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User, UserDocument } from './schemas/user.schema';
 import { LoginDto } from './dto/login-user.dto';
-import { User as UserDec } from './user.decorator';
+import { User as UserDec } from './decorators/user.decorator';
 import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import * as bcrypt from 'bcrypt';
 import { TokenInterface } from './dto/token.interface';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { RolesGuard } from './guards/roles.guard';
+import { Roles } from './decorators/role.decorator';
+import { UserRole } from './dto/user-role.enum';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard, RolesGuard) // * JwtAuthGuard et RolesGuard sont des guards executé a la suite, l'ordre est important
+@Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR)
 export class UsersController {
   constructor(private readonly usersService: UsersService, private jwtService: JwtService) {}
 
@@ -34,7 +39,6 @@ export class UsersController {
   }
 
   @Post('logout/:idUser')
-  @UseGuards(JwtAuthGuard)
   logout(@Body() userDto: CreateUserDto) {
     return this.usersService.logout(userDto);
   }
@@ -82,13 +86,11 @@ export class UsersController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   async findAll() {
     return this.usersService.findAll();
   }
 
   @Patch('update-password')
-  @UseGuards(JwtAuthGuard)
   async updatePassword(@Body() updatePasswordDto: UpdatePasswordDto, @UserDec() userDec) {
     try {
       const user: (User & UserDocument) | null = await this.usersService.findOne(userDec.username);
@@ -126,7 +128,6 @@ export class UsersController {
   }
 
   @Delete('delete-me')
-  @UseGuards(JwtAuthGuard)
   async remove(@Param('id') id: string, @UserDec() userDec) {
     try {
       const user: (User & UserDocument) | null = await this.usersService.deleteOne(userDec.id);

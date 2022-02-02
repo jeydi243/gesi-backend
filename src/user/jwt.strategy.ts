@@ -18,10 +18,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: TokenInterface) {
-    console.log('The token is : ', payload);
     const user: User & UserDocument = await this.usersService.findOne(payload.username);
     if (!user) {
-      console.log('eeee');
       throw new UnauthorizedException();
     }
     const { username, role, idOfRole, id: idOfUser } = user;

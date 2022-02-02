@@ -24,6 +24,9 @@ export class UsersService {
   logout(userDto: CreateUserDto): boolean {
     return false;
   }
+  testAbilities(role: string) {
+    console.log('Bon apparement sa marche');
+  }
   async register(userDto: CreateUserDto): Promise<User | null | Error> {
     const createdUser = new this.userModel(userDto);
 
@@ -78,7 +81,6 @@ export class UsersService {
       await this.userModel.findOneAndUpdate({ _id: idUser }, { $set: { password: hashedPassword, salt } }).exec();
       return true;
     } catch (err) {
-
       console.log("Can't modify the password and new salt: " + err);
     }
   }
