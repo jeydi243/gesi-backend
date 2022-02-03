@@ -2,7 +2,7 @@ import validator from 'validator';
 import { Document, Schema as S } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Name } from 'src/students/dto/create-student.dto';
-export type ProfessorSchema = Professor & Document;
+export type ProfessorDocument = Professor & Document;
 
 @Schema({ autoIndex: true, timestamps: true })
 export class Professor {

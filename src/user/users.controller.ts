@@ -26,12 +26,19 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { RolesGuard } from './guards/roles.guard';
 import { Roles } from './decorators/role.decorator';
 import { UserRole } from './dto/user-role.enum';
+import { StudentsService } from 'src/students/students.service';
+import { ProfessorsService } from 'src/professors/professors.service';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, RolesGuard) // * JwtAuthGuard et RolesGuard sont des guards executé a la suite, l'ordre est important
 @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR)
 export class UsersController {
-  constructor(private readonly usersService: UsersService, private jwtService: JwtService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly studentService: StudentsService,
+    private readonly professorService: ProfessorsService,
+    private jwtService: JwtService,
+  ) {}
 
   @Post('register')
   register(@Body() createUserDto: CreateUserDto): Promise<CreateUserDto | null | Error> {
@@ -78,10 +85,24 @@ export class UsersController {
       };
       const token: string = this.jwtService.sign(tokenInterface);
 
-      return { token };
+      // return { token };
+      return this.determinerRole(user.role, token, user.idOfRole);
     } catch (err) {
       console.log(err);
       throw new InternalServerErrorException(err);
+    }
+  }
+  async determinerRole(role: string, token: string, id: string) {
+    const reponse: { [key: string]: any } = { token };
+    switch (role) {
+      case 'Etudiant':
+        return this.studentService.findOne(id);
+        break;
+      case 'Professor':
+        return this.professorService.findOne(id);
+        break;
+      default:
+        break;
     }
   }
 

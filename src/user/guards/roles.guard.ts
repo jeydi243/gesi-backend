@@ -7,7 +7,7 @@ import { UsersService } from '../users.service';
 // ! car il beneficie de l'object user dans la requete
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private readonly usersService: UsersService, private reflector: Reflector) {}
+  constructor(private reflector: Reflector) {}
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     // * List des roles permis d'acceder à cette route
     // * Ces roles sont définis dans le decorator @Roles
