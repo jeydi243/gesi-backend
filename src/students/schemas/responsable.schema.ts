@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
-import { Name } from '../dto/create-student.dto';
+import { Name } from 'src/export.type';
 import validator from 'validator';
 export type ResponsableDocument = Responsable & Document;
 

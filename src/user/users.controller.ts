@@ -25,9 +25,9 @@ import { TokenInterface } from './dto/token.interface';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { RolesGuard } from './guards/roles.guard';
 import { Roles } from './decorators/role.decorator';
-import { UserRole } from './dto/user-role.enum';
 import { StudentsService } from 'src/students/students.service';
 import { ProfessorsService } from 'src/professors/professors.service';
+import { UserRole } from 'src/export.type';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard, RolesGuard) // * JwtAuthGuard et RolesGuard sont des guards executé a la suite, l'ordre est important

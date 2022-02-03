@@ -1,7 +1,7 @@
 import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
-import { UserRole } from './user-role.enum';
+import { UserRole } from 'src/export.type';
 
 export class CreateUserDto {
   @IsNotEmpty()

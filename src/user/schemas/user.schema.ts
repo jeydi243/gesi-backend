@@ -1,13 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
-import { UserRole } from '../dto/user-role.enum';
-
+import { UserRole } from 'src/export.type';
 export type UserDocument = User & Document;
 
 @Schema({ autoIndex: true, timestamps: true, _id: true })
 export class User {
-  bcrypt = require('bcrypt');
-
   @Prop({
     required: true,
     minlength: 6,

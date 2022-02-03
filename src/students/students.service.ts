@@ -43,11 +43,11 @@ export class StudentsService {
   async findOne(id: string): Promise<Student | any> {
     return this.studentModel
       .findOne({ _id: id }, { name: 1, email: 1, telephone: 1, matricule: 1 })
-      .then((student: Student) => {
+      .then((student: StudentDocument) => {
         console.log('Find one student with id = ', student.id);
         return student;
       })
-      .catch((err) => {
+      .catch(err => {
         console.log("Can't find student with id = ", id, '\n', err);
         return err;
       });
@@ -57,15 +57,11 @@ export class StudentsService {
   async updateOne(id: string, updateStudentDto: UpdateStudentDto) {
     // return this.studentModel.updateOne({ _id: id }, updateStudentDto);
     try {
-      const student = await this.studentModel.findByIdAndUpdate(
-        { _id: id },
-        updateStudentDto,
-        {
-          new: true,
-          returnDocument: 'after',
-          lean: true,
-        },
-      );
+      const student = await this.studentModel.findByIdAndUpdate({ _id: id }, updateStudentDto, {
+        new: true,
+        returnDocument: 'after',
+        lean: true,
+      });
       console.log('The student has been updated: ', student);
       return student;
     } catch (err) {
@@ -75,17 +71,14 @@ export class StudentsService {
   }
 
   remove(id: string) {
-    this.studentModel.findByIdAndRemove(
-      { _id: id },
-      function (err: NativeError, student: Student) {
-        if (err) {
-          console.error(err.message);
-          return { error: err.message };
-        }
-        console.log('The student has been deleted:', student);
-        return true;
-      },
-    );
+    this.studentModel.findByIdAndRemove({ _id: id }, function (err: NativeError, student: Student) {
+      if (err) {
+        console.error(err.message);
+        return { error: err.message };
+      }
+      console.log('The student has been deleted:', student);
+      return true;
+    });
   }
   async addResponsable(idStudent: string, respoDto: CreateResponsableDto) {
     const createdResponsable = new this.responsableModel(respoDto);
@@ -103,7 +96,7 @@ export class StudentsService {
     //   });
     return createdResponsable
       .save()
-      .then((result) => {
+      .then(result => {
         console.log(result);
         return this.studentModel.findByIdAndUpdate(
           { _id: idStudent },
@@ -111,7 +104,7 @@ export class StudentsService {
           { new: true },
         );
       })
-      .catch((err) => {
+      .catch(err => {
         return err;
       });
   }
@@ -126,7 +119,7 @@ export class StudentsService {
           _id: { $in: student.responsables },
         });
       })
-      .catch((err) => {
+      .catch(err => {
         console.log("Can't get studend's responsables ", idStudent, '\n', err);
         return err;
       });
@@ -141,23 +134,16 @@ export class StudentsService {
           _id: idResponsable,
         });
       })
-      .catch((err) => {
+      .catch(err => {
         console.log("Can't get studend's responsables ", idStudent, '\n', err);
         return err;
       });
   }
-  async updateResponsable(
-    idResponsable: string,
-    updateResponsableDto: UpdateResponsableDto,
-  ) {
-    return this.responsableModel.findByIdAndUpdate(
-      { _id: idResponsable },
-      updateResponsableDto,
-      {
-        new: true,
-        returnDocument: 'after',
-        lean: true,
-      },
-    );
+  async updateResponsable(idResponsable: string, updateResponsableDto: UpdateResponsableDto) {
+    return this.responsableModel.findByIdAndUpdate({ _id: idResponsable }, updateResponsableDto, {
+      new: true,
+      returnDocument: 'after',
+      lean: true,
+    });
   }
 }

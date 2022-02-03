@@ -1,36 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
+import { Genre, ListLevel, Name } from 'src/export.type';
 
-export type Name = { first: string; last?: string; middle?: string };
 export class CreateStudentDto {
-  listLevel: Array<string> = [
-    'Prépa',
-    'Bac',
-    'Bac+1',
-    'Bac+2',
-    'Bac+3',
-    'Bac+4',
-    'Bac+5',
-    'Bac+6',
-  ];
-  listState: Array<string> = [
-    'Candidat',
-    'Etudiant',
-    'Diplomé',
-    'Abandon',
-    'Renvoi',
-  ];
-
   @MaxLength(25, {
     message: '$value est trop long',
   })
   @MinLength(6, { message: '$value est trop court' })
   @ApiProperty({
     description: "Nom de l'etudiant sous la forme 'last middle first'",
-    examples: [
-      'Kadiongo Kazadi Jospin',
-      { firstName: 'Kadiongo', lastName: 'Kazadi', middleName: 'Jospin' },
-    ],
+    examples: ['Kadiongo Kazadi Jospin', { firstName: 'Kadiongo', lastName: 'Kazadi', middleName: 'Jospin' }],
     required: true,
   })
   name: string | Name;
@@ -38,6 +17,7 @@ export class CreateStudentDto {
   @IsNotEmpty()
   @ApiProperty({
     required: true,
+    enum: Genre,
     description: 'Le genre M ou F',
     maximum: 1,
   })
@@ -67,7 +47,7 @@ export class CreateStudentDto {
   birthDate: Date;
 
   @ApiProperty({
-    description: "Le statut actuel de l'etudiant",
+    description: "Le statut actuel de l'étudiant",
     example: 'Diplomé',
     default: 'Candidat',
     required: true,
@@ -76,25 +56,23 @@ export class CreateStudentDto {
   statut: string;
 
   @ApiProperty({
-    description: "Le niveau actuel de l'etudiant",
-    example: 'G2',
+    description: "Le niveau actuel de l'étudiant",
     default: 'G3',
+    enum: ListLevel,
     nullable: false,
     required: true,
   })
   level: string;
 
   @ApiProperty({
-    description:
-      'Les informations concernant une ou plusieurs personne référente',
+    description: 'Les informations concernant une ou plusieurs personne référente',
     type: Array,
   })
   responsables: Map<string, any>[];
 
   @ApiProperty({
     type: Map,
-    description:
-      "L'établissement secondaire ou le diplome secondaire a été obtenue",
+    description: "L'établissement secondaire ou le diplome secondaire a été obtenue",
     example: 'Ecole Maadini',
     required: true,
   })
