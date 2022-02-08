@@ -28,9 +28,10 @@ import { Roles } from './decorators/role.decorator';
 import { StudentsService } from 'src/students/students.service';
 import { ProfessorsService } from 'src/professors/professors.service';
 import { UserRole } from 'src/export.type';
+import { Student } from 'src/students/schemas/student.schema';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard, RolesGuard) // * JwtAuthGuard et RolesGuard sont des guards executé a la suite, l'ordre est important
+// * JwtAuthGuard et RolesGuard sont des guards executé a la suite, l'ordre est important
 @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR)
 export class UsersController {
   constructor(
@@ -41,17 +42,19 @@ export class UsersController {
   ) {}
 
   @Post('register')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   register(@Body() createUserDto: CreateUserDto): Promise<CreateUserDto | null | Error> {
     return this.usersService.register(createUserDto);
   }
 
   @Post('logout/:idUser')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   logout(@Body() userDto: CreateUserDto) {
     return this.usersService.logout(userDto);
   }
 
   @Post('login')
-  async login(@Body() loginDto: LoginDto): Promise<{ [key: string]: any } | string> {
+  async login(@Body() loginDto: LoginDto): Promise<{ [key: string]: any } | string | any> {
     try {
       const user: (User & UserDocument) | null = await this.usersService.findOne(loginDto.username);
 
@@ -86,7 +89,9 @@ export class UsersController {
       const token: string = this.jwtService.sign(tokenInterface);
 
       // return { token };
-      return this.determinerRole(user.role, token, user.idOfRole);
+      setTimeout(() => {
+        return this.determinerRole(user.role, token, user.idOfRole);
+      }, 2000);
     } catch (err) {
       console.log(err);
       throw new InternalServerErrorException(err);
@@ -96,7 +101,18 @@ export class UsersController {
     const reponse: { [key: string]: any } = { token };
     switch (role) {
       case 'Etudiant':
-        return this.studentService.findOne(id);
+        const res: any = this.studentService.findOne(id);
+        if (!(res instanceof Student)) {
+          throw new HttpException(
+            {
+              status: HttpStatus.NOT_FOUND,
+              error: `The ${role} associeted to this user does not exist`,
+            },
+            HttpStatus.NOT_FOUND,
+          );
+        }
+        return res;
+
         break;
       case 'Professor':
         return this.professorService.findOne(id);
@@ -107,11 +123,13 @@ export class UsersController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async findAll() {
     return this.usersService.findAll();
   }
 
   @Patch('update-password')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async updatePassword(@Body() updatePasswordDto: UpdatePasswordDto, @UserDec() userDec) {
     try {
       const user: (User & UserDocument) | null = await this.usersService.findOne(userDec.username);
@@ -149,6 +167,7 @@ export class UsersController {
   }
 
   @Delete('delete-me')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async remove(@Param('id') id: string, @UserDec() userDec) {
     try {
       const user: (User & UserDocument) | null = await this.usersService.deleteOne(userDec.id);
