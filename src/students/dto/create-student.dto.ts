@@ -8,10 +8,11 @@ export class CreateStudentDto {
   })
   @MinLength(6, { message: '$value est trop court' })
   @ApiProperty({
-    description: "Nom de l'etudiant sous la forme 'last middle first'",
+    description: "Nom de l'étudiant sous la forme 'last middle first'",
     examples: ['Kadiongo Kazadi Jospin', { firstName: 'Kadiongo', lastName: 'Kazadi', middleName: 'Jospin' }],
     required: true,
   })
+  @IsNotEmpty()
   name: string | Name;
 
   @IsNotEmpty()
@@ -27,6 +28,10 @@ export class CreateStudentDto {
   @ApiProperty({ description: "Email personnel fournis par l'etudiant " })
   personalEmail: string;
 
+  @IsNotEmpty()
+  @ApiProperty({ description: 'Nationalité ' })
+  cityzenship: string;
+
   @IsEmail()
   @ApiProperty({ description: "Email fournis par l'institution" })
   email: string;
@@ -37,13 +42,16 @@ export class CreateStudentDto {
     isArray: true,
     minItems: 1,
     maxItems: 5,
+    required: true,
   })
-  telephone: number[] | string[];
+  @IsNotEmpty()
+  telephone: string[];
 
   @ApiProperty({
     description: "Date de naissance de l'étudiant",
     required: true,
   })
+  @IsNotEmpty()
   birthDate: Date;
 
   @ApiProperty({
@@ -53,6 +61,7 @@ export class CreateStudentDto {
     required: true,
     type: String,
   })
+  @IsNotEmpty()
   statut: string;
 
   @ApiProperty({
@@ -62,6 +71,7 @@ export class CreateStudentDto {
     nullable: false,
     required: true,
   })
+  @IsNotEmpty()
   level: string;
 
   @ApiProperty({

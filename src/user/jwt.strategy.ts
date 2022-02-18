@@ -20,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: TokenInterface) {
     const user: User & UserDocument = await this.usersService.findOne(payload.username);
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(`User doesn't exist with ${JSON.stringify(payload)}`);
     }
     const { username, role, idOfRole, id: idOfUser } = user;
     return { username, role, idOfRole, idOfUser };

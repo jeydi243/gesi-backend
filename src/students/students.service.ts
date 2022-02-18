@@ -15,16 +15,9 @@ export class StudentsService {
     @InjectModel(Responsable.name)
     private responsableModel: Model<ResponsableDocument>,
   ) {}
-  async add(createStudentDto: CreateStudentDto): Promise<Student | any> {
+  async add(createStudentDto: CreateStudentDto): Promise<Student | void> {
     const createdStudent = new this.studentModel(createStudentDto);
-
-    return createdStudent.save(function (err, student) {
-      if (err) {
-        return err;
-      }
-      console.log('Newly created student', student);
-      return student;
-    });
+    return createdStudent.save();
   }
 
   async findAll(): Promise<Student[] | any> {

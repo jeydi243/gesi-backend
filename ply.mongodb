@@ -1,0 +1,13 @@
+// Select the database to use.
+use('test');
+
+db.users.insertOne({
+    username: 'rootuser',
+    password: "rootpass",
+    role:"Academique",
+    roleUserID: null,
+});
+db.users.countDocuments();
+
+// db.users.deleteOne({role:"ACADEMIQUE"})
+

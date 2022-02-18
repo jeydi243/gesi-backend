@@ -1,6 +1,6 @@
 import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsMongoId } from 'class-validator';
 import { UserRole } from 'src/export.type';
 
 export class CreateUserDto {
@@ -27,6 +27,7 @@ export class CreateUserDto {
   role: string;
 
   @IsNotEmpty()
+  @IsMongoId()
   @ApiProperty({
     required: true,
     type: String,

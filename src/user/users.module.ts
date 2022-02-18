@@ -26,8 +26,9 @@ import { Responsable, ResponsableSchema } from 'src/students/schemas/responsable
     JwtModule.register({ secret: 'jeydi243' }),
     ProfessorsModule,
     StudentsModule,
+   
   ],
   controllers: [UsersController],
-  providers: [UsersService, ProfessorsService, StudentsService, JwtStrategy],
+  providers: [UsersService, ProfessorsService, StudentsService],
 })
 export class UsersModule {}

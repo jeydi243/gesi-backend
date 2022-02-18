@@ -1,32 +1,16 @@
 import { Model } from 'mongoose';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserDocument } from './schemas/user.schema';
 import * as bcrypt from 'bcrypt';
-import * as generator from 'generate-password';
-import { JwtService } from '@nestjs/jwt';
 import { UpdatePasswordDto } from './dto/update-password.dto';
-import { exec } from 'child_process';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async findOne(username: string): Promise<(User & UserDocument) | null> {
-    return this.userModel
-      .findOne({
-        username,
-      })
-      .exec();
-  }
-  logout(userDto: CreateUserDto): boolean {
-    return false;
-  }
-  testAbilities(role: string) {
-    console.log('Bon apparement sa marche');
-  }
   async register(userDto: CreateUserDto): Promise<User | null | Error> {
     const createdUser = new this.userModel(userDto);
 
@@ -52,6 +36,47 @@ export class UsersService {
         return err;
       });
   }
+  async registerRoot(userDto?: CreateUserDto): Promise<User | null | Error> {
+    let createdUser = null;
+    if (userDto) {
+      createdUser = new this.userModel(userDto);
+    } else {
+      //Create root user with role as ACADEMIQUE
+      createdUser = new this.userModel({ username: 'rootuser', password: 'rootpass', role: 'Academique', salt: 'rootroot' });
+    }
+
+    console.log('Salt created for root: ' + createdUser.salt);
+    return bcrypt
+      .hash(userDto.password, createdUser.salt)
+      .then((hashedPassword: string) => {
+        createdUser.password = hashedPassword;
+        console.log('hashedPassword created is : ' + hashedPassword);
+        return createdUser.save();
+      })
+
+      .then((user: User & UserDocument) => {
+        console.log('Root user id: ', user._id);
+        return user;
+      })
+      .catch(err => {
+        console.log('Une erreur a été détectée : ' + err + '\n \n');
+        return err;
+      });
+  }
+  async findOne(username: string): Promise<(User & UserDocument) | null> {
+    return this.userModel
+      .findOne({
+        username,
+      })
+      .exec();
+  }
+  logout(userDto: CreateUserDto): boolean {
+    return false;
+  }
+  testAbilities(role: string) {
+    console.log('Bon apparement sa marche');
+  }
+
   async deleteOne(idUser: string): Promise<(User & UserDocument) | null> {
     return this.userModel.findOneAndUpdate({ _id: idUser }, { $set: { deleteAt: Date.now() } }).exec();
   }
@@ -73,7 +98,6 @@ export class UsersService {
   removeBy(idUser: string, updateUserDto: UpdateUserDto) {
     return `This action removes a #${idUser} user`;
   }
-
   async updatePassword(idUser: number, updatePasswordDto: UpdatePasswordDto): Promise<boolean> {
     try {
       const salt = bcrypt.genSaltSync();

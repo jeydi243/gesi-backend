@@ -1,26 +1,23 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { CreateResponsableDto } from './dto/create-responsable.dto';
 import { UpdateResponsableDto } from './dto/update-responsable.dto';
+import { Student } from './schemas/student.schema';
 
 @Controller('students')
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
   @Post()
-  create(@Body() createStudentDto: CreateStudentDto) {
-    return this.studentsService.add(createStudentDto);
+  async create(@Body() createStudentDto: CreateStudentDto) {
+    try {
+      const student: Student | void = await this.studentsService.add(createStudentDto);
+      return {student};
+    } catch (err) {
+      return err.message;
+    }
   }
 
   @Get()
@@ -45,20 +42,14 @@ export class StudentsController {
 
   //section des responsables
   @Post('/:id/responsables')
-  async addResponsable(
-    @Param('id') idStudent: string,
-    @Body() respoDto: CreateResponsableDto,
-  ) {
+  async addResponsable(@Param('id') idStudent: string, @Body() respoDto: CreateResponsableDto) {
     return this.studentsService
       .addResponsable(idStudent, respoDto)
-      .then((result) => {
-        console.log(
-          `add responsable to student with id ${idStudent}, result: `,
-          result,
-        );
+      .then(result => {
+        console.log(`add responsable to student with id ${idStudent}, result: `, result);
         return result;
       })
-      .catch((err) => {
+      .catch(err => {
         return err;
       });
   }
@@ -69,10 +60,7 @@ export class StudentsController {
   }
 
   @Get('/:idStudent/responsables/:idResponsable')
-  async getResponsable(
-    @Param('id') idStudent: string,
-    @Param('idResponsable') idResponsable: string,
-  ) {
+  async getResponsable(@Param('id') idStudent: string, @Param('idResponsable') idResponsable: string) {
     return this.studentsService.getResponsable(idStudent, idResponsable);
   }
   @Patch('/:id/responsables/:idResponsable')
@@ -81,9 +69,6 @@ export class StudentsController {
     @Param('idResponsable') idResponsable: string,
     @Body() updateResponsableDto: UpdateResponsableDto,
   ) {
-    return this.studentsService.updateResponsable(
-      idResponsable,
-      updateResponsableDto,
-    );
+    return this.studentsService.updateResponsable(idResponsable, updateResponsableDto);
   }
 }
