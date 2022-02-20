@@ -9,5 +9,5 @@ db.users.insertOne({
 });
 db.users.countDocuments();
 
-// db.users.deleteOne({role:"ACADEMIQUE"})
+db.users.deleteOne({role:"ACADEMIQUE"})
 

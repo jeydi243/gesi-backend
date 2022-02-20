@@ -1,10 +1,11 @@
-import { Model } from 'mongoose';
+import { Model, Schema as S, Types as T } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserDocument } from './schemas/user.schema';
 import * as bcrypt from 'bcrypt';
+
 import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
@@ -36,24 +37,22 @@ export class UsersService {
         return err;
       });
   }
-  async registerRoot(userDto?: CreateUserDto): Promise<User | null | Error> {
-    let createdUser = null;
-    if (userDto) {
-      createdUser = new this.userModel(userDto);
-    } else {
-      //Create root user with role as ACADEMIQUE
-      createdUser = new this.userModel({ username: 'rootuser', password: 'rootpass', role: 'Academique', salt: 'rootroot' });
-    }
+  async registerRoot(userDto: CreateUserDto): Promise<User | any> {
+    const createdUser = new this.userModel(userDto);
 
-    console.log('Salt created for root: ' + createdUser.salt);
     return bcrypt
-      .hash(userDto.password, createdUser.salt)
+      .genSalt()
+      .then((salt: string) => {
+        console.log('Salt created for root: ' + salt);
+        createdUser.salt = salt;
+        return bcrypt.hash(userDto.password, createdUser.salt);
+      })
       .then((hashedPassword: string) => {
         createdUser.password = hashedPassword;
+        createdUser.idOfRole = new T.ObjectId().toString();
         console.log('hashedPassword created is : ' + hashedPassword);
         return createdUser.save();
       })
-
       .then((user: User & UserDocument) => {
         console.log('Root user id: ', user._id);
         return user;

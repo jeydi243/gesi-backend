@@ -14,16 +14,17 @@ import { JwtStrategy } from './user/jwt.strategy';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     // MongooseModule.forRoot('mongodb://localhost/gesi'), //for use in production
-    MongooseModule.forRoot(process.env.MONGO_DEV_URI),
-    MongooseModule.forFeature([
-      { name: User.name, schema: UserSchema },
-    ]),
+
+    MongooseModule.forRoot(
+      process.env.NODE_ENV === 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
+    ),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     StudentsModule,
     ProfessorsModule,
     UsersModule,
   ],
   controllers: [RootController],
-  providers: [UsersService],
+  providers: [UsersService, RootController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

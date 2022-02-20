@@ -12,10 +12,6 @@ export class CreateUserDto {
   @ApiProperty({ required: true, minLength: 6, maxLength: 20, type: String })
   password: string;
 
-  @Optional()
-  @ApiProperty({ required: true, minLength: 6, maxLength: 20, type: String })
-  salt: string;
-
   @IsNotEmpty()
   @ApiProperty({
     required: true,
@@ -26,8 +22,8 @@ export class CreateUserDto {
   })
   role: string;
 
+  @Optional()
   @IsNotEmpty()
-  @IsMongoId()
   @ApiProperty({
     required: true,
     type: String,

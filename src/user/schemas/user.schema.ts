@@ -31,5 +31,4 @@ export class User {
   @Prop({ enum: UserRole })
   role: string;
 }
-
 export const UserSchema = SchemaFactory.createForClass(User);

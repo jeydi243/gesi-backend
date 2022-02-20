@@ -1,17 +1,27 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { UsersService } from './user/users.service';
 import { CreateUserDto } from './user/dto/create-user.dto';
+import { User } from './user/schemas/user.schema';
 
 @Controller('root')
 export class RootController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('add')
-  registerRoot(@Body() createUserDto?: CreateUserDto): Promise<CreateUserDto | null | Error> {
-    return this.usersService.registerRoot(createUserDto);
+  async registerRoot(@Body() createUserDto: CreateUserDto): Promise<User | any> {
+    try {
+      const response = await this.usersService.registerRoot(createUserDto);
+      if (response instanceof User) {
+        return { message: 'User created', user: response };
+      }
+      throw new HttpException(response.message, HttpStatus.EXPECTATION_FAILED);
+    } catch (error) {
+      return error;
+    }
+    // return 'ok';
   }
   @Post('add-professor')
-  registerProfessor(@Body() createUserDto?: CreateUserDto) {
+  registerProfessor(@Body() createUserDto: Partial<CreateUserDto>) {
     // return this.usersService.registerRootProfessor(createUserDto);
   }
 }
