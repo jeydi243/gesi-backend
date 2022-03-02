@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
-import { ProfessorsService } from './professors.service';
-import { CreateProfessorDto } from './dto/create-professor.dto';
-import { UpdateProfessorDto } from './dto/update-professor.dto';
+import { TeachersService } from './teachers.service';
+import { CreateTeacherDto } from './dto/create-teacher.dto';
+import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { Roles } from 'src/user/decorators/role.decorator';
 import { RolesGuard } from 'src/user/guards/roles.guard';
 import { JwtAuthGuard } from 'src/user/guards/jwt.guard';
@@ -9,12 +9,12 @@ import { UserRole } from 'src/export.type';
 
 @UseGuards(JwtAuthGuard, RolesGuard) // * JwtAuthGuard et RolesGuard sont des guards executé a la suite, l'ordre est important
 @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR, UserRole.PROFESSEUR)
-@Controller('professors')
-export class ProfessorsController {
-  constructor(private readonly professorsService: ProfessorsService) {}
+@Controller('teachers')
+export class TeachersController {
+  constructor(private readonly professorsService: TeachersService) {}
 
   @Post()
-  create(@Body() createProfessorDto: CreateProfessorDto) {
+  create(@Body() createProfessorDto: CreateTeacherDto) {
     return this.professorsService.create(createProfessorDto);
   }
 
@@ -29,8 +29,8 @@ export class ProfessorsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProfessorDto: UpdateProfessorDto) {
-    return this.professorsService.update(+id, updateProfessorDto);
+  update(@Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto) {
+    return this.professorsService.update(+id, updateTeacherDto);
   }
 
   @Delete(':id')

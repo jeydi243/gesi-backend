@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { StudentsModule } from './students/students.module';
-import { ProfessorsModule } from './professors/professors.module';
+import { TeachersModule } from './teachers/teachers.module';
 import { UsersModule } from './user/users.module';
 import * as helmet from 'helmet';
 import { ConfigModule } from '@nestjs/config';
@@ -21,7 +21,7 @@ import { CoursesModule } from './courses/courses.module';
     ),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     StudentsModule,
-    ProfessorsModule,
+    TeachersModule,
     UsersModule,
     CoursesModule,
   ],

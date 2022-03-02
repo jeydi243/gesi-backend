@@ -26,7 +26,7 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 import { RolesGuard } from './guards/roles.guard';
 import { Roles } from './decorators/role.decorator';
 import { StudentsService } from 'src/students/students.service';
-import { ProfessorsService } from 'src/professors/professors.service';
+import { TeachersService } from 'src/teachers/teachers.service';
 import { UserRole } from 'src/export.type';
 import { Student } from 'src/students/schemas/student.schema';
 
@@ -36,7 +36,7 @@ export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly studentService: StudentsService,
-    private readonly professorService: ProfessorsService,
+    private readonly professorService: TeachersService,
     private jwtService: JwtService,
   ) {}
 
