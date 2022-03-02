@@ -9,6 +9,7 @@ import { RootController } from './root.controller';
 import { UsersService } from './user/users.service';
 import { User, UserSchema } from './user/schemas/user.schema';
 import { JwtStrategy } from './user/jwt.strategy';
+import { CoursesModule } from './courses/courses.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { JwtStrategy } from './user/jwt.strategy';
     StudentsModule,
     ProfessorsModule,
     UsersModule,
+    CoursesModule,
   ],
   controllers: [RootController],
   providers: [UsersService, RootController],
