@@ -1,7 +1,7 @@
 import { Document, Schema as S } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractMember } from 'src/member.abstract';
-export type ProfessorDocument = Teacher & Document;
+export type TeacherDocument = Teacher & Document;
 
 @Schema({ autoIndex: true, timestamps: true, _id: true })
 export class Teacher extends AbstractMember {
@@ -9,4 +9,4 @@ export class Teacher extends AbstractMember {
   matricule: number;
 }
 
-export const ProfessorSchema = SchemaFactory.createForClass(Teacher);
+export const TeacherSchema = SchemaFactory.createForClass(Teacher);

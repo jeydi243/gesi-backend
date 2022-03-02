@@ -21,6 +21,10 @@ export class CoursesController {
   findOne(@Param('id') id: string) {
     return this.coursesService.findOne(+id);
   }
+  @Get('byauthor/:idauthor')
+  findByAuthor(@Param('idauthor') idauthor: string) {
+    return this.coursesService.findByAuthor(idauthor);
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {

@@ -3,12 +3,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
-import { Teacher, ProfessorDocument } from './schemas/teacher.schema';
+import { Teacher, TeacherDocument } from './schemas/teacher.schema';
 
 @Injectable()
 export class TeachersService {
   constructor(
-    @InjectModel(Teacher.name) private professorModel: Model<ProfessorDocument>,
+    @InjectModel(Teacher.name) private professorModel: Model<TeacherDocument>,
   ) {}
   create(createProfessorDto: CreateTeacherDto) {
     return 'This action adds a new professor';

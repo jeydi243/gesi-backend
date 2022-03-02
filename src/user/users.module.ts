@@ -10,7 +10,7 @@ import { TeachersModule } from 'src/teachers/teachers.module';
 import { StudentsModule } from 'src/students/students.module';
 import { TeachersService } from 'src/teachers/teachers.service';
 import { StudentsService } from 'src/students/students.service';
-import { Teacher, ProfessorSchema } from 'src/teachers/schemas/teacher.schema';
+import { Teacher, TeacherSchema } from 'src/teachers/schemas/teacher.schema';
 import { Student, StudentSchema } from 'src/students/schemas/student.schema';
 import { Responsable, ResponsableSchema } from 'src/students/schemas/responsable.schema';
 
@@ -18,7 +18,7 @@ import { Responsable, ResponsableSchema } from 'src/students/schemas/responsable
   imports: [
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
-      { name: Teacher.name, schema: ProfessorSchema },
+      { name: Teacher.name, schema: TeacherSchema },
       { name: Student.name, schema: StudentSchema },
       { name: Responsable.name, schema: ResponsableSchema },
     ]),
