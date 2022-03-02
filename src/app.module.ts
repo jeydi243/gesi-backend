@@ -2,13 +2,13 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { StudentsModule } from './students/students.module';
 import { TeachersModule } from './teachers/teachers.module';
-import { UsersModule } from './user/users.module';
+import { UsersModule } from './users/users.module';
 import * as helmet from 'helmet';
 import { ConfigModule } from '@nestjs/config';
 import { RootController } from './root.controller';
-import { UsersService } from './user/users.service';
-import { User, UserSchema } from './user/schemas/user.schema';
-import { JwtStrategy } from './user/jwt.strategy';
+import { UsersService } from './users/users.service';
+import { User, UserSchema } from './users/schemas/user.schema';
+import { JwtStrategy } from './users/jwt.strategy';
 import { CoursesModule } from './courses/courses.module';
 
 @Module({

@@ -1,7 +1,7 @@
 import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
-import { UsersService } from './user/users.service';
-import { CreateUserDto } from './user/dto/create-user.dto';
-import { User } from './user/schemas/user.schema';
+import { UsersService } from './users/users.service';
+import { CreateUserDto } from './users/dto/create-user.dto';
+import { User } from './users/schemas/user.schema';
 
 @Controller('root')
 export class RootController {

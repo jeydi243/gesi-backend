@@ -2,9 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { TeachersService } from './teachers.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
-import { Roles } from 'src/user/decorators/role.decorator';
-import { RolesGuard } from 'src/user/guards/roles.guard';
-import { JwtAuthGuard } from 'src/user/guards/jwt.guard';
+import { Roles } from 'src/users/decorators/role.decorator';
+import { RolesGuard } from 'src/users/guards/roles.guard';
+import { JwtAuthGuard } from 'src/users/guards/jwt.guard';
 import { UserRole } from 'src/export.type';
 
 @UseGuards(JwtAuthGuard, RolesGuard) // * JwtAuthGuard et RolesGuard sont des guards executé a la suite, l'ordre est important
