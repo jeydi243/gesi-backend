@@ -2,11 +2,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
 import { Responsable } from './responsable.schema';
 import { HighSchool } from './highschool.schema';
-import { AbstractMember } from 'src/member.abstract';
+import { BaseMemberSchema } from 'src/member.base';
 export type StudentDocument = Student & Document;
 
 @Schema({ autoIndex: true, timestamps: true, _id: true })
-export class Student extends AbstractMember {
+export class Student extends BaseMemberSchema {
   @Prop({ required: false, type: S.Types.ObjectId })
   matricule: number;
 

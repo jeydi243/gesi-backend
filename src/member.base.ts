@@ -1,8 +1,10 @@
 import { Prop } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, isPhoneNumber, ValidateIf } from 'class-validator';
 import validator from 'validator';
 import { Name } from './export.type';
 
-export abstract class AbstractMember {
+export abstract class BaseMemberSchema {
   @Prop({
     required: true,
     minlength: 6,
@@ -86,4 +88,29 @@ export abstract class AbstractMember {
 
   @Prop({ type: String, required: true, default: 'Congo (RDC)' })
   cityzenship: string;
+}
+
+export class BaseMemberDto {
+  // create data transfer object for Teacher class
+  @ApiProperty()
+  @IsNotEmpty()
+  name: string | Name;
+
+  @IsNotEmpty()
+  @ValidateIf(o => isPhoneNumber(o.telephone))
+  @ApiProperty()
+  //   @isPhoneNumber(region: 'RU')
+  telephone: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @ValidateIf(o => o.email != o.personalEmail)
+  @IsEmail()
+  personalEmail: string | Name;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @ValidateIf(o => o.email != o.personalEmail)
+  @IsEmail()
+  email: string | Name; //Email fourni par l'établissement
 }
