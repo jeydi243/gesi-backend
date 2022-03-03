@@ -50,8 +50,8 @@ export class UsersController {
   @Post('logout/:idUser')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR)
-  logout(@Body() userDto: CreateUserDto) {
-    return this.usersService.logout(userDto);
+  logout() {
+    return this.usersService.logout();
   }
 
   @Post('login')

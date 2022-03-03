@@ -28,6 +28,6 @@ import { Responsable, ResponsableSchema } from 'src/students/schemas/responsable
     StudentsModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, TeachersService, StudentsService],
+  providers: [UsersService, TeachersService, StudentsService, JwtStrategy],
 })
 export class UsersModule {}

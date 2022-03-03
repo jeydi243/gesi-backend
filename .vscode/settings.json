@@ -2,8 +2,12 @@
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 200,
   "prettier.jsxBracketSameLine": true,
-  // "editor.fontFamily": "K2D Light Italic",
+  "window.autoDetectColorScheme": true,
+  "workbench.preferredLightColorTheme": "GitHub Light Default",
+  "workbench.preferredDarkColorTheme": "Dracula",
+  "editor.fontFamily": "Cascadia Code, 'Courier New', monospace",
   "scm.inputFontFamily": "k2d",
   "better-comments.multilineComments": true,
-  "files.autoSave": "afterDelay"
+  "files.autoSave": "afterDelay",
+  "workbench.colorTheme": "GitHub Light Default",
 }

@@ -7,8 +7,9 @@ import { RolesGuard } from 'src/users/guards/roles.guard';
 import { JwtAuthGuard } from 'src/users/guards/jwt.guard';
 import { UserRole } from 'src/export.type';
 
-@UseGuards(JwtAuthGuard, RolesGuard) // * JwtAuthGuard et RolesGuard sont des guards executé a la suite, l'ordre est important
-@Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR, UserRole.PROFESSEUR)
+// a decommenter apres
+// @UseGuards(JwtAuthGuard, RolesGuard) // * JwtAuthGuard et RolesGuard sont des guards executé a la suite, l'ordre est important
+// @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR, UserRole.PROFESSEUR)
 @Controller('teachers')
 export class TeachersController {
   constructor(private readonly professorsService: TeachersService) {}

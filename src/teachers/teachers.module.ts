@@ -4,6 +4,7 @@ import { TeachersController } from './teachers.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Teacher, TeacherSchema } from './schemas/teacher.schema';
 import { User, UserSchema } from 'src/users/schemas/user.schema';
+import { JwtStrategy } from 'src/users/jwt.strategy';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { User, UserSchema } from 'src/users/schemas/user.schema';
     ]),
   ],
   controllers: [TeachersController],
-  providers: [TeachersService],
+  providers: [TeachersService,],
 })
 export class TeachersModule {}

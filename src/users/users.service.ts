@@ -69,11 +69,8 @@ export class UsersService {
       })
       .exec();
   }
-  logout(userDto: CreateUserDto): boolean {
+  logout(): boolean {
     return false;
-  }
-  testAbilities(role: string) {
-    console.log('Bon apparement sa marche');
   }
 
   async deleteOne(idUser: string): Promise<(User & UserDocument) | null> {

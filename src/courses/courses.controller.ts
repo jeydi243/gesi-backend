@@ -13,8 +13,11 @@ export class CoursesController {
   }
 
   @Get()
-  findAll() {
-    return this.coursesService.findAll();
+  async findAll() {
+    return this.coursesService
+      .findAll()
+      .then(courses => courses)
+      .catch(err => err);
   }
 
   @Get(':id')

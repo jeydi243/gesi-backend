@@ -8,12 +8,13 @@ import { Course, CourseDocument } from './schemas/course.schema';
 @Injectable()
 export class CoursesService {
   constructor(@InjectModel(Course.name) private studentModel: Model<CourseDocument>) {}
-  create(createCourseDto: CreateCourseDto) {
-    return 'This action adds a new course';
+  async create(createCourseDto: CreateCourseDto) {
+    const student = new this.studentModel(createCourseDto);
+    return student.save();
   }
 
-  findAll() {
-    return `This action returns all courses`;
+  async findAll(): Promise<CourseDocument[]> {
+    return this.studentModel.find().exec();
   }
 
   findOne(id: number) {
