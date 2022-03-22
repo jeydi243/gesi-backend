@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
-import { Genre, ListLevel, Name } from 'src/export.type';
+import { Genre, ListLevel, ListStatus, Name } from 'src/export.type';
 
 export class CreateStudentDto {
   @MaxLength(25, {
@@ -58,11 +58,12 @@ export class CreateStudentDto {
     description: "Le statut actuel de l'étudiant",
     example: 'Diplomé',
     default: 'Candidat',
+    enum: ListStatus,
     required: true,
     type: String,
   })
   @IsNotEmpty()
-  statut: string;
+  status: string;
 
   @ApiProperty({
     description: "Le niveau actuel de l'étudiant",

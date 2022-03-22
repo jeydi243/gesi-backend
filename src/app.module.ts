@@ -17,7 +17,7 @@ import { CoursesModule } from './courses/courses.module';
     // MongooseModule.forRoot('mongodb://localhost/gesi'), //for use in production
 
     MongooseModule.forRoot(
-      process.env.NODE_ENV === 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
+      process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
     ),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     StudentsModule,

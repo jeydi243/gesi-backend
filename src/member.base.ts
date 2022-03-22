@@ -1,8 +1,19 @@
+import { Optional } from '@nestjs/common';
 import { Prop } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, isPhoneNumber, ValidateIf } from 'class-validator';
+import {
+  IsArray,
+  IsDateString,
+  IsEmail,
+  IsNotEmpty,
+  isPhoneNumber,
+  IsString,
+  MaxLength,
+  MinLength,
+  ValidateIf,
+} from 'class-validator';
 import validator from 'validator';
-import { Name } from './export.type';
+import { Genre, Name } from './export.type';
 
 export abstract class BaseMemberSchema {
   @Prop({
@@ -22,15 +33,15 @@ export abstract class BaseMemberSchema {
     required: true,
     type: [String],
     validate: {
-      validator: function (value: string[]) {
-        return value.every((tel: string) => {
-          return /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(tel);
+      validator: function (tels: string[]) {
+        return tels.every((tel: string) => {
+          return isPhoneNumber(tel);
         });
       },
-      message: props => `${props.value} n'est pas un numero valide!`,
+      message: props => `${props.value} un des numéros n'est pas un numero valide!`,
     },
   })
-  telephone: string[];
+  telephones: string[];
 
   @Prop({
     required: true,
@@ -78,15 +89,11 @@ export abstract class BaseMemberSchema {
   @Prop({
     type: String,
     required: true,
-    set: (v: any) => {
-      if (typeof v === 'string') {
-        return v.toLowerCase();
-      }
-    },
+    enum: Genre,
   })
   gender: string;
 
-  @Prop({ type: String, required: true, default: 'Congo (RDC)' })
+  @Prop({ type: String, required: true, default: 'CD', minlength: 2, maxlength: 3 })
   cityzenship: string;
 }
 
@@ -96,21 +103,43 @@ export class BaseMemberDto {
   @IsNotEmpty()
   name: string | Name;
 
+  @ApiProperty({ isArray: true })
   @IsNotEmpty()
-  @ValidateIf(o => isPhoneNumber(o.telephone))
-  @ApiProperty()
-  //   @isPhoneNumber(region: 'RU')
-  telephone: string;
+  @IsArray()
+  // @ValidateIf(
+  //   o => {
+  //     return o.telephones.every(tel => isPhoneNumber(tel, o.cityzenship));
+  //   },
+  //   { message: "Le numero de telephone($value) n'est pas valide!" },
+  // )
+  telephones: string[];
 
   @ApiProperty()
   @IsNotEmpty()
-  @ValidateIf(o => o.email != o.personalEmail)
+  @ValidateIf(o => o.email != o.personalEmail, { message: "$value doit etre différent de l'Email de l'Etablissement" })
   @IsEmail()
   personalEmail: string | Name;
 
   @ApiProperty()
   @IsNotEmpty()
-  @ValidateIf(o => o.email != o.personalEmail)
+  @ValidateIf(o => o.email != o.personalEmail, { message: "$value doit etre différent de l'Email personel" })
   @IsEmail()
   email: string | Name; //Email fourni par l'établissement
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @MaxLength(1, { message: "$value n'est pas M ou F" })
+  gender: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsDateString({ message: "$value n'est pas une date valide" })
+  birthDate: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @MinLength(2, { message: "$value n'est pas un code de pays valide " })
+  @MaxLength(3, { message: "$value n'est pas un code de pays valide " })
+  cityzenship: string;
 }

@@ -21,16 +21,14 @@ export class StudentsService {
   }
 
   async findAll(): Promise<Student[] | any> {
-    return this.studentModel
-      .find()
-      .then(function (students: Student[]) {
-        // console.log('We found students', students);
-        return students;
-      })
-      .catch(function (err: any) {
-        console.log('Une erreur est survenue', err);
-        return err;
-      });
+    try {
+      const students = await this.studentModel.find({});
+      console.log('We found students:', students);
+      return students;
+    } catch (err) {
+      console.log('Une erreur est survenue', err);
+      return err;
+    }
   }
 
   async findOne(id: string): Promise<Student | any> {
@@ -101,7 +99,6 @@ export class StudentsService {
         return err;
       });
   }
-
   async getResponsables(idStudent: string) {
     return this.studentModel
       .findOne({ _id: idStudent }, { responsables: 1 })

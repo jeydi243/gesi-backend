@@ -97,7 +97,7 @@ export class UsersService {
   async updatePassword(idUser: number, updatePasswordDto: UpdatePasswordDto): Promise<boolean> {
     try {
       const salt = bcrypt.genSaltSync();
-      const hashedPassword = bcrypt.hashSync(updatePasswordDto.new_password, salt);
+      const hashedPassword = bcrypt.hashSync(updatePasswordDto.newPassword, salt);
       await this.userModel.findOneAndUpdate({ _id: idUser }, { $set: { password: hashedPassword, salt } }).exec();
       return true;
     } catch (err) {

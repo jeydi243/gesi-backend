@@ -1,13 +1,14 @@
 // Select the database to use.
-use('test');
+use('gesi-production');
 
-db.users.insertOne({
-    username: 'rootuser',
-    password: "rootpass",
-    role:"Academique",
-    roleUserID: null,
+db.students.insertOne({
+   name:"Diaby Moussa",
+   level:"G1",
+   email:"student@email.com",
+   gender:"M",
+   status: "Etudiant",
+   matricule:'G20861',
+   birthDate:"2000-01-01",
+   cityzenship:"CD",
+   personalEmail:"personal@email.com",
 });
-db.users.countDocuments();
-
-db.users.deleteOne({role:"ACADEMIQUE"})
-

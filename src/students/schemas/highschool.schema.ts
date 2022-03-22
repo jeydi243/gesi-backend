@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
 import { Name } from 'src/export.type';
 import validator from 'validator';
-export type ResponsableDocument = HighSchool & Document;
+export type HighSchoolDocument = HighSchool & Document;
 
 @Schema({ autoIndex: true, timestamps: true })
 export class HighSchool {
@@ -18,7 +18,7 @@ export class HighSchool {
       validator: function (v: any) {
         return validator.isMobilePhone(v);
       },
-      message: (props) => `${props} n'est pas un numero valide!`,
+      message: props => `${props} n'est pas un numero valide!`,
     },
     set: (v: any) => {
       return v.replace(/\D/g, '');
@@ -32,10 +32,14 @@ export class HighSchool {
       validator: function (v: any) {
         return validator.isEmail(v);
       },
-      message: (props) => `${props.value} is not a valid email!`,
+      message: props => `${props.value} is not a valid email!`,
     },
   })
   email: string;
 }
 
-export const StudentSchema = SchemaFactory.createForClass(HighSchool);
+export const HighSchoolSchema = SchemaFactory.createForClass(HighSchool);
+
+HighSchoolSchema.pre('save', () => {
+  console.log('Pre-save HighSchool is : ', this);
+});

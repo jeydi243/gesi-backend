@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { TeachersService } from './teachers.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
@@ -15,7 +15,7 @@ export class TeachersController {
   constructor(private readonly professorsService: TeachersService) {}
 
   @Post()
-  create(@Body() createProfessorDto: CreateTeacherDto) {
+  async create(@Body() createProfessorDto: CreateTeacherDto) {
     return this.professorsService.create(createProfessorDto);
   }
 
@@ -25,17 +25,24 @@ export class TeachersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.professorsService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    console.log('Okay ', id);
+
+    return this.professorsService.findById(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto) {
-    return this.professorsService.update(+id, updateTeacherDto);
+  async updateById(@Query('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto) {
+    return this.professorsService.updateById(id, updateTeacherDto);
+  }
+
+  @Patch('where')
+  async updateWhere(@Body() body) {
+    return this.professorsService.updateWhere(body.where, body.fields);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.professorsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return this.professorsService.deleteById(id);
   }
 }

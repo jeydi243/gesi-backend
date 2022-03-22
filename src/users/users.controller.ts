@@ -127,7 +127,7 @@ export class UsersController {
         );
       }
       const { password: hashedPassword } = user;
-      const { old_password: plainTextPassword } = updatePasswordDto;
+      const { oldPassword: plainTextPassword } = updatePasswordDto;
       const isPassMatch = bcrypt.compareSync(plainTextPassword, hashedPassword);
 
       if (!isPassMatch) {
@@ -182,7 +182,7 @@ export class UsersController {
 
         break;
       case 'Professor':
-        return this.professorService.findOne(id);
+        return this.professorService.findById(id);
         break;
       default:
         break;

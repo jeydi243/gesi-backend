@@ -3,6 +3,7 @@ import { Document, Schema as S } from 'mongoose';
 import { Responsable } from './responsable.schema';
 import { HighSchool } from './highschool.schema';
 import { BaseMemberSchema } from 'src/member.base';
+import { ListLevel, ListStatus } from 'src/export.type';
 export type StudentDocument = Student & Document;
 
 @Schema({ autoIndex: true, timestamps: true, _id: true })
@@ -11,6 +12,7 @@ export class Student extends BaseMemberSchema {
   matricule: number;
 
   @Prop({
+
     type: [{ type: S.Types.ObjectId, ref: 'Responsable' }],
   })
   responsables: Responsable[];
@@ -21,13 +23,12 @@ export class Student extends BaseMemberSchema {
     default: 'Candidat',
     validate: {
       validator: function (value: string) {
-        const listStatut: string[] = ['Candidat', 'Etudiant', 'Diplomé', 'Abandon', 'Renvoi'];
-        return listStatut.includes(value);
+        return ListStatus.includes(value);
       },
-      message: props => `${props.value} n'est pas valide!`,
+      message: props => `${props.value} n'est pas valide - ${ListStatus}!`,
     },
   })
-  statut: string;
+  status: string;
 
   @Prop({
     type: String,
@@ -35,16 +36,19 @@ export class Student extends BaseMemberSchema {
     default: 'Prépa',
     validate: {
       validator: function (value: string) {
-        const listNiveau: string[] = ['Prépa', 'G1', 'G2', 'G3'];
-        return listNiveau.includes(value);
+        return ListLevel.includes(value);
       },
-      message: props => `${props.value} n'est pas valide!`,
+      message: props => `${props.value} n'est pas valide - ${ListLevel}!`,
     },
   })
-  niveau: string;
+  level: string;
 
   @Prop({ type: [{ type: S.Types.ObjectId, ref: 'HighSchool' }] })
   highSchool: HighSchool;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);
+
+StudentSchema.pre('save', () => {
+  console.log('Pre-save Student is : ', this);
+});

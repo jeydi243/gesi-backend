@@ -9,5 +9,5 @@
   "scm.inputFontFamily": "k2d",
   "better-comments.multilineComments": true,
   "files.autoSave": "afterDelay",
-  "workbench.colorTheme": "GitHub Light Default",
+  "workbench.colorTheme": "Dracula",
 }
