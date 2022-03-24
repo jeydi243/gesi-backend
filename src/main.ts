@@ -7,6 +7,7 @@ import { ErrorFilter } from './erros.filter';
 import * as morganBody from 'morgan-body';
 0;
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { logger: ['error', 'warn', 'log'] });
@@ -44,4 +45,5 @@ async function bootstrap() {
   });
   await app.listen(3000);
 }
+
 bootstrap();

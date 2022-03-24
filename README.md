@@ -15,6 +15,7 @@ Les fonctionalités sont (Tenant compte du role de l'utilisateur):
     - [x] Créer
     - [x] Mettre à jour
     - [x] Supprimer(Soft delete)
+    - [ ] Affecter un evenement
   ### Professeurs
     - [ ] Créer
     - [ ] Mettre à jour
@@ -22,6 +23,15 @@ Les fonctionalités sont (Tenant compte du role de l'utilisateur):
     - [ ] Affecter un cours
     - [ ] Retirer un cours
     - [ ] Affecter la gestion d'une filière
+  ### Cours
+    - [ ] Créer un cours
+    - [ ] Modifier un cours (ex: Author, pondération)
+    - [ ] Supprimer un cours (ex: Author, pondération)
+    - [ ] Session:
+      - [ ] Créer une session d'un cours avec (Id de l'auteur du cours)
+      - [ ] Decaler une session
+      - [ ] Supprimer une session
+      - [ ] Modifier le
 
 
 ## Installation
