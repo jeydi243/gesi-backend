@@ -1,37 +1,36 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
+# Description
 
 Gesi est une application de gestion d'une université (Institut supérieure). \
 Les fonctionalités sont (Tenant compte du role de l'utilisateur):
+
+  ### Filière
+  - [x] Créer
+  - [x] Mettre à jour
+  - [x] Supprimer(Soft delete)
+  - [ ] Affecter un gestionnaire, son adjoint, affecter
+  - [ ] Changer le gestionnaire
+  - [ ] Affecter une ou plusieurs resources.
   ### Etudiants
-    - [x] Créer
-    - [x] Mettre à jour
-    - [x] Supprimer(Soft delete)
-    - [ ] Affecter un evenement
+  - [x] Créer
+  - [x] Mettre à jour
+  - [x] Supprimer(Soft delete)
+  - [ ] Affecter un evenement
   ### Professeurs
-    - [ ] Créer
-    - [ ] Mettre à jour
-    - [ ] Supprimer (Soft Delete)
-    - [ ] Affecter un cours
-    - [ ] Retirer un cours
-    - [ ] Affecter la gestion d'une filière
+  - [x] Créer
+  - [x] Mettre à jour
+  - [x] Supprimer (Soft Delete)
+  - [ ] Affecter un cours
+  - [ ] Retirer un cours
+  - [ ] Affecter la gestion d'une filière
   ### Cours
-    - [ ] Créer un cours
-    - [ ] Modifier un cours (ex: Author, pondération)
-    - [ ] Supprimer un cours (ex: Author, pondération)
-    - [ ] Session:
-      - [ ] Créer une session d'un cours avec (Id de l'auteur du cours)
-      - [ ] Decaler une session
-      - [ ] Supprimer une session
-      - [ ] Modifier le
+  - [x] Créer un cours
+  - [x] Modifier un cours (ex: Author, pondération)
+  - [ ] Supprimer un cours (ex: Author)
+  - [ ] Session:
+    - [ ] Créer une session d'un cours avec (Id de l'auteur du cours)
+    - [ ] Decaler une session
+    - [ ] Supprimer une session
+    - [ ] Modifier le
 
 
 ## Installation
