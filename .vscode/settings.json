@@ -10,4 +10,5 @@
   "better-comments.multilineComments": true,
   "files.autoSave": "afterDelay",
   "workbench.colorTheme": "Dracula",
+
 }

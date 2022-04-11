@@ -12,3 +12,12 @@ db.students.insertOne({
    cityzenship:"CD",
    personalEmail:"personal@email.com",
 });
+
+db.trips.aggregate(
+   [
+      {"$match": {"birth year": {"$gt": 0} } },
+      {"$project": {"birth year":1,"birth year":1}},
+      {'$sort': {'birth year':-1}},
+      {'$limit': 2},
+   ]
+).pretty()
