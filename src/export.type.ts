@@ -12,7 +12,6 @@ export const ListDocument: Array<Record<string, any>> = [
   { name: 'Attestation de scolarité', code: 'AX-005', required: true },
   { name: 'Lettre de motivation', code: 'LX-001', required: false },
   { name: 'Relevé de cote', code: 'LX-002', required: false, concerne: "" },
-  
 ];
 
 export enum Genre {
