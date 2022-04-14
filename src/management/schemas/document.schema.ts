@@ -5,8 +5,11 @@ export type DocumentOrgDocument = DocumentOrg & Document;
 
 @Schema({ autoIndex: true, timestamps: true, _id: true })
 export class DocumentOrg {
-  @Prop({ required: false, type: S.Types.ObjectId })
+  @Prop({ required: true, type: String })
   code: string;
+
+  @Prop({ required: true, type: String })
+  name: string;
 }
 
 export const DocumentOrgSchema = SchemaFactory.createForClass(DocumentOrg);

@@ -11,9 +11,15 @@ export const ListDocument: Array<Record<string, any>> = [
   { name: 'Bulletin 6eme', code: 'AX-004', required: true },
   { name: 'Attestation de scolarité', code: 'AX-005', required: true },
   { name: 'Lettre de motivation', code: 'LX-001', required: false },
-  { name: 'Relevé de cote', code: 'LX-002', required: false, concerne: "" },
+  { name: 'Relevé de cote', code: 'LX-002', required: false, concerne: '' },
 ];
 
+export interface DocumentOrganisation {
+  code: string;
+  name: string;
+  required?: boolean;
+  link?: string;
+}
 export enum Genre {
   M, //Male
   F, //Female

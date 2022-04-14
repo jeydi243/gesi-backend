@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
-import { Genre, ListLevel, ListStatus, Name } from 'src/export.type';
+import { DocumentOrganisation, Genre, ListLevel, ListStatus, Name } from 'src/export.type';
 
 export class CreateStudentDto {
   @MaxLength(25, {
@@ -80,6 +80,12 @@ export class CreateStudentDto {
     type: Array,
   })
   responsables: Map<string, any>[];
+
+  @ApiProperty({
+    description: 'Document et lien du document',
+    type: Array,
+  })
+  documents: Record<keyof DocumentOrganisation, any>[];
 
   @ApiProperty({
     type: Map,
