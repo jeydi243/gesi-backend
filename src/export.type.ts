@@ -16,9 +16,9 @@ export const ListDocument: Array<Record<string, any>> = [
 
 export interface DocumentOrganisation {
   code: string;
-  name: string;
+  link: string;
+  name?: string;
   required?: boolean;
-  link?: string;
 }
 export enum Genre {
   M, //Male

@@ -55,9 +55,8 @@ export class CreateStudentDto {
   birthDate: Date;
 
   @ApiProperty({
-    description: "Le statut actuel de l'étudiant",
-    example: 'Diplomé',
-    default: 'Candidat',
+    example: 'CANDIDAT',
+    default: 'CANDIDAT',
     enum: ListStatus,
     required: true,
     type: String,

@@ -1,14 +1,13 @@
 {
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 200,
-  "prettier.jsxBracketSameLine": true,
+  "prettier.jsxBracketSameLine": false,
   "window.autoDetectColorScheme": true,
   "workbench.preferredLightColorTheme": "GitHub Light Default",
   "workbench.preferredDarkColorTheme": "Dracula",
+  "workbench.colorTheme": "Dracula",
   "editor.fontFamily": "Cascadia Code, 'Courier New', monospace",
   "scm.inputFontFamily": "k2d",
   "better-comments.multilineComments": true,
-  "files.autoSave": "afterDelay",
-  "workbench.colorTheme": "Dracula",
-
+  "files.autoSave": "afterDelay"
 }

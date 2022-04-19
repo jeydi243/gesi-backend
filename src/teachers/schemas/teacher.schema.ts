@@ -6,7 +6,7 @@ export type TeacherDocument = Teacher & Document;
 @Schema({ autoIndex: true, timestamps: true, _id: true })
 export class Teacher extends BaseMemberSchema {
   @Prop({ required: false, type: S.Types.ObjectId, unique: true })
-  matricule: number;
+  matricule: S.Types.ObjectId;
 
   @Prop({ required: true, minlength: 300 })
   resume: string;

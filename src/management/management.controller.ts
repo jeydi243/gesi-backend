@@ -24,4 +24,9 @@ export class ManagementController {
   uploadFruits(@Body() body) {
     return `Body sent  is ${body}`;
   }
+
+  @Get('documents')
+  findAllDocuments() {
+    return this.managementService.findAllDocuments();
+  }
 }

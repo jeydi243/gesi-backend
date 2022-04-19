@@ -8,8 +8,8 @@ export type StudentDocument = Student & Document;
 
 @Schema({ autoIndex: true, timestamps: true, _id: true })
 export class Student extends BaseMemberSchema {
-  @Prop({ required: false, type: S.Types.ObjectId })
-  matricule: number;
+  @Prop({ required: false })
+  matricule: string;
 
   @Prop({
     type: [{ type: S.Types.ObjectId, ref: 'Responsable' }],
@@ -19,12 +19,12 @@ export class Student extends BaseMemberSchema {
   @Prop({
     type: String,
     required: true,
-    default: 'Candidat',
+    default: 'CANDIDAT',
     validate: {
       validator: function (value: string) {
         return ListStatus.includes(value);
       },
-      message: props => `${props.value} n'est pas valide - ${ListStatus}!`,
+      message: props => `${props.value} doit correspondre a une des valeurs suivante(CASE sensitive) - ${ListStatus}!`,
     },
   })
   status: string;

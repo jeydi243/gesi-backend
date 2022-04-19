@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, NativeError } from 'mongoose';
 import { CreateResponsableDto } from './dto/create-responsable.dto';
@@ -7,7 +7,9 @@ import { UpdateResponsableDto } from './dto/update-responsable.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Responsable, ResponsableDocument } from './schemas/responsable.schema';
 import { Student, StudentDocument } from './schemas/student.schema';
-
+import { join } from 'path';
+import { move, moveSync } from 'fs-extra';
+import * as tempDirectory from 'temp-dir';
 @Injectable()
 export class StudentsService {
   constructor(
@@ -60,7 +62,6 @@ export class StudentsService {
       return err;
     }
   }
-
   remove(id: string) {
     this.studentModel.findByIdAndRemove({ _id: id }, function (err: NativeError, student: Student) {
       if (err) {
@@ -110,7 +111,7 @@ export class StudentsService {
         });
       })
       .catch(err => {
-        console.log("Can't get studend's responsables ", idStudent, '\n', err);
+        console.log("Can't get student's responsables ", idStudent, '\n', err);
         return err;
       });
   }
@@ -135,5 +136,56 @@ export class StudentsService {
       returnDocument: 'after',
       lean: true,
     });
+  }
+  async updateDocument(idStudent, code, link): Promise<StudentDocument | any> {
+    try {
+      const foundStudent = await this.studentModel.findOne({ id: idStudent });
+      const indexOfOld: number = foundStudent.documents.findIndex(doc => doc.code == code);
+      if (indexOfOld == -1) {
+        throw new BadRequestException("Ce document n'existe pas pour cette utilisateur");
+      }
+      foundStudent.documents[indexOfOld].link = link;
+      return foundStudent.save();
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  }
+  async updateDocument2(idStudent, code, link): Promise<number | any> {
+    try {
+      const foundStudent = await this.studentModel.updateOne(
+        {
+          id: idStudent,
+          documents: { $elemMatch: { code: code } },
+        },
+        { $set: { 'documents.$.link': link } },
+      );
+      return foundStudent.modifiedCount;
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  }
+  async addDocument(idStudent: string, code: string, file: Express.Multer.File): Promise<StudentDocument | any> {
+    try {
+      const foundStudent = await this.studentModel.findOne({ id: idStudent });
+      if (!foundStudent) {
+        return new BadRequestException("Cet utilisateur n'existe pas, Impossible d'ajouter le document");
+      }
+      const link = this.buildLink(idStudent, file, code);
+      moveSync(file.path, link, { overwrite: true }); // move the file to the destination path
+      foundStudent.documents.push({ code, link });
+      console.log('Donc on arrive ici');
+
+      return foundStudent.save();
+    } catch (e) {
+      console.log(e);
+      return e;
+    }
+  }
+
+  buildLink(studentID: string, doc: Express.Multer.File, code: string): string {
+    const ext = doc.mimetype.split('/')[1];
+    return `../STORAGE/Students/${studentID}/Documents/${code}.${ext}`;
   }
 }

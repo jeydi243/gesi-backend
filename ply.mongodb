@@ -1,23 +1,9 @@
 // Select the database to use.
-use('gesi-production');
+use('gesi-development');
 
-db.students.insertOne({
+db.students.findOneAndUpdate(
+{
    name:"Diaby Moussa",
-   level:"G1",
-   email:"student@email.com",
-   gender:"M",
-   status: "Etudiant",
-   matricule:'G20861',
-   birthDate:"2000-01-01",
-   cityzenship:"CD",
-   personalEmail:"personal@email.com",
-});
-
-db.trips.aggregate(
-   [
-      {"$match": {"birth year": {"$gt": 0} } },
-      {"$project": {"birth year":1,"birth year":1}},
-      {'$sort': {'birth year':-1}},
-      {'$limit': 2},
-   ]
-).pretty()
+},
+{$set:{statut:"ETUDIANT"}}
+);

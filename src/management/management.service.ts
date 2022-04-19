@@ -12,7 +12,7 @@ export class ManagementService {
     const createddocumentOrgModel = new this.documentOrgModel(docDto);
     return createddocumentOrgModel.save();
   }
-  async findAll(): Promise<DocumentOrg[] | void> {
+  async findAllDocuments(): Promise<DocumentOrg[] | void> {
     return this.documentOrgModel.find();
   }
 }
