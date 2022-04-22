@@ -49,7 +49,6 @@ export class TeachersService {
       return error;
     }
   }
-
   //delete by id
   deleteById(id: string) {
     return this.professorModel.findOneAndUpdate({ _id: id }, { isDeleted: true, deletedAt: new Date() });

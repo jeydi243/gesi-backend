@@ -37,8 +37,8 @@ export class TeachersController {
   }
 
   @Patch('where')
-  async updateWhere(@Body() body) {
-    return this.professorsService.updateWhere(body.where, body.fields);
+  async updateWhere(@Body() body, @Body() updateTeacherDto: UpdateTeacherDto) {
+    return this.professorsService.updateWhere(body.where, updateTeacherDto);
   }
 
   @Delete(':id')

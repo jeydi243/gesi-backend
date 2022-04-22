@@ -1,31 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Document, Schema as S } from 'mongoose';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Course, CourseDocument } from './schemas/course.schema';
 
 @Injectable()
 export class CoursesService {
-  constructor(@InjectModel(Course.name) private studentModel: Model<CourseDocument>) {}
+  constructor(@InjectModel(Course.name) private courseModel: Model<CourseDocument>) {}
   async create(createCourseDto: CreateCourseDto) {
-    const student = new this.studentModel(createCourseDto);
+    const student = new this.courseModel(createCourseDto);
     return student.save();
   }
 
   async findAll(): Promise<CourseDocument[]> {
-    return this.studentModel.find().exec();
+    return this.courseModel.find().exec();
   }
 
   findOne(id: number) {
     return `This action returns a #${id} course`;
   }
-  findByAuthor(idauthor: string) {
-    return `This action returns a #${idauthor} course`;
+  findByAuthor(author: S.Types.ObjectId) {
+    return this.courseModel.find({ author: author });
   }
 
   update(id: number, updateCourseDto: UpdateCourseDto) {
-    return `This action updates a #${id} course`;
+    return this.courseModel.findOneAndUpdate({ id }, updateCourseDto);
   }
 
   remove(id: number) {

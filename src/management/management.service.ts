@@ -15,11 +15,12 @@ export class ManagementService {
   }
 
   async findAllDocuments(): Promise<DocumentOrg[] | void> {
+    //return all documents that is not marked as deletedAt
     return this.documentOrgModel.find({ deletedAt: null });
   }
 
   async softDelete(code: string): Promise<DocumentOrg | void> {
-    return this.documentOrgModel.findByIdAndUpdate({ code }, { $set: { deletedAt: Date() } });
+    return this.documentOrgModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });
   }
   async remove(code: string): Promise<DocumentOrg | void> {
     return this.documentOrgModel.findOneAndRemove({ code });

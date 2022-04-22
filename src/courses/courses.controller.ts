@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-
+import { Schema as S } from 'mongoose';
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
@@ -26,8 +26,8 @@ export class CoursesController {
   }
 
   @Get('byauthor/:idauthor')
-  findByAuthor(@Param('idauthor') idauthor: string) {
-    return this.coursesService.findByAuthor(idauthor);
+  findByAuthor(@Param('author') author: S.Types.ObjectId) {
+    return this.coursesService.findByAuthor(author);
   }
 
   @Patch(':id')

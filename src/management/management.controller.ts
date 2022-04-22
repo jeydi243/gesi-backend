@@ -53,7 +53,7 @@ export class ManagementController {
   softDeleteDocument(@Query('code') code: string) {
     return this.managementService.softDelete(code);
   }
-  @Patch('documents/:code')
+  @Patch('documents/update/:code')
   @HttpCode(200)
   updateDocument(@Query('code') code: string, @Body() body: UpdateDocumentDto) {
     return this.managementService.updateDocument(code, body);
