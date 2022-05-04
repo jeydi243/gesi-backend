@@ -2,12 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { DocumentOrgDTO } from './dto/create-document.dto';
+import { FiliereDTO } from './dto/create-filiere.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { DocumentOrg, DocumentOrgDocument } from './schemas/document.schema';
+import { Filiere, FiliereDocument } from './schemas/filiere.schema';
 
 @Injectable()
 export class ManagementService {
-  constructor(@InjectModel(DocumentOrg.name) private documentOrgModel: Model<DocumentOrgDocument>) {}
+  constructor(
+    @InjectModel(DocumentOrg.name) private documentOrgModel: Model<DocumentOrgDocument>,
+    @InjectModel(Filiere.name) private filiereModel: Model<FiliereDocument>,
+  ) {}
 
   async addDocumentSpec(docDto: DocumentOrgDTO): Promise<DocumentOrg | void> {
     const createddocumentOrgModel = new this.documentOrgModel(docDto);
@@ -27,5 +32,23 @@ export class ManagementService {
   }
   async updateDocument(code: string, documentUpdate: UpdateDocumentDto): Promise<DocumentOrg | void> {
     return this.documentOrgModel.findOneAndUpdate({ code }, { $set: { ...documentUpdate } });
+  }
+
+  async addFiliere(filiereDto: FiliereDTO): Promise<Filiere | void> {
+    const createdfiliere = new this.filiereModel(filiereDto);
+    return createdfiliere.save();
+  }
+  async softDeleteFiliere(code: string): Promise<Filiere | void> {
+    return this.filiereModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });
+  }
+  async removeFiliere(code: string): Promise<Filiere | void> {
+    return this.filiereModel.findOneAndRemove({ code });
+  }
+  async updateFiliere(code: string, filiereUpdate: UpdateDocumentDto): Promise<Filiere | void> {
+    return this.filiereModel.findOneAndUpdate({ code }, { $set: { ...filiereUpdate } });
+  }
+  async findAllFiliere(): Promise<Filiere[] | void> {
+    //return all filiere that is not marked as deletedAt
+    return this.filiereModel.find({ deletedAt: null });
   }
 }

@@ -21,8 +21,8 @@ export class Filiere {
   sub_manager: string;
 }
 
-export const DocumentOrgSchema = SchemaFactory.createForClass(Filiere);
+export const FiliereSchema = SchemaFactory.createForClass(Filiere);
 
-DocumentOrgSchema.pre('save', () => {
-  console.log('Pre-save DocumentOrg is : ', this);
+FiliereSchema.pre('save', () => {
+  console.log('Pre-save FiliereSchema is : ', this);
 });
