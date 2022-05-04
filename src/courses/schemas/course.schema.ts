@@ -8,10 +8,26 @@ export class Course {
   title: string;
 
   @Prop({ required: true, type: S.Types.ObjectId, ref: 'Teacher' })
-  author: string;
+  author: S.Types.ObjectId;
 
   @Prop({ required: true, type: String, length: [30, 500] })
   description: string;
+
+  @Prop({
+    type: Date,
+    set: (v: any) => {
+      if (typeof v == 'string') {
+        return new Date(v as string);
+      } else if (v instanceof Date) {
+        return v;
+      } else {
+        console.log(
+          `Ce champ(${v}) n'as pas pu etre convertie en date car son c'est une instance de ${v.constructor.name}`,
+        );
+      }
+    },
+  })
+  expireDate?: Date;
 }
 
 export const CourseSchema = SchemaFactory.createForClass(Course);
