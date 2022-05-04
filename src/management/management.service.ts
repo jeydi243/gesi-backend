@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { DocumentOrgDTO } from './dto/create-document.dto';
 import { FiliereDTO } from './dto/create-filiere.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
+import { UpdateFiliereDto } from './dto/update-filiere.dto';
 import { DocumentOrg, DocumentOrgDocument } from './schemas/document.schema';
 import { Filiere, FiliereDocument } from './schemas/filiere.schema';
 
@@ -44,8 +45,20 @@ export class ManagementService {
   async removeFiliere(code: string): Promise<Filiere | void> {
     return this.filiereModel.findOneAndRemove({ code });
   }
-  async updateFiliere(code: string, filiereUpdate: UpdateDocumentDto): Promise<Filiere | void> {
-    return this.filiereModel.findOneAndUpdate({ code }, { $set: { ...filiereUpdate } });
+  async updateFiliere(code: string, filiereUpdate: UpdateFiliereDto): Promise<Filiere | null | string> {
+    const filiere = await this.filiereModel.findOne({ code });
+    if (filiere) {
+      if (filiereUpdate.manager != filiereUpdate.sub_manager) {
+        //le manager et submanager ne sont pas pareil
+
+        return this.filiereModel.findOneAndUpdate({ code }, { $set: { ...filiereUpdate } }).exec();
+        // filiere.save();
+      } else {
+        return 'Le manager et le sub_manager semble correspondre a la meme personne';
+      }
+    }
+
+    return;
   }
   async findAllFiliere(): Promise<Filiere[] | void> {
     //return all filiere that is not marked as deletedAt

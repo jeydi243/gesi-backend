@@ -30,12 +30,10 @@ export class FiliereDTO {
   @IsNotEmpty()
   @MaxLength(500)
   @MinLength(20)
-  @ApiProperty({ type: String, minLength: 20, maxLength: 500, required: false })
-  sub_manager: string;
+  @ApiProperty({ type: S.Types.ObjectId, minLength: 20, maxLength: 500, required: false })
+  sub_manager: S.Types.ObjectId;
 
   @IsNotEmpty()
-  @MaxLength(500)
-  @MinLength(20)
-  @ApiProperty({ type: Date, required: false })
+  @ApiProperty({ type: Date, required: true })
   date_creation: Date;
 }

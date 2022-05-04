@@ -14,6 +14,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { DocumentOrgDTO } from './dto/create-document.dto';
 import { FiliereDTO } from './dto/create-filiere.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
+import { UpdateFiliereDto } from './dto/update-filiere.dto';
 import { ManagementService } from './management.service';
 
 @Controller('management')
@@ -77,5 +78,15 @@ export class ManagementController {
   @HttpCode(200)
   addFiliere(@Body() body: FiliereDTO) {
     return this.managementService.addFiliere(body);
+  }
+  @Delete('filieres/:code')
+  @HttpCode(200)
+  removeFiliere(@Query('code') code: string) {
+    return this.managementService.removeFiliere(code);
+  }
+  @Patch('filieres/update/:code')
+  @HttpCode(200)
+  updateFiliere(@Query('code') code: string, @Body() body: UpdateFiliereDto) {
+    return this.managementService.updateFiliere(code, body);
   }
 }
