@@ -7,8 +7,8 @@ Les fonctionalités sont (Tenant compte du role de l'utilisateur):
   - [x] Créer
   - [x] Mettre à jour
   - [x] Supprimer(Soft delete)
-  - [ ] Affecter un gestionnaire, son adjoint, affecter
-  - [ ] Changer le gestionnaire
+  - [ ] Affecter un gestionnaire(manager), son adjoint
+  - [ ] Changer le gestionnaire(manager)
   - [ ] Affecter une ou plusieurs resources.
   ### Etudiants
   - [x] Créer
@@ -30,9 +30,14 @@ Les fonctionalités sont (Tenant compte du role de l'utilisateur):
     - [ ] Créer une session d'un cours avec (Id de l'auteur du cours)
     - [ ] Decaler une session
     - [ ] Supprimer une session
-    - [ ] Modifier le
-
-
+    - [ ] Modifier l'intitulé
+  ### Evènements
+  - [ ] Créer un évènement (Colloct, Live Event, TEDxTalk ...)
+  - [ ] Affecter des participants (Soit une filière entiere soit un niveau, soit un ou plusieur etudiants)
+  - [ ] Retirer une groupe ou en ajouter
+  - [ ] Supprimer un évènement
+  ### Ressources
+  - [ ] Ajouter une ressource(Materiel, PC, Imprimantes, )
 ## Installation
 
 ```bash
