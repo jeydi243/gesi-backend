@@ -4,6 +4,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { ManagementController } from './management.controller';
 import { ManagementService } from './management.service';
 import { DocumentOrg, DocumentOrgSchema } from './schemas/document.schema';
+import { Employee, EmployeeSchema } from './schemas/employee.schema';
 import { Filiere, FiliereSchema } from './schemas/filiere.schema';
 
 @Module({
@@ -11,6 +12,7 @@ import { Filiere, FiliereSchema } from './schemas/filiere.schema';
     MongooseModule.forFeature([
       { name: DocumentOrg.name, schema: DocumentOrgSchema },
       { name: Filiere.name, schema: FiliereSchema },
+      { name: Employee.name, schema: EmployeeSchema },
     ]),
     MulterModule.register({
       dest: './uploads',

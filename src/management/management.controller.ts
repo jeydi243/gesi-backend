@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -12,10 +13,12 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DocumentOrgDTO } from './dto/create-document.dto';
+import { EmployeeDto } from './dto/create-employee.dto';
 import { FiliereDTO } from './dto/create-filiere.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { UpdateFiliereDto } from './dto/update-filiere.dto';
 import { ManagementService } from './management.service';
+import { DocumentOrg } from './schemas/document.schema';
 
 @Controller('management')
 export class ManagementController {
@@ -59,8 +62,20 @@ export class ManagementController {
 
   @Patch('documents/update/:code')
   @HttpCode(200)
-  updateDocument(@Query('code') code: string, @Body() body: UpdateDocumentDto) {
-    return this.managementService.updateDocument(code, body);
+  async updateDocument(@Query('code') code: string, @Body() body: UpdateDocumentDto) {
+    console.log('Try to update tgis docment: ', body);
+
+    try {
+      const response: DocumentOrg | null = await this.managementService.updateDocument(code, body);
+      console.log({ response });
+
+      if (response != null) {
+        return response;
+      }
+      new BadRequestException('Document not found');
+    } catch (error) {
+      return error;
+    }
   }
 
   @Delete('documents/:code')
@@ -69,6 +84,7 @@ export class ManagementController {
     return this.managementService.remove(code);
   }
 
+  //cette section s'occupe des routes 'Filieres'
   @Get('filieres')
   @HttpCode(200)
   findFiliere() {
@@ -88,5 +104,17 @@ export class ManagementController {
   @HttpCode(200)
   updateFiliere(@Query('code') code: string, @Body() body: UpdateFiliereDto) {
     return this.managementService.updateFiliere(code, body);
+  }
+
+  //Cette section s'occupe des route employee
+  @Get('employees')
+  @HttpCode(200)
+  findAllEmployee() {
+    return this.managementService.findAllEmployee();
+  }
+  @Post('employees')
+  @HttpCode(200)
+  addEmployee(@Body() body: EmployeeDto) {
+    return this.managementService.addEmployee(body);
   }
 }

@@ -4,15 +4,18 @@ import { Model } from 'mongoose';
 import { DocumentOrgDTO } from './dto/create-document.dto';
 import { FiliereDTO } from './dto/create-filiere.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { UpdateFiliereDto } from './dto/update-filiere.dto';
 import { DocumentOrg, DocumentOrgDocument } from './schemas/document.schema';
+import { Employee, EmployeeDocument } from './schemas/employee.schema';
 import { Filiere, FiliereDocument } from './schemas/filiere.schema';
-
+import { EmployeeDto } from './dto/create-employee.dto';
 @Injectable()
 export class ManagementService {
   constructor(
     @InjectModel(DocumentOrg.name) private documentOrgModel: Model<DocumentOrgDocument>,
     @InjectModel(Filiere.name) private filiereModel: Model<FiliereDocument>,
+    @InjectModel(Employee.name) private employeeModel: Model<EmployeeDocument>,
   ) {}
 
   async addDocumentSpec(docDto: DocumentOrgDTO): Promise<DocumentOrg | void> {
@@ -24,14 +27,13 @@ export class ManagementService {
     //return all documents that is not marked as deletedAt
     return this.documentOrgModel.find({ deletedAt: null });
   }
-
   async softDelete(code: string): Promise<DocumentOrg | void> {
     return this.documentOrgModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });
   }
   async remove(code: string): Promise<DocumentOrg | void> {
     return this.documentOrgModel.findOneAndRemove({ code });
   }
-  async updateDocument(code: string, documentUpdate: UpdateDocumentDto): Promise<DocumentOrg | void> {
+  async updateDocument(code: string, documentUpdate: UpdateDocumentDto): Promise<DocumentOrg | null> {
     return this.documentOrgModel.findOneAndUpdate({ code }, { $set: { ...documentUpdate } });
   }
 
@@ -49,8 +51,6 @@ export class ManagementService {
     const filiere = await this.filiereModel.findOne({ code });
     if (filiere) {
       if (filiereUpdate.manager != filiereUpdate.sub_manager) {
-        //le manager et submanager ne sont pas pareil
-
         return this.filiereModel.findOneAndUpdate({ code }, { $set: { ...filiereUpdate } }).exec();
         // filiere.save();
       } else {
@@ -63,5 +63,30 @@ export class ManagementService {
   async findAllFiliere(): Promise<Filiere[] | void> {
     //return all filiere that is not marked as deletedAt
     return this.filiereModel.find({ deletedAt: null });
+  }
+
+  //Employee
+  async addEmployee(employeeDto: EmployeeDto): Promise<Employee | void> {
+    const createdemployee = new this.employeeModel(employeeDto);
+    return createdemployee.save();
+  }
+  async softDeleteEmployee(code: string): Promise<Employee | void> {
+    return this.employeeModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });
+  }
+  async removeEmployee(code: string): Promise<Employee | void> {
+    return this.employeeModel.findOneAndRemove({ code });
+  }
+  async updateEmployee(code: string, employeeUpdate: UpdateEmployeeDto): Promise<Filiere | null | string> {
+    const employee = await this.filiereModel.findOne({ code });
+    if (employee) {
+      return this.filiereModel.findOneAndUpdate({ code }, { $set: { ...employeeUpdate } }).exec();
+      // filiere.save();
+    }
+
+    return "Impossible de modifier cette employé, il n'existe pas";
+  }
+  async findAllEmployee(): Promise<Employee[] | void> {
+    //return all Employee that is not marked as deletedAt
+    return this.employeeModel.find({ deletedAt: null });
   }
 }

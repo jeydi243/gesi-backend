@@ -1,3 +1,4 @@
+import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 import { Schema as S } from 'mongoose';
@@ -34,6 +35,7 @@ export class FiliereDTO {
   sub_manager: S.Types.ObjectId;
 
   @IsNotEmpty()
+  @Optional()
   @ApiProperty({ type: Date, required: true })
   date_creation: Date;
 }
