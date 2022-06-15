@@ -22,6 +22,6 @@ export class RootController {
   }
   @Post('add-professor')
   registerProfessor(@Body() createUserDto: Partial<CreateUserDto>) {
-    // return this.usersService.registerRootProfessor(createUserDto);
+    return this.usersService.registerRootProfessor(createUserDto);
   }
 }

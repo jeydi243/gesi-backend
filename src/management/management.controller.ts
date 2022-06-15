@@ -9,16 +9,19 @@ import {
   Post,
   Query,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FileFieldsInterceptor } from '@nestjs/platform-express';
 import { DocumentOrgDTO } from './dto/create-document.dto';
 import { EmployeeDto } from './dto/create-employee.dto';
 import { FiliereDTO } from './dto/create-filiere.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { UpdateFiliereDto } from './dto/update-filiere.dto';
+import * as tempDirectory from 'temp-dir';
 import { ManagementService } from './management.service';
 import { DocumentOrg } from './schemas/document.schema';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('management')
 export class ManagementController {
@@ -114,7 +117,26 @@ export class ManagementController {
   }
   @Post('employees')
   @HttpCode(200)
-  addEmployee(@Body() body: EmployeeDto) {
+  @ApiOperation({ summary: 'Register new employee', description: 'Register a new employee' })
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'resume_file', maxCount: 1 },
+      { name: 'profile_img', maxCount: 1 },
+      { name: 'school_diploma_file', maxCount: 1 },
+    ]),
+  )
+  addEmployee(
+    @Body() body: EmployeeDto,
+    @UploadedFiles()
+    files: {
+      profile_img: Express.Multer.File;
+      school_diploma_file: Express.Multer.File;
+      resume_file: Express.Multer.File;
+    },
+  ) {
+    console.log({ files });
+    console.log({ body });
+    
     return this.managementService.addEmployee(body);
   }
 }

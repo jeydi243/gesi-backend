@@ -67,6 +67,8 @@ export class ManagementService {
 
   //Employee
   async addEmployee(employeeDto: EmployeeDto): Promise<Employee | void> {
+    console.log("Est-ce qu'on arrive meme ici");
+
     const createdemployee = new this.employeeModel(employeeDto);
     return createdemployee.save();
   }

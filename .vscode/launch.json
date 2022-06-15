@@ -7,9 +7,10 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Start Nestjs Dev",
       "skipFiles": ["<node_internals>/**"],
-      "program": "npm run start:dev"
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start:dev"]
     }
   ]
 }

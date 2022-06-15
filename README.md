@@ -1,7 +1,7 @@
 # Description
 
-Gesi est une application de gestion d'une université (Institut supérieure). \
-Les fonctionalités sont (Tenant compte du role de l'utilisateur):
+  Gesi est une application de gestion d'une université (Institut supérieure). \
+  Les fonctionalités sont (Tenant compte du role de l'utilisateur):
 
   ### Filière
   - [x] Créer
@@ -10,12 +10,17 @@ Les fonctionalités sont (Tenant compte du role de l'utilisateur):
   - [ ] Affecter un gestionnaire(manager), son adjoint
   - [ ] Changer le gestionnaire(manager)
   - [ ] Affecter une ou plusieurs resources.
-  ### Etudiants
-  - [x] Créer
-  - [x] Mettre à jour
-  - [x] Supprimer(Soft delete)
+  ### Students
+  - [x] Create
+  - [x] Update
+  - [x] Soft delete
   - [ ] Affecter un evenement
-  ### Professeurs
+  ### Employees
+  - [x] Create
+  - [x] Update
+  - [x] Soft delete
+  - [ ] Affecter un evenement
+  ### Teachers
   - [x] Créer
   - [x] Mettre à jour
   - [x] Supprimer (Soft Delete)

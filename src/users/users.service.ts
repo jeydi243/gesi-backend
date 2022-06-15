@@ -10,6 +10,9 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UsersService {
+  registerRootProfessor(createUserDto: Partial<CreateUserDto>) {
+    throw new Error('Method not implemented.');
+  }
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async register(userDto: CreateUserDto): Promise<User | null | Error> {
