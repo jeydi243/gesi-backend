@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MulterModule } from '@nestjs/platform-express';
-import { BaseMemberSchema } from 'src/member.base';
+import { Person, PersonSchema } from 'src/person.base';
+import { Student, StudentSchema } from 'src/students/schemas/student.schema';
+import { Teacher, TeacherSchema } from 'src/teachers/schemas/teacher.schema';
 import { ManagementController } from './management.controller';
 import { ManagementService } from './management.service';
 import { DocumentOrg, DocumentOrgSchema } from './schemas/document.schema';
@@ -14,14 +16,14 @@ import { Filiere, FiliereSchema } from './schemas/filiere.schema';
       { name: DocumentOrg.name, schema: DocumentOrgSchema },
       { name: Filiere.name, schema: FiliereSchema },
       {
-        name: BaseMemberSchema.name,
-        schema: EventSchema,
+        name: Person.name,
+        schema: PersonSchema,
         discriminators: [
-          { name: ClickedLinkEvent.name, schema: ClickedLinkEventSchema },
-          { name: SignUpEvent.name, schema: SignUpEventSchema },
+          { name: Teacher.name, schema: TeacherSchema },
+          { name: Student.name, schema: StudentSchema },
+          { name: Employee.name, schema: EmployeeSchema },
         ],
       },
-      { name: Employee.name, schema: EmployeeSchema },
     ]),
     MulterModule.register({
       dest: './uploads',

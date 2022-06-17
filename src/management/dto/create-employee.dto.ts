@@ -3,9 +3,9 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsString, MaxLength, MinLength, ValidateIf } from 'class-validator';
 import { Name } from 'src/export.type';
-import { BaseMemberDto } from '../../member.base';
+import { PersonDto } from '../../person.base';
 
-export class EmployeeDto extends BaseMemberDto {
+export class EmployeeDto extends PersonDto {
   @ApiProperty({ type: String })
   name: string | Name;
 

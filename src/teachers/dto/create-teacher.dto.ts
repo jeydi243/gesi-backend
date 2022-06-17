@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, MinLength } from 'class-validator';
-import { BaseMemberDto } from '../../member.base';
+import { PersonDto } from '../../person.base';
 
-export class CreateTeacherDto extends BaseMemberDto {
+export class CreateTeacherDto extends PersonDto {
   @MinLength(300, { message: 'Le message de description doit contenir au minimum $value' })
   @IsString()
   @ApiProperty()

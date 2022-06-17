@@ -1,19 +1,19 @@
 import { Document, Schema as S } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseMemberSchema } from 'src/member.base';
+
 export type TeacherDocument = Teacher & Document;
 
-@Schema({ autoIndex: true, timestamps: true, _id: true })
-export class Teacher extends BaseMemberSchema {
+@Schema()
+export class Teacher {
   @Prop({ required: false, type: S.Types.ObjectId, unique: true })
   matricule: S.Types.ObjectId;
 
   @Prop({ required: true, minlength: 300 })
-  resume: string;
+  resume_file: string;
 }
 
 export const TeacherSchema = SchemaFactory.createForClass(Teacher);
 
-TeacherSchema.pre('save', () => {
-  console.log('Pre-save Teacher is : ', this);
-});
+// TeacherSchema.pre('save', () => {
+//   console.log('Pre-save Teacher is : ', this);
+// });

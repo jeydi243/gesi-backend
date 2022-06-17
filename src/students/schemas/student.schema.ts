@@ -1,13 +1,13 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as S } from 'mongoose';
-import { Responsable } from './responsable.schema';
 import { HighSchool } from './highschool.schema';
-import { BaseMemberSchema } from 'src/member.base';
+import { Responsable } from './responsable.schema';
+import { Document, Schema as S } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ListLevel, ListStatus, DocumentOrganisation } from 'src/export.type';
+
 export type StudentDocument = Student & Document;
 
-@Schema({ autoIndex: true, timestamps: true, _id: true })
-export class Student extends BaseMemberSchema {
+@Schema()
+export class Student {
   @Prop({ required: false })
   matricule: string;
 
@@ -51,6 +51,6 @@ export class Student extends BaseMemberSchema {
 
 export const StudentSchema = SchemaFactory.createForClass(Student);
 
-StudentSchema.pre('save', () => {
-  console.log('Pre-save Student is : ', this);
-});
+// StudentSchema.pre('save', () => {
+//   console.log('Pre-save Student is : ', this);
+// });

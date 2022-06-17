@@ -3,7 +3,7 @@ import { Document, Schema as S } from 'mongoose';
 import { UserRole } from 'src/export.type';
 export type UserDocument = User & Document;
 
-@Schema({ autoIndex: true, timestamps: true, _id: true })
+@Schema()
 export class User {
   @Prop({
     required: true,
