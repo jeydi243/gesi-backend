@@ -19,9 +19,9 @@ import { Filiere, FiliereSchema } from './schemas/filiere.schema';
         name: Person.name,
         schema: PersonSchema,
         discriminators: [
-          { name: Teacher.name, schema: TeacherSchema },
-          { name: Student.name, schema: StudentSchema },
           { name: Employee.name, schema: EmployeeSchema },
+          // { name: Student.name, schema: StudentSchema },
+          // { name: Teacher.name, schema: TeacherSchema },
         ],
       },
     ]),

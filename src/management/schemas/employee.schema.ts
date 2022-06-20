@@ -1,6 +1,5 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
-import { Name } from 'src/export.type';
 
 export type EmployeeDocument = Employee & Document;
 
@@ -16,7 +15,7 @@ export class Employee {
   resume_file: string;
 
   @Prop({ type: String })
-  school_name: Name;
+  school_name: string;
 
   @Prop({ type: Date })
   school_start_date: Date;

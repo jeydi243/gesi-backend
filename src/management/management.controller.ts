@@ -18,7 +18,6 @@ import { EmployeeDto } from './dto/create-employee.dto';
 import { FiliereDTO } from './dto/create-filiere.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { UpdateFiliereDto } from './dto/update-filiere.dto';
-import * as tempDirectory from 'temp-dir';
 import { ManagementService } from './management.service';
 import { DocumentOrg } from './schemas/document.schema';
 import { ApiOperation } from '@nestjs/swagger';

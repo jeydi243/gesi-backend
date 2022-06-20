@@ -1,5 +1,5 @@
-import { Document, Schema as S } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Schema as S } from 'mongoose';
 
 export type TeacherDocument = Teacher & Document;
 
