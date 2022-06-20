@@ -1,0 +1,9 @@
+// Select the database to use.
+use('gesi-development');
+
+db.students.findOneAndUpdate(
+{
+   name:"Diaby Moussa",
+},
+{$set:{statut:"ETUDIANT"}}
+);
