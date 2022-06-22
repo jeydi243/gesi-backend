@@ -17,7 +17,6 @@ import { CreateResponsableDto } from './dto/create-responsable.dto';
 import { UpdateResponsableDto } from './dto/update-responsable.dto';
 import { Student } from './schemas/student.schema';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
-import { join } from 'path';
 import { moveSync } from 'fs-extra';
 import * as tempDirectory from 'temp-dir';
 import { DocumentOrganisation } from 'src/export.type';

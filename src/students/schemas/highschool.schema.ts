@@ -40,6 +40,6 @@ export class HighSchool {
 
 export const HighSchoolSchema = SchemaFactory.createForClass(HighSchool);
 
-HighSchoolSchema.pre('save', () => {
-  console.log('Pre-save HighSchool is : ', this);
-});
+// HighSchoolSchema.pre('save', () => {
+//   console.log('Pre-save HighSchool is : ', this);
+// });

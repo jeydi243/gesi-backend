@@ -8,6 +8,7 @@
   "workbench.colorTheme": "Dracula",
   "editor.fontFamily": "Cascadia Code, 'Courier New', monospace",
   "scm.inputFontFamily": "k2d",
+  "mdb.confirmRunAll": false,
   "better-comments.multilineComments": true,
   "files.autoSave": "afterDelay"
 }

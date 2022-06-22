@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MulterModule } from '@nestjs/platform-express';
-import { Person, PersonSchema } from 'src/person.base';
-import { Student, StudentSchema } from 'src/students/schemas/student.schema';
-import { Teacher, TeacherSchema } from 'src/teachers/schemas/teacher.schema';
+import {  PersonSchema } from 'src/person.base';
+import { StudentSchema } from 'src/students/schemas/student.schema';
+import { TeacherSchema } from 'src/teachers/schemas/teacher.schema';
+import { EmployeeSchema } from 'src/management/schemas/employee.schema';
 import { ManagementController } from './management.controller';
 import { ManagementService } from './management.service';
 import { DocumentOrg, DocumentOrgSchema } from './schemas/document.schema';
-import { Employee, EmployeeSchema } from './schemas/employee.schema';
 import { Filiere, FiliereSchema } from './schemas/filiere.schema';
 
 @Module({
@@ -16,12 +16,12 @@ import { Filiere, FiliereSchema } from './schemas/filiere.schema';
       { name: DocumentOrg.name, schema: DocumentOrgSchema },
       { name: Filiere.name, schema: FiliereSchema },
       {
-        name: Person.name,
+        name: 'Person',
         schema: PersonSchema,
         discriminators: [
-          { name: Employee.name, schema: EmployeeSchema },
-          // { name: Student.name, schema: StudentSchema },
-          // { name: Teacher.name, schema: TeacherSchema },
+          { name: 'Employee', schema: EmployeeSchema },
+          { name: 'Teacher', schema: TeacherSchema },
+          { name: 'Student', schema: StudentSchema },
         ],
       },
     ]),

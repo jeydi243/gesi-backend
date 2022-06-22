@@ -17,6 +17,7 @@ import validator from 'validator';
 import { Genre, Name } from './export.type';
 
 @Schema({ timestamps: true, _id: true, autoIndex: true })
+
 export class Person {
   @Prop({
     required: true,
@@ -104,7 +105,11 @@ export class Person {
   @Prop({ type: String, required: true, default: 'CD', minlength: 2, maxlength: 3 })
   cityzenship: string;
 }
+
 export const PersonSchema = SchemaFactory.createForClass(Person);
+
+
+
 export class PersonDto {
   // create data transfer object for Teacher class
   @ApiProperty()

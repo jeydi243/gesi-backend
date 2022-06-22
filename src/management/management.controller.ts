@@ -20,7 +20,7 @@ import { UpdateDocumentDto } from './dto/update-document.dto';
 import { UpdateFiliereDto } from './dto/update-filiere.dto';
 import { ManagementService } from './management.service';
 import { DocumentOrg } from './schemas/document.schema';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiConsumes, ApiOperation } from '@nestjs/swagger';
 
 @Controller('management')
 export class ManagementController {
@@ -116,6 +116,7 @@ export class ManagementController {
   }
   @Post('employees')
   @HttpCode(200)
+  @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Register new employee', description: 'Register a new employee' })
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -135,7 +136,7 @@ export class ManagementController {
   ) {
     console.log({ files });
     console.log({ body });
-    
+
     return this.managementService.addEmployee(body);
   }
 }

@@ -17,6 +17,6 @@ export class DocumentOrg {
 
 export const DocumentOrgSchema = SchemaFactory.createForClass(DocumentOrg);
 
-DocumentOrgSchema.pre('save', () => {
-  // console.log('Pre-save DocumentOrg is : ', this);
-});
+// DocumentOrgSchema.pre('save', () => {
+//   // console.log('Pre-save DocumentOrg is : ', this);
+// });

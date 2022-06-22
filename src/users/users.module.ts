@@ -10,17 +10,25 @@ import { TeachersModule } from 'src/teachers/teachers.module';
 import { StudentsModule } from 'src/students/students.module';
 import { TeachersService } from 'src/teachers/teachers.service';
 import { StudentsService } from 'src/students/students.service';
-import { Teacher, TeacherSchema } from 'src/teachers/schemas/teacher.schema';
-import { Student, StudentSchema } from 'src/students/schemas/student.schema';
+import {  TeacherSchema } from 'src/teachers/schemas/teacher.schema';
+import {  StudentSchema } from 'src/students/schemas/student.schema';
 import { Responsable, ResponsableSchema } from 'src/students/schemas/responsable.schema';
+import { PersonSchema } from 'src/person.base';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
-      { name: Teacher.name, schema: TeacherSchema },
-      { name: Student.name, schema: StudentSchema },
       { name: Responsable.name, schema: ResponsableSchema },
+
+      {
+        name: 'Person',
+        schema: PersonSchema,
+        discriminators: [
+          { name: 'Student', schema: StudentSchema },
+          { name: 'Teacher', schema: TeacherSchema },
+        ],
+      },
     ]),
     PassportModule.register({ defaultStrategy: 'jwt', property: 'user' }),
     JwtModule.register({ secret: 'jeydi243' }),

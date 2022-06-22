@@ -39,6 +39,6 @@ export class Responsable {
 
 export const ResponsableSchema = SchemaFactory.createForClass(Responsable);
 
-ResponsableSchema.pre('save', () => {
-  console.log('Pre-save Responsable is : ', this);
-});
+// ResponsableSchema.pre('save', () => {
+//   console.log('Pre-save Responsable is : ', this);
+// });

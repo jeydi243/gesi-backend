@@ -23,6 +23,6 @@ export class Filiere {
 
 export const FiliereSchema = SchemaFactory.createForClass(Filiere);
 
-FiliereSchema.pre('save', () => {
-  console.log('Pre-save FiliereSchema is : ', this);
-});
+// FiliereSchema.pre('save', () => {
+//   console.log('Pre-save FiliereSchema is : ', this);
+// });

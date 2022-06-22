@@ -2,6 +2,21 @@
 
   Gesi est une application de gestion d'une université (Institut supérieure). \
   Les fonctionalités sont (Tenant compte du role de l'utilisateur):
+## Installation
+
+```bash
+$ npm install
+```
+
+## Lancer l'application
+
+```bash
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
 
   ### Filière
   - [x] Créer
@@ -43,21 +58,7 @@
   - [ ] Supprimer un évènement
   ### Ressources
   - [ ] Ajouter une ressource(Materiel, PC, Imprimantes, )
-## Installation
 
-```bash
-$ npm install
-```
-
-## Lancer l'application
-
-```bash
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
 
 ## Support
 

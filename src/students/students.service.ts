@@ -7,7 +7,6 @@ import { UpdateResponsableDto } from './dto/update-responsable.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Responsable, ResponsableDocument } from './schemas/responsable.schema';
 import { Student, StudentDocument } from './schemas/student.schema';
-import { join } from 'path';
 import { move, moveSync } from 'fs-extra';
 import * as tempDirectory from 'temp-dir';
 @Injectable()

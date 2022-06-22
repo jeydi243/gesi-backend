@@ -1,21 +1,21 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { DocumentOrgDTO } from './dto/create-document.dto';
+import { Injectable } from '@nestjs/common';
 import { FiliereDTO } from './dto/create-filiere.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { EmployeeDto } from './dto/create-employee.dto';
+import { DocumentOrgDTO } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { UpdateFiliereDto } from './dto/update-filiere.dto';
-import { DocumentOrg, DocumentOrgDocument } from './schemas/document.schema';
-import { Employee, EmployeeDocument } from './schemas/employee.schema';
 import { Filiere, FiliereDocument } from './schemas/filiere.schema';
-import { EmployeeDto } from './dto/create-employee.dto';
+import { Employee, EmployeeDocument } from './schemas/employee.schema';
+import { DocumentOrg, DocumentOrgDocument } from './schemas/document.schema';
 @Injectable()
 export class ManagementService {
   constructor(
     @InjectModel(DocumentOrg.name) private documentOrgModel: Model<DocumentOrgDocument>,
-    @InjectModel(Filiere.name) private filiereModel: Model<FiliereDocument>,
-    @InjectModel(Employee.name) private employeeModel: Model<EmployeeDocument>,
+    @InjectModel("Filiere") private filiereModel: Model<FiliereDocument>,
+    @InjectModel("Employee") private employeeModel: Model<EmployeeDocument>,
   ) {}
 
   async addDocumentSpec(docDto: DocumentOrgDTO): Promise<DocumentOrg | void> {

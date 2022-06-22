@@ -39,6 +39,6 @@ export class EtablissementSecondaire {
 
 export const EtablissementSecondaireSchema = SchemaFactory.createForClass(EtablissementSecondaire);
 
-EtablissementSecondaireSchema.pre('save', () => {
-  console.log('Pre-save Etablissement is : ', this);
-});
+// EtablissementSecondaireSchema.pre('save', () => {
+//   console.log('Pre-save Etablissement is : ', this);
+// });
