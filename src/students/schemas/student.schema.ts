@@ -49,7 +49,7 @@ export class Student extends Document {
   documents: DocumentOrganisation[];
 }
 
-export const StudentSchema = SchemaFactory.createForClass(Student);
+export const StudentSchema: S = SchemaFactory.createForClass<Student>(Student);
 
 // StudentSchema.pre('save', () => {
 //   console.log('Pre-save Student is : ', this);

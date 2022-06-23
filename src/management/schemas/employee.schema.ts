@@ -31,7 +31,7 @@ export class Employee extends Document {
   cover_letter: string;
 }
 
-export const EmployeeSchema = SchemaFactory.createForClass(Employee);
+export const EmployeeSchema: S = SchemaFactory.createForClass<Employee>(Employee);
 
 // EmployeeSchema.pre('save', () => {
 // console.log('Pre-save DocumentOrg is : ', this);

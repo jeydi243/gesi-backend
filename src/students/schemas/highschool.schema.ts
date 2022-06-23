@@ -40,7 +40,7 @@ export class HighSchool extends Document{
   email: string;
 }
 
-export const HighSchoolSchema = SchemaFactory.createForClass(HighSchool);
+export const HighSchoolSchema: S = SchemaFactory.createForClass<HighSchool>(HighSchool);
 
 // HighSchoolSchema.pre('save', () => {
 //   console.log('Pre-save HighSchool is : ', this);

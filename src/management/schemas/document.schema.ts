@@ -13,7 +13,7 @@ export class DocumentOrg extends Document {
   description: string;
 }
 
-export const DocumentOrgSchema = SchemaFactory.createForClass(DocumentOrg);
+export const DocumentOrgSchema: S = SchemaFactory.createForClass<DocumentOrg>(DocumentOrg);
 
 // DocumentOrgSchema.pre('save', () => {
 //   // console.log('Pre-save DocumentOrg is : ', this);

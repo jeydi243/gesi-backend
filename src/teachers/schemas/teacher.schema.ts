@@ -12,7 +12,7 @@ export class Teacher extends Document{
   resume_file: string;
 }
 
-export const TeacherSchema = SchemaFactory.createForClass(Teacher);
+export const TeacherSchema: S = SchemaFactory.createForClass<Teacher>(Teacher);
 
 // TeacherSchema.pre('save', () => {
 //   console.log('Pre-save Teacher is : ', this);

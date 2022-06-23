@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema as S } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
@@ -103,7 +104,7 @@ export class Person {
   cityzenship: string;
 }
 
-export const PersonSchema = SchemaFactory.createForClass(Person);
+export const PersonSchema: S = SchemaFactory.createForClass(Person);
 
 export class PersonDto {
   // create data transfer object for Teacher class

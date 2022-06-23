@@ -19,7 +19,7 @@ export class Filiere extends Document {
   sub_manager: string;
 }
 
-export const FiliereSchema = SchemaFactory.createForClass(Filiere);
+export const FiliereSchema: S = SchemaFactory.createForClass<Filiere>(Filiere);
 
 // FiliereSchema.pre('save', () => {
 //   console.log('Pre-save FiliereSchema is : ', this);

@@ -29,4 +29,4 @@ export class Course extends Document {
   expireDate?: Date;
 }
 
-export const CourseSchema = SchemaFactory.createForClass(Course);
+export const CourseSchema: S = SchemaFactory.createForClass<Course>(Course);

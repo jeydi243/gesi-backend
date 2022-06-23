@@ -38,7 +38,7 @@ export class Responsable extends Document {
   email: string;
 }
 
-export const ResponsableSchema = SchemaFactory.createForClass(Responsable);
+export const ResponsableSchema: S = SchemaFactory.createForClass<Responsable>(Responsable);
 
 // ResponsableSchema.pre('save', () => {
 //   console.log('Pre-save Responsable is : ', this);
