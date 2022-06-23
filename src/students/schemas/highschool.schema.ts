@@ -2,10 +2,12 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
 import { Name } from 'src/export.type';
 import validator from 'validator';
-export type HighSchoolDocument = HighSchool & Document;
+
+
+// export type HighSchoolDocument = HighSchool & Document;
 
 @Schema({ autoIndex: true, timestamps: true })
-export class HighSchool {
+export class HighSchool extends Document{
   @Prop({ required: false, type: S.Types.ObjectId, auto: true })
   id: number;
 

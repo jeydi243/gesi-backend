@@ -5,16 +5,16 @@ import { CreateResponsableDto } from './dto/create-responsable.dto';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateResponsableDto } from './dto/update-responsable.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { Responsable, ResponsableDocument } from './schemas/responsable.schema';
-import { Student, StudentDocument } from './schemas/student.schema';
+import { Responsable,  } from './schemas/responsable.schema';
+import { Student } from './schemas/student.schema';
 import { move, moveSync } from 'fs-extra';
 import * as tempDirectory from 'temp-dir';
 @Injectable()
 export class StudentsService {
   constructor(
-    @InjectModel(Student.name) private studentModel: Model<StudentDocument>,
+    @InjectModel(Student.name) private studentModel: Model<Student>,
     @InjectModel(Responsable.name)
-    private responsableModel: Model<ResponsableDocument>,
+    private responsableModel: Model<Responsable>,
   ) {}
   async add(createStudentDto: CreateStudentDto): Promise<Student | void> {
     const createdStudent = new this.studentModel(createStudentDto);
@@ -35,7 +35,7 @@ export class StudentsService {
   async findOne(id: string): Promise<Student | any> {
     return this.studentModel
       .findOne({ _id: id }, { name: 1, email: 1, telephone: 1, matricule: 1 })
-      .then((student: StudentDocument) => {
+      .then((student: Student) => {
         console.log('Find one student with id = ', student.id);
         return student;
       })
@@ -136,7 +136,7 @@ export class StudentsService {
       lean: true,
     });
   }
-  async updateDocument(idStudent, code, link): Promise<StudentDocument | any> {
+  async updateDocument(idStudent, code, link): Promise<Student | any> {
     try {
       const foundStudent = await this.studentModel.findOne({ id: idStudent });
       const indexOfOld: number = foundStudent.documents.findIndex(doc => doc.code == code);
@@ -165,7 +165,7 @@ export class StudentsService {
       return e;
     }
   }
-  async addDocument(idStudent: string, code: string, file: Express.Multer.File): Promise<StudentDocument | any> {
+  async addDocument(idStudent: string, code: string, file: Express.Multer.File): Promise<Student | any> {
     try {
       const foundStudent = await this.studentModel.findOne({ id: idStudent });
       if (!foundStudent) {

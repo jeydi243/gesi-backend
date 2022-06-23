@@ -1,10 +1,8 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
 
-export type DocumentOrgDocument = DocumentOrg & Document;
-
 @Schema({ autoIndex: true, timestamps: true, _id: true })
-export class DocumentOrg {
+export class DocumentOrg extends Document {
   @Prop({ required: true, type: String, unique: true, immutable: true })
   code: string;
 

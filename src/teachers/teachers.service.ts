@@ -3,11 +3,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
-import { Teacher, TeacherDocument } from './schemas/teacher.schema';
+import { Teacher } from './schemas/teacher.schema';
 
 @Injectable()
 export class TeachersService {
-  constructor(@InjectModel(Teacher.name) private professorModel: Model<TeacherDocument>) {}
+  constructor(@InjectModel(Teacher.name) private professorModel: Model<Teacher>) {}
   async create(createProfessorDto: CreateTeacherDto) {
     try {
       const prof = await new this.professorModel(createProfessorDto);
@@ -26,7 +26,7 @@ export class TeachersService {
   findWhere(where: UpdateTeacherDto) {
     return this.professorModel.find(where).$where('this.isDeleted == false').exec();
   }
-  async updateById(id: string, updateProfessorDto: UpdateTeacherDto): Promise<TeacherDocument | null> {
+  async updateById(id: string, updateProfessorDto: UpdateTeacherDto): Promise<Teacher | null> {
     try {
       const isNotDeleted: boolean = await this.professorModel.exists({ _id: id, isDeleted: false });
       if (isNotDeleted) return this.professorModel.findByIdAndUpdate(id, updateProfessorDto);
@@ -35,7 +35,7 @@ export class TeachersService {
       return null;
     }
   }
-  async updateWhere(where: UpdateTeacherDto, fieldsToUpdate: UpdateTeacherDto): Promise<TeacherDocument | null> {
+  async updateWhere(where: UpdateTeacherDto, fieldsToUpdate: UpdateTeacherDto): Promise<Teacher | null> {
     try {
       const isNotDeleted: boolean = await this.professorModel.exists({ ...where, isDeleted: false });
       if (isNotDeleted) {

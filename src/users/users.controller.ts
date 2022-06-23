@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User, UserDocument } from './schemas/user.schema';
+import { User } from './schemas/user.schema';
 import { LoginDto } from './dto/login-user.dto';
 import { User as UserDec } from './decorators/user.decorator';
 import { JwtService } from '@nestjs/jwt';
@@ -57,7 +57,7 @@ export class UsersController {
   @Post('login')
   async login(@Body() loginDto: LoginDto): Promise<{ [key: string]: any } | string | any> {
     try {
-      const user: (User & UserDocument) | null = await this.usersService.findOne(loginDto.username);
+      const user: User | null = await this.usersService.findOne(loginDto.username);
 
       if (!user) {
         throw new HttpException(
@@ -115,7 +115,7 @@ export class UsersController {
   @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR)
   async updatePassword(@Body() updatePasswordDto: UpdatePasswordDto, @UserDec() userDec) {
     try {
-      const user: (User & UserDocument) | null = await this.usersService.findOne(userDec.username);
+      const user: User | null = await this.usersService.findOne(userDec.username);
 
       if (!user) {
         throw new HttpException(
@@ -154,7 +154,7 @@ export class UsersController {
   @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR)
   async remove(@Param('id') id: string, @UserDec() userDec) {
     try {
-      const user: (User & UserDocument) | null = await this.usersService.deleteOne(userDec.id);
+      const user: User | null = await this.usersService.deleteOne(userDec.id);
       if (!user) {
         throw new NotFoundException("Can't mark this user as deleted");
       }

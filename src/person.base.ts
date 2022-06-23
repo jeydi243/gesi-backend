@@ -1,9 +1,7 @@
-import { Optional } from '@nestjs/common';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
-  IsArray,
   IsDateString,
   IsEmail,
   IsNotEmpty,
@@ -17,7 +15,6 @@ import validator from 'validator';
 import { Genre, Name } from './export.type';
 
 @Schema({ timestamps: true, _id: true, autoIndex: true })
-
 export class Person {
   @Prop({
     required: true,
@@ -107,8 +104,6 @@ export class Person {
 }
 
 export const PersonSchema = SchemaFactory.createForClass(Person);
-
-
 
 export class PersonDto {
   // create data transfer object for Teacher class

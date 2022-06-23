@@ -4,17 +4,17 @@ import { Model } from 'mongoose';
 import { Document, Schema as S } from 'mongoose';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { Course, CourseDocument } from './schemas/course.schema';
+import { Course } from './schemas/course.schema';
 
 @Injectable()
 export class CoursesService {
-  constructor(@InjectModel(Course.name) private courseModel: Model<CourseDocument>) {}
+  constructor(@InjectModel(Course.name) private courseModel: Model<Course>) {}
   async create(createCourseDto: CreateCourseDto) {
     const student = new this.courseModel(createCourseDto);
     return student.save();
   }
 
-  async findAll(): Promise<CourseDocument[]> {
+  async findAll(): Promise<Course[]> {
     return this.courseModel.find().exec();
   }
 

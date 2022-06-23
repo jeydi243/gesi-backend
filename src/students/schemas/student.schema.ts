@@ -4,10 +4,10 @@ import { Document, Schema as S } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ListLevel, ListStatus, DocumentOrganisation } from 'src/export.type';
 
-export type StudentDocument = Student & Document;
+// export type StudentDocument = Student & Document;
 
 @Schema()
-export class Student {
+export class Student extends Document {
   @Prop({ required: false })
   matricule: string;
 

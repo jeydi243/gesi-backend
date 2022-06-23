@@ -1,10 +1,8 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
 
-export type EmployeeDocument = Employee & Document;
-
 @Schema()
-export class Employee {
+export class Employee extends Document {
   @Prop({ type: String })
   profile_img: string;
 
@@ -36,5 +34,5 @@ export class Employee {
 export const EmployeeSchema = SchemaFactory.createForClass(Employee);
 
 // EmployeeSchema.pre('save', () => {
-  // console.log('Pre-save DocumentOrg is : ', this);
+// console.log('Pre-save DocumentOrg is : ', this);
 // });

@@ -7,15 +7,15 @@ import { DocumentOrgDTO } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { UpdateFiliereDto } from './dto/update-filiere.dto';
-import { Filiere, FiliereDocument } from './schemas/filiere.schema';
-import { Employee, EmployeeDocument } from './schemas/employee.schema';
-import { DocumentOrg, DocumentOrgDocument } from './schemas/document.schema';
+import { Filiere } from './schemas/filiere.schema';
+import { Employee } from './schemas/employee.schema';
+import { DocumentOrg } from './schemas/document.schema';
 @Injectable()
 export class ManagementService {
   constructor(
-    @InjectModel(DocumentOrg.name) private documentOrgModel: Model<DocumentOrgDocument>,
-    @InjectModel("Filiere") private filiereModel: Model<FiliereDocument>,
-    @InjectModel("Employee") private employeeModel: Model<EmployeeDocument>,
+    @InjectModel(DocumentOrg.name) private documentOrgModel: Model<DocumentOrg>,
+    @InjectModel("Filiere") private filiereModel: Model<Filiere>,
+    @InjectModel("Employee") private employeeModel: Model<Employee>,
   ) {}
 
   async addDocumentSpec(docDto: DocumentOrgDTO): Promise<DocumentOrg | void> {

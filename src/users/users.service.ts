@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User, UserDocument } from './schemas/user.schema';
+import { User } from './schemas/user.schema';
 import * as bcrypt from 'bcrypt';
 
 import { UpdatePasswordDto } from './dto/update-password.dto';
@@ -13,7 +13,7 @@ export class UsersService {
   registerRootProfessor(createUserDto: Partial<CreateUserDto>) {
     throw new Error('Method not implemented.');
   }
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async register(userDto: CreateUserDto): Promise<User | null | Error> {
     const createdUser = new this.userModel(userDto);
@@ -31,7 +31,7 @@ export class UsersService {
         return createdUser.save();
       })
 
-      .then((user: User & UserDocument) => {
+      .then((user: User) => {
         console.log('New user created with id: ', user._id);
         return user;
       })
@@ -56,7 +56,7 @@ export class UsersService {
         console.log('hashedPassword created is : ' + hashedPassword);
         return createdUser.save();
       })
-      .then((user: User & UserDocument) => {
+      .then((user: User) => {
         console.log('Root user id: ', user._id);
         return user;
       })
@@ -65,7 +65,7 @@ export class UsersService {
         return err;
       });
   }
-  async findOne(username: string): Promise<(User & UserDocument) | null> {
+  async findOne(username: string): Promise<(User ) | null> {
     return this.userModel
       .findOne({
         username,
@@ -76,7 +76,7 @@ export class UsersService {
     return false;
   }
 
-  async deleteOne(idUser: string): Promise<(User & UserDocument) | null> {
+  async deleteOne(idUser: string): Promise<User  | null> {
     return this.userModel.findOneAndUpdate({ _id: idUser }, { $set: { deleteAt: Date.now() } }).exec();
   }
   async findAll(): Promise<User[] | any> {

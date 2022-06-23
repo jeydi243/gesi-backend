@@ -1,4 +1,4 @@
-import { User, UserDocument } from './schemas/user.schema';
+import { User } from './schemas/user.schema';
 import { UsersService } from './users.service';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
@@ -19,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: TokenInterface) {
     try {
-      const user: User & UserDocument = await this.usersService.findOne(payload.username);
+      const user: User = await this.usersService.findOne(payload.username);
       if (!user) {
         throw new UnauthorizedException(`User doesn't exist with ${JSON.stringify(payload)}`);
       }
