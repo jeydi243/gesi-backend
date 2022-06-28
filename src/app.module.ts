@@ -8,7 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { RootController } from './root.controller';
 import { UsersService } from './users/users.service';
 import { User, UserSchema } from './users/schemas/user.schema';
-import { JwtStrategy } from './users/jwt.strategy';
+
 import { CoursesModule } from './courses/courses.module';
 import { ManagementModule } from './management/management.module';
 
@@ -19,6 +19,7 @@ import { ManagementModule } from './management/management.module';
 
     MongooseModule.forRoot(
       process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
+      {},
     ),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     StudentsModule,
