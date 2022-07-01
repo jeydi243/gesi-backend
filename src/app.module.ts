@@ -5,9 +5,6 @@ import { TeachersModule } from './teachers/teachers.module';
 import { UsersModule } from './users/users.module';
 import * as helmet from 'helmet';
 import { ConfigModule } from '@nestjs/config';
-import { RootController } from './root.controller';
-import { UsersService } from './users/users.service';
-import { User, UserSchema } from './users/schemas/user.schema';
 
 import { CoursesModule } from './courses/courses.module';
 import { ManagementModule } from './management/management.module';
@@ -29,8 +26,8 @@ import { ResourceDbModule } from './resource-db/resource-db.module';
     CoursesModule,
     ManagementModule,
   ],
-  controllers: [RootController],
-  providers: [UsersService, RootController],
+  controllers: [],
+  providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
