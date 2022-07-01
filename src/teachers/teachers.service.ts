@@ -7,10 +7,10 @@ import { Teacher } from './schemas/teacher.schema';
 
 @Injectable()
 export class TeachersService {
-  constructor(@InjectModel(Teacher.name) private professorModel: Model<Teacher>) {}
+  constructor(@InjectModel('Teacher') private teacherModel: Model<Teacher>) {}
   async create(createProfessorDto: CreateTeacherDto) {
     try {
-      const prof = await new this.professorModel(createProfessorDto);
+      const prof = await new this.teacherModel(createProfessorDto);
       return prof.save();
     } catch (error) {
       console.log(error);
@@ -18,18 +18,18 @@ export class TeachersService {
     }
   }
   findAll() {
-    return this.professorModel.find();
+    return this.teacherModel.find();
   }
   findById(id: string) {
-    return this.professorModel.findById(id).$where('this.isDeleted == false').exec();
+    return this.teacherModel.findById(id).$where('this.isDeleted == false').exec();
   }
   findWhere(where: UpdateTeacherDto) {
-    return this.professorModel.find(where).$where('this.isDeleted == false').exec();
+    return this.teacherModel.find(where).$where('this.isDeleted == false').exec();
   }
   async updateById(id: string, updateProfessorDto: UpdateTeacherDto): Promise<Teacher | null> {
     try {
-      const isNotDeleted: boolean = await this.professorModel.exists({ _id: id, isDeleted: false });
-      if (isNotDeleted) return this.professorModel.findByIdAndUpdate(id, updateProfessorDto);
+      const isNotDeleted: boolean = await this.teacherModel.exists({ _id: id, isDeleted: false });
+      if (isNotDeleted) return this.teacherModel.findByIdAndUpdate(id, updateProfessorDto);
       return null;
     } catch (error) {
       return null;
@@ -37,11 +37,11 @@ export class TeachersService {
   }
   async updateWhere(where: UpdateTeacherDto, fieldsToUpdate: UpdateTeacherDto): Promise<Teacher | null> {
     try {
-      const isNotDeleted: boolean = await this.professorModel.exists({ ...where, isDeleted: false });
+      const isNotDeleted: boolean = await this.teacherModel.exists({ ...where, isDeleted: false });
       if (isNotDeleted) {
-        const updateresult = await this.professorModel.updateMany(where, fieldsToUpdate);
+        const updateresult = await this.teacherModel.updateMany(where, fieldsToUpdate);
         if (updateresult.modifiedCount != 0) {
-          return this.professorModel.findOne({ ...where, isDeleted: false });
+          return this.teacherModel.findOne({ ...where, isDeleted: false });
         }
       }
       return null;
@@ -51,10 +51,10 @@ export class TeachersService {
   }
   //delete by id
   deleteById(id: string) {
-    return this.professorModel.findOneAndUpdate({ _id: id }, { isDeleted: true, deletedAt: new Date() });
+    return this.teacherModel.findOneAndUpdate({ _id: id }, { isDeleted: true, deletedAt: new Date() });
   }
   //delete where some condition are meet
   deleteWhere(where: UpdateTeacherDto) {
-    return this.professorModel.findOneAndUpdate(where, { isDeleted: true, deletedAt: new Date() });
+    return this.teacherModel.findOneAndUpdate(where, { isDeleted: true, deletedAt: new Date() });
   }
 }

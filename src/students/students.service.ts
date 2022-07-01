@@ -5,15 +5,15 @@ import { CreateResponsableDto } from './dto/create-responsable.dto';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateResponsableDto } from './dto/update-responsable.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { Responsable,  } from './schemas/responsable.schema';
+import { Responsable } from './schemas/responsable.schema';
 import { Student } from './schemas/student.schema';
 import { move, moveSync } from 'fs-extra';
 import * as tempDirectory from 'temp-dir';
 @Injectable()
 export class StudentsService {
   constructor(
-    @InjectModel(Student.name) private studentModel: Model<Student>,
-    @InjectModel(Responsable.name)
+    @InjectModel('Student') private studentModel: Model<Student>,
+    @InjectModel('Responsable')
     private responsableModel: Model<Responsable>,
   ) {}
   async add(createStudentDto: CreateStudentDto): Promise<Student | void> {

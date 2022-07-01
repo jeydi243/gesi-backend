@@ -11,6 +11,7 @@ import { User, UserSchema } from './users/schemas/user.schema';
 
 import { CoursesModule } from './courses/courses.module';
 import { ManagementModule } from './management/management.module';
+import { ResourceDbModule } from './resource-db/resource-db.module';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { ManagementModule } from './management/management.module';
       process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
       {},
     ),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    ResourceDbModule,
     StudentsModule,
     TeachersModule,
     UsersModule,

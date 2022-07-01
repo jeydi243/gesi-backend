@@ -21,10 +21,14 @@ import { UpdateFiliereDto } from './dto/update-filiere.dto';
 import { ManagementService } from './management.service';
 import { DocumentOrg } from './schemas/document.schema';
 import { ApiConsumes, ApiOperation } from '@nestjs/swagger';
+import { EmployeeService } from './services/employee.service';
 
 @Controller('management')
 export class ManagementController {
-  constructor(private readonly managementService: ManagementService) {}
+  constructor(
+    private readonly managementService: ManagementService,
+    private readonly employeeService: EmployeeService,
+  ) {}
   @Get()
   findAll() {
     // return this.managementService.findAll();
@@ -112,7 +116,7 @@ export class ManagementController {
   @Get('employees')
   @HttpCode(200)
   findAllEmployee() {
-    return this.managementService.findAllEmployee();
+    return this.employeeService.findAllEmployee();
   }
   @Post('employees')
   @HttpCode(200)
@@ -137,6 +141,6 @@ export class ManagementController {
     console.log({ files });
     console.log({ body });
 
-    return this.managementService.addEmployee(body);
+    return this.employeeService.addEmployee(body);
   }
 }

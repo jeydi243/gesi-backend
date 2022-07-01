@@ -64,31 +64,4 @@ export class ManagementService {
     //return all filiere that is not marked as deletedAt
     return this.filiereModel.find({ deletedAt: null });
   }
-
-  //Employee
-  async addEmployee(employeeDto: EmployeeDto): Promise<Employee | void> {
-    console.log("Est-ce qu'on arrive meme ici");
-
-    const createdemployee = new this.employeeModel(employeeDto);
-    return createdemployee.save();
-  }
-  async softDeleteEmployee(code: string): Promise<Employee | void> {
-    return this.employeeModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });
-  }
-  async removeEmployee(code: string): Promise<Employee | void> {
-    return this.employeeModel.findOneAndRemove({ code });
-  }
-  async updateEmployee(code: string, employeeUpdate: UpdateEmployeeDto): Promise<Filiere | null | string> {
-    const employee = await this.filiereModel.findOne({ code });
-    if (employee) {
-      return this.filiereModel.findOneAndUpdate({ code }, { $set: { ...employeeUpdate } }).exec();
-      // filiere.save();
-    }
-
-    return "Impossible de modifier cette employé, il n'existe pas";
-  }
-  async findAllEmployee(): Promise<Employee[] | void> {
-    //return all Employee that is not marked as deletedAt
-    return this.employeeModel.find({ deletedAt: null });
-  }
 }
