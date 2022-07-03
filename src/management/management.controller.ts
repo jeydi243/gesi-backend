@@ -11,7 +11,7 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor, FileFieldsInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { DocumentOrgDTO } from './dto/create-document.dto';
 import { FiliereDTO } from './dto/create-filiere.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
@@ -23,10 +23,7 @@ import { EmployeeService } from './services/employee.service';
 
 @Controller('management')
 export class ManagementController {
-  constructor(
-    private readonly managementService: ManagementService,
-    private readonly employeeService: EmployeeService,
-  ) {}
+  constructor(private readonly managementService: ManagementService) {}
   @Get()
   findAll() {
     // return this.managementService.findAll();
@@ -88,25 +85,5 @@ export class ManagementController {
     return this.managementService.remove(code);
   }
 
-  //cette section s'occupe des routes 'Filieres'
-  @Get('filieres')
-  @HttpCode(200)
-  findFiliere() {
-    return this.managementService.findAllFiliere();
-  }
-  @Post('filieres')
-  @HttpCode(200)
-  addFiliere(@Body() body: FiliereDTO) {
-    return this.managementService.addFiliere(body);
-  }
-  @Delete('filieres/:code')
-  @HttpCode(200)
-  removeFiliere(@Query('code') code: string) {
-    return this.managementService.removeFiliere(code);
-  }
-  @Patch('filieres/update/:code')
-  @HttpCode(200)
-  updateFiliere(@Query('code') code: string, @Body() body: UpdateFiliereDto) {
-    return this.managementService.updateFiliere(code, body);
-  }
+
 }
