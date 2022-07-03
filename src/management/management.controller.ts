@@ -9,12 +9,10 @@ import {
   Post,
   Query,
   UploadedFile,
-  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor, FileFieldsInterceptor } from '@nestjs/platform-express';
 import { DocumentOrgDTO } from './dto/create-document.dto';
-import { EmployeeDto } from './dto/create-employee.dto';
 import { FiliereDTO } from './dto/create-filiere.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { UpdateFiliereDto } from './dto/update-filiere.dto';
@@ -110,37 +108,5 @@ export class ManagementController {
   @HttpCode(200)
   updateFiliere(@Query('code') code: string, @Body() body: UpdateFiliereDto) {
     return this.managementService.updateFiliere(code, body);
-  }
-
-  //Cette section s'occupe des route employee
-  @Get('employees')
-  @HttpCode(200)
-  findAllEmployee() {
-    return this.employeeService.findAllEmployee();
-  }
-  @Post('employees')
-  @HttpCode(200)
-  @ApiConsumes('multipart/form-data')
-  @ApiOperation({ summary: 'Register new employee', description: 'Register a new employee' })
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'resume_file', maxCount: 1 },
-      { name: 'profile_img', maxCount: 1 },
-      { name: 'school_diploma_file', maxCount: 1 },
-    ]),
-  )
-  addEmployee(
-    @Body() body: EmployeeDto,
-    @UploadedFiles()
-    files: {
-      profile_img: Express.Multer.File;
-      school_diploma_file: Express.Multer.File;
-      resume_file: Express.Multer.File;
-    },
-  ) {
-    console.log({ files });
-    console.log({ body });
-
-    return this.employeeService.addEmployee(body);
   }
 }

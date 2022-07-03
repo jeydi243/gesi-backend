@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import { ManagementController } from './management.controller';
-import { ManagementService } from './management.service';
-import { ResourceDbModule } from 'src/resource-db/resource-db.module';
+import { EmployeeController } from './employee.controller';
 
 @Module({
   imports: [
@@ -10,7 +9,7 @@ import { ResourceDbModule } from 'src/resource-db/resource-db.module';
       dest: './uploads',
     }),
   ],
-  controllers: [ManagementController],
+  controllers: [ManagementController, EmployeeController],
   providers: [],
 })
 export class ManagementModule {}
