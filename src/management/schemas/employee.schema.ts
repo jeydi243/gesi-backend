@@ -25,9 +25,6 @@ export class Employee extends Document {
 
   @Prop({
     type: String,
-    set: function (a) {
-      return this.f;
-    },
     unique: true,
   })
   email: string;

@@ -2,10 +2,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Schema as S } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
+import { differenceInYears } from 'date-fns';
 import {
   IsDateString,
   IsEmail,
-  MinDate,
   IsNotEmpty,
   isPhoneNumber,
   IsString,
@@ -67,7 +67,7 @@ export class Person {
     },
     type: String,
   })
-  personalEmail: number;
+  personal_email: number;
 
   @Prop({
     type: Date,
@@ -110,7 +110,8 @@ export const PersonSchema: S = SchemaFactory.createForClass(Person);
 
 export class PersonDto {
   // create data transfer object for Teacher class
-  @ApiProperty()
+
+  @ApiProperty({ type: String, description: "Le nom de l'employee", examples: ['Franck Kessler', 'Paul George'] })
   @IsNotEmpty()
   name: string | Name;
 
@@ -130,17 +131,17 @@ export class PersonDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @ValidateIf(o => o.email != o.personalEmail, {
+  @ValidateIf(o => o.email != o.personal_email, {
     message: ({ value, object }) => `${value} must be different ${object['email']}, which is you other email`,
   })
   @IsEmail({ message: ({ value }) => `${value} is not a valid email` })
-  personalEmail: string | Name;
+  personal_email: string | Name;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  @ValidateIf(o => o.email != o.personalEmail, { message: "$value doit etre différent de l'Email personel" })
-  @IsEmail({ message: ({ value }) => `${value} is not a valid email` })
-  email: string | Name; //Email fourni par l'établissement
+  // @ApiProperty()
+  // @IsNotEmpty()
+  // @ValidateIf(o => o.email != o.personal_email, { message: "$value doit etre différent de l'Email personel" })
+  // @IsEmail({ message: ({ value }) => `${value} is not a valid email` })
+  // email: string | Name; //Email fourni par l'établissement
 
   @ApiProperty()
   @IsNotEmpty()
@@ -154,6 +155,9 @@ export class PersonDto {
   @Transform(v => new Date(v.value).toISOString())
   @IsDateString({}, { message: ({ value, property }) => `${value} for ${property} is not valid date string` })
   @ApiProperty({ type: Date, description: 'Birthday' })
+  @ValidateIf(o => differenceInYears(new Date(), o.birthay) <= 23, {
+    message: pr => 'Apparement vous avez moins de 23 ans',
+  })
   birthday: Date;
 
   @ApiProperty()

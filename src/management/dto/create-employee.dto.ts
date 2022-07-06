@@ -1,17 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsArray, IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf } from 'class-validator';
-import { parseWithOptions } from 'date-fns/fp';
+import {  IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf } from 'class-validator';
 import { Name } from 'src/export.type';
 import { PersonDto } from '../../person.base';
 
 export class EmployeeDto extends PersonDto {
-  @ApiProperty({ type: String, description: "Le nom de l'employee", examples: ['Franck Kessler', 'Paul George'] })
-  name: string | Name;
-
   // @ApiProperty()
   // resume_file: File | Blob;
-
   // @ApiProperty()
   // profile_img: File | Blob;
   // @ApiProperty()
