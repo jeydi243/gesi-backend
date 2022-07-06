@@ -6,44 +6,65 @@ import { Name } from 'src/export.type';
 import { PersonDto } from '../../person.base';
 
 export class EmployeeDto extends PersonDto {
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: String, description: "Le nom de l'employee", examples: ['Franck Kessler', 'Paul George'] })
   name: string | Name;
 
-  @ApiProperty()
-  resume_file: File | Blob;
+  // @ApiProperty()
+  // resume_file: File | Blob;
 
-  @ApiProperty()
-  profile_img: File | Blob;
+  // @ApiProperty()
+  // profile_img: File | Blob;
 
-  @ApiProperty({ type: String, maxLength: 20 })
+  @ApiProperty({ type: String, maxLength: 20, description: "Le nom de l'ecole/universite " })
+  @MinLength(5)
+  @MaxLength(30, {
+    message: ({ value, property, object }) =>
+      `${property} n'as que ${value.length} le nombre de caractere maximum est ${object}`,
+  })
   school_name: string;
 
-  @ApiProperty()
-  school_diploma_file: File | Blob;
+  // @ApiProperty()
+  // school_diploma_file: File | Blob;
 
-  @ApiProperty({ type: String, maxLength: 100 })
+  @ApiProperty({ type: String, maxLength: 100, description: 'Le type de diplome obtenu' })
+  @MinLength(5)
+  @MaxLength(30, {
+    message: ({ value, property, object }) =>
+      `${property} n'as que ${value.length} le nombre de caractere maximum est ${object}`,
+  })
   school_diploma_name: string;
 
-  @ApiProperty({ type: Date })
+  @ApiProperty({ type: Date, description: 'Date de début des études', required: true })
   @Transform(v => new Date(v.value))
-  @ValidateIf(o => o.school_start_date < o.school_end_date)
+  @ValidateIf(o => o.school_start_date < o.school_end_date && !(o.school_start_date <= o.birthay))
   school_start_date: Date;
 
-  @ApiProperty({ type: Date })
+  @ApiProperty({ type: Date, description: 'La date de fin des etudes' })
   @Transform(v => new Date(v.value))
+  @ValidateIf(o => o.school_end_date > o.school_start_date)
   school_end_date: Date;
 
-  @MinLength(300, { message: 'Le cover letter doit contenir au minimum $value' })
   @IsString()
-  @ApiProperty()
+  @MinLength(5)
+  @MaxLength(200, {
+    message: ({ value, property, object }) =>
+      `${property} n'as que ${value.length} le nombre de caractere maximum est ${JSON.stringify(object)}`,
+  })
+  @ApiProperty({ description: 'Lettre de motivation' })
   cover_letter: string;
 
-  @MaxLength(30)
-  @ApiProperty()
+  @MaxLength(30, { message: 'Le maximum  de caracteres permis est 30' })
+  @ApiProperty({ description: "Domaine d'application", examples: ['Math', 'Technique'] })
   domain: string | string[];
 
-  @MinLength(300)
-  @Optional()
-  @ApiPropertyOptional()
+  @MaxLength(300)
+  @MinLength(3, {
+    message: ({ value, property, object }) =>
+      `${property} n'as que ${value.length} le nombre de caractere minimum est ${JSON.stringify(object)}`,
+  })
+  @ApiProperty({
+    examples: ['Directeur Financier', 'Developpeur Web'],
+    description: "Fonction qu'il exerce au sein de l'organisation",
+  })
   fonction: string | string[];
 }

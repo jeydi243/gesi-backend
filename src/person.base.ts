@@ -5,12 +5,14 @@ import { Transform } from 'class-transformer';
 import {
   IsDateString,
   IsEmail,
+  MinDate,
   IsNotEmpty,
   isPhoneNumber,
   IsString,
   MaxLength,
   MinLength,
   ValidateIf,
+  IsArray,
 } from 'class-validator';
 import validator from 'validator';
 import { Genre, Name } from './export.type';
@@ -114,39 +116,44 @@ export class PersonDto {
 
   @ApiProperty()
   @IsNotEmpty()
+  @IsArray()
   @ValidateIf(
-    o => {
-      if (Array.isArray(o.telephones)) {
-        return o.telephones.every(tel => isPhoneNumber(tel, o.cityzenship));
+    (o, tels) => {
+      if (Array.isArray(tels)) {
+        return tels.every(tel => isPhoneNumber(tel, o.cityzenship));
       }
-      return isPhoneNumber(o.telephones, o.cityzenship);
+      return isPhoneNumber(tels, o.cityzenship);
     },
-    { message: "Le numero de telephone($value) n'est pas valide!" },
+    { message: ({ value }) => `${value} contains invalid phone(s) numbers!` },
   )
   telephones: string[] | string;
 
   @ApiProperty()
   @IsNotEmpty()
-  @ValidateIf(o => o.email != o.personalEmail, { message: "$value doit etre différent de l'Email de l'Etablissement" })
-  @IsEmail()
+  @ValidateIf(o => o.email != o.personalEmail, {
+    message: ({ value, object }) => `${value} must be different ${object['email']}, which is you other email`,
+  })
+  @IsEmail({ message: ({ value }) => `${value} is not a valid email` })
   personalEmail: string | Name;
 
   @ApiProperty()
   @IsNotEmpty()
   @ValidateIf(o => o.email != o.personalEmail, { message: "$value doit etre différent de l'Email personel" })
-  @IsEmail()
+  @IsEmail({ message: ({ value }) => `${value} is not a valid email` })
   email: string | Name; //Email fourni par l'établissement
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  @MaxLength(1, { message: "$value n'est pas M ou F" })
+  @MaxLength(1, { message: ({ property }) => `The length of ${property} must be 1` })
+  @ValidateIf((o, value) => ['M', 'F'].includes(value), {
+    message: ({ value }) => `${value} not in ${['M', 'F']}`,
+  })
   gender: string;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsDateString({ message: ({ value }) => `${value} is not valid birthday` })
   @Transform(v => new Date(v.value))
-  @IsDateString({ message: "$value n'est pas une date valide" })
   birthday: Date;
 
   @ApiProperty()

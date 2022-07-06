@@ -6,7 +6,7 @@ import { EmployeeController } from './employee.controller';
 @Module({
   imports: [
     MulterModule.register({
-      dest: './uploads',
+      
     }),
   ],
   controllers: [ManagementController, EmployeeController],

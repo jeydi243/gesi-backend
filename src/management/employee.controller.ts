@@ -1,24 +1,31 @@
-import { Body, Controller, Get, HttpCode, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, Query, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { EmployeeDto } from './dto/create-employee.dto';
 import { EmployeeService } from './services/employee.service';
-import {  FileFieldsInterceptor } from '@nestjs/platform-express';
-
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { cwd } from 'process';
+import { moveSync } from 'fs-extra';
+import { isInstance } from 'class-validator';
 @Controller('employees')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
-  //Cette section s'occupe des route employee
-  @Get('employees')
+  @Post()
   @HttpCode(200)
-  findAllEmployee() {
-    return this.employeeService.findAllEmployee();
+  @ApiOperation({ summary: 'Register new employee', description: 'Register a new employee' })
+  addEmployee(@Body() employee: EmployeeDto) {
+    console.log(employee);
+    try {
+      const result = this.employeeService.addEmployee(employee);
+      return result;
+    } catch (error) {
+      console.log(error);
+      return 'Une erreur est survenue';
+    }
   }
 
-  @Post('employees')
+  @Post('/:employeeID')
   @HttpCode(200)
-  @ApiConsumes('multipart/form-data')
-  @ApiOperation({ summary: 'Register new employee', description: 'Register a new employee' })
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'resume_file', maxCount: 1 },
@@ -26,18 +33,39 @@ export class EmployeeController {
       { name: 'school_diploma_file', maxCount: 1 },
     ]),
   )
-  addEmployee(
-    @Body() body: EmployeeDto,
+  continueAdd(
     @UploadedFiles()
     files: {
       profile_img: Express.Multer.File;
       school_diploma_file: Express.Multer.File;
       resume_file: Express.Multer.File;
     },
+    @Param('employeeID') employeeID: string,
   ) {
-    console.log({ files });
-    console.log({ body });
+    for (const key in files) {
+      const file = files[key];
+      console.log(file[0]);
 
-    return this.employeeService.addEmployee(body);
+      const destinationPath: string | null = this.buildLink(employeeID, file[0], key);
+      if (destinationPath) {
+        moveSync(files.profile_img.path, destinationPath, { overwrite: true });
+      } else {
+        console.log('Destination path return null');
+      }
+    }
+  }
+  buildLink(employeeID: string, file: Express.Multer.File, filename: string): string | null {
+    console.log('FILE in function: ', file);
+    try {
+      const ext = file.mimetype.split('/')[1];
+      const path = `${cwd()}/STORAGE/Employees/${employeeID}/files/${filename}.${ext}`;
+      return path;
+    } catch (e: any) {
+      if (isInstance(e, TypeError)) {
+        console.log('Le type');
+      }
+      console.log(e);
+      return null;
+    }
   }
 }

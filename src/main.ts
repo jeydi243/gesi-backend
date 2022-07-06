@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import * as morgan from 'morgan';
-import { ErrorFilter } from './erros.filter';
+import { ErrorFilter } from './errors.filter';
 import * as morganBody from 'morgan-body';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -11,11 +11,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { logger: ['error', 'warn', 'log'] });
   app.use(cookieParser());
   app.enableCors();
-  app.use(morgan('tiny'));
-  // app.useGlobalFilters(new ErrorFilter());
+  // app.use(morgan('tiny'));
+  app.useGlobalFilters(new ErrorFilter());
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: false,
+      transform: true,
       whitelist: true,
       enableDebugMessages: true,
       disableErrorMessages: false,
@@ -36,7 +36,7 @@ async function bootstrap() {
   (morganBody as any)(app.getHttpAdapter().getInstance(), {
     stream: {
       write: (message: string) => {
-        console.log(message.replace('\n', ''));
+        console.log(message);
         return true;
       },
     },

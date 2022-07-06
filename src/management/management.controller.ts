@@ -13,13 +13,9 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DocumentOrgDTO } from './dto/create-document.dto';
-import { FiliereDTO } from './dto/create-filiere.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
-import { UpdateFiliereDto } from './dto/update-filiere.dto';
 import { ManagementService } from './management.service';
 import { DocumentOrg } from './schemas/document.schema';
-import { ApiConsumes, ApiOperation } from '@nestjs/swagger';
-import { EmployeeService } from './services/employee.service';
 
 @Controller('management')
 export class ManagementController {
@@ -27,6 +23,7 @@ export class ManagementController {
   @Get()
   findAll() {
     // return this.managementService.findAll();
+    return null;
   }
   @Post()
   add(@Body() createDoc: DocumentOrgDTO) {
@@ -64,7 +61,7 @@ export class ManagementController {
   @Patch('documents/update/:code')
   @HttpCode(200)
   async updateDocument(@Query('code') code: string, @Body() body: UpdateDocumentDto) {
-    console.log('Try to update tgis docment: ', body);
+    console.log('Try to update this document: ', body);
 
     try {
       const response: DocumentOrg | null = await this.managementService.updateDocument(code, body);
@@ -84,6 +81,4 @@ export class ManagementController {
   removeDocument(@Query('code') code: string) {
     return this.managementService.remove(code);
   }
-
-
 }
