@@ -151,9 +151,9 @@ export class PersonDto {
   })
   gender: string;
 
-  @ApiProperty()
-  @IsDateString({ message: ({ value }) => `${value} is not valid birthday` })
-  @Transform(v => new Date(v.value))
+  @Transform(v => new Date(v.value).toISOString())
+  @IsDateString({}, { message: ({ value, property }) => `${value} for ${property} is not valid date string` })
+  @ApiProperty({ type: Date, description: 'Birthday' })
   birthday: Date;
 
   @ApiProperty()

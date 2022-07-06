@@ -2,8 +2,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
-import * as morgan from 'morgan';
-import { ErrorFilter } from './errors.filter';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { OtherException } from './filters/other-exception.filter';
 import * as morganBody from 'morgan-body';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -12,7 +12,8 @@ async function bootstrap() {
   app.use(cookieParser());
   app.enableCors();
   // app.use(morgan('tiny'));
-  app.useGlobalFilters(new ErrorFilter());
+  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new OtherException());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

@@ -1,4 +1,5 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
+import { Transform } from 'class-transformer';
 import { Document, Schema as S } from 'mongoose';
 
 @Schema()
@@ -6,8 +7,9 @@ export class Employee extends Document {
   @Prop({ type: String })
   profile_img: string;
 
-  @Prop({ type: String })
-  fonction: string;
+  @Prop({ type: [String] })
+  @Transform(({ value }) => [value])
+  position: string;
 
   @Prop({ type: String })
   resume_file: string;
@@ -17,6 +19,18 @@ export class Employee extends Document {
 
   @Prop({ type: Date })
   school_start_date: Date;
+
+  @Prop({ type: String, unique: true })
+  personal_email: string;
+
+  @Prop({
+    type: String,
+    set: function (a) {
+      return this.f;
+    },
+    unique: true,
+  })
+  email: string;
 
   @Prop({ type: Date })
   school_end_date: Date;

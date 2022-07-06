@@ -1,5 +1,5 @@
-import { Body, Controller, Get, HttpCode, Param, Post, Query, UploadedFiles, UseInterceptors } from '@nestjs/common';
-import { ApiConsumes, ApiOperation } from '@nestjs/swagger';
+import { Body, Controller, HttpCode, Param, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
 import { EmployeeDto } from './dto/create-employee.dto';
 import { EmployeeService } from './services/employee.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';

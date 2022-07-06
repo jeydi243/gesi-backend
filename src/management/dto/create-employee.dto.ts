@@ -1,7 +1,7 @@
-import { Optional } from '@nestjs/common';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsString, MaxLength, MinLength, ValidateIf } from 'class-validator';
+import { IsArray, IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf } from 'class-validator';
+import { parseWithOptions } from 'date-fns/fp';
 import { Name } from 'src/export.type';
 import { PersonDto } from '../../person.base';
 
@@ -14,7 +14,8 @@ export class EmployeeDto extends PersonDto {
 
   // @ApiProperty()
   // profile_img: File | Blob;
-
+  // @ApiProperty()
+  // school_diploma_file: File | Blob;
   @ApiProperty({ type: String, maxLength: 20, description: "Le nom de l'ecole/universite " })
   @MinLength(5)
   @MaxLength(30, {
@@ -22,9 +23,6 @@ export class EmployeeDto extends PersonDto {
       `${property} n'as que ${value.length} le nombre de caractere maximum est ${object}`,
   })
   school_name: string;
-
-  // @ApiProperty()
-  // school_diploma_file: File | Blob;
 
   @ApiProperty({ type: String, maxLength: 100, description: 'Le type de diplome obtenu' })
   @MinLength(5)
@@ -45,10 +43,13 @@ export class EmployeeDto extends PersonDto {
   school_end_date: Date;
 
   @IsString()
-  @MinLength(5)
-  @MaxLength(200, {
-    message: ({ value, property, object }) =>
-      `${property} n'as que ${value.length} le nombre de caractere maximum est ${JSON.stringify(object)}`,
+  @MinLength(5, {
+    message: ({ value, property, constraints }) =>
+      `${property} have ${value.length} characters, but minimum is ${constraints[0]}`,
+  })
+  @MaxLength(500, {
+    message: ({ value, property, constraints }) =>
+      `${property} have ${value.length} characters, but maximum is ${constraints[0]}`,
   })
   @ApiProperty({ description: 'Lettre de motivation' })
   cover_letter: string;
@@ -57,14 +58,21 @@ export class EmployeeDto extends PersonDto {
   @ApiProperty({ description: "Domaine d'application", examples: ['Math', 'Technique'] })
   domain: string | string[];
 
+  @ApiProperty({ description: 'Personal Email' })
+  @IsEmail()
+  personal_email: string;
+
   @MaxLength(300)
   @MinLength(3, {
-    message: ({ value, property, object }) =>
-      `${property} n'as que ${value.length} le nombre de caractere minimum est ${JSON.stringify(object)}`,
+    message: ({ value, property, constraints }) =>
+      `${property} n'as que ${value} le nombre de caractere minimum est ${constraints[0]}`,
   })
   @ApiProperty({
     examples: ['Directeur Financier', 'Developpeur Web'],
-    description: "Fonction qu'il exerce au sein de l'organisation",
+    description: 'Position in company',
+    required: true,
   })
-  fonction: string | string[];
+  @ValidateIf(object => object.length <= 3 && object.every(pos => isString(pos)))
+  // @IsArray({ each: true })
+  position: string[];
 }
