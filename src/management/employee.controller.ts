@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Param, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Patch, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { EmployeeDto } from './dto/create-employee.dto';
 import { EmployeeService } from './services/employee.service';
@@ -6,6 +6,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { cwd } from 'process';
 import { moveSync } from 'fs-extra';
 import { isInstance } from 'class-validator';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
 @Controller('employees')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
@@ -22,6 +23,10 @@ export class EmployeeController {
       console.log(error);
       return 'Une erreur est survenue';
     }
+  }
+  @Get()
+  getEmployees() {
+    return this.employeeService.getEmployees();
   }
 
   @Post('/:employeeID')
@@ -67,5 +72,12 @@ export class EmployeeController {
       console.log(e);
       return null;
     }
+  }
+
+  @Patch('/:employeeID')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Update employee', description: 'Update an employee' })
+  updateEmployee(@Param('employeeID') employeeID: string, @Body() employee: UpdateEmployeeDto) {
+    return this.employeeService.updateEmployee(employeeID, employee);
   }
 }

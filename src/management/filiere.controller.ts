@@ -7,12 +7,8 @@ import {
   HttpCode,
   Patch,
   Post,
-  Query,
-  UploadedFile,
-  UseInterceptors,
+  Query
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { DocumentOrgDTO } from './dto/create-document.dto';
 import { FiliereDTO } from './dto/create-filiere.dto';
 import { UpdateFiliereDto } from './dto/update-filiere.dto';
 import { ManagementService } from './management.service';

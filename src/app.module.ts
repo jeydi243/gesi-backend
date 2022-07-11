@@ -9,7 +9,8 @@ import { ConfigModule } from '@nestjs/config';
 import { CoursesModule } from './courses/courses.module';
 import { ManagementModule } from './management/management.module';
 import { ResourceDbModule } from './resource-db/resource-db.module';
-
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config();
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),

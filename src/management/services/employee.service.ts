@@ -11,6 +11,16 @@ export class EmployeeService {
   organisationName = '';
   organisationDomain = '';
   constructor(@InjectModel('Employee') private employeeModel: Model<Employee>) {}
+
+  async getEmployees(): Promise<Employee[] | null | any> {
+    return this.employeeModel
+      .find({ deletedAt: null })
+      .select(
+        '-deletedAt --created -birthday -updatedAt -__v -__t -cover_letter -resume_file -school_end_date -school_start_date -cityzenship',
+      );
+
+    // .projection({ deletedAt: 0, cover_letter: 0, resume: 0, school_diploma: 0 })
+  }
   createEmail(name: string | Name): string {
     let email = '';
     if (typeof name === 'string') {
@@ -35,10 +45,10 @@ export class EmployeeService {
   async removeEmployee(code: string): Promise<Employee | void> {
     return this.employeeModel.findOneAndRemove({ code });
   }
-  async updateEmployee(code: string, employeeUpdate: UpdateEmployeeDto): Promise<Employee | null | string> {
-    const employee = await this.employeeModel.findOne({ code });
+  async updateEmployee(employeeID: string, employeeUpdate: UpdateEmployeeDto): Promise<Employee | null | string> {
+    const employee = await this.employeeModel.findOne({ _id: employeeID });
     if (employee) {
-      return this.employeeModel.findOneAndUpdate({ code }, { $set: { ...employeeUpdate } }).exec();
+      return this.employeeModel.findOneAndUpdate({ employeeID }, { $set: { ...employeeUpdate } }).exec();
       // filiere.save();
     }
 

@@ -3,6 +3,9 @@ import { Schema as S } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { differenceInYears } from 'date-fns';
+import * as APN from 'awesome-phonenumber';
+import PhoneNumber from 'awesome-phonenumber';
+
 import {
   IsDateString,
   IsEmail,
@@ -17,12 +20,14 @@ import {
 import validator from 'validator';
 import { Genre, Name } from './export.type';
 
+// use awesome-phonenumber
+
 @Schema({ timestamps: true, _id: true, autoIndex: true })
 export class Person {
   @Prop({
     required: true,
     minlength: 2,
-    maxlength: 20,
+    maxlength: 40,
     type: String,
     set: (v: any) => {
       if (typeof v === 'string') {
@@ -38,7 +43,7 @@ export class Person {
     validate: {
       validator: function (tels: string[]) {
         return tels.every((tel: string) => {
-          return isPhoneNumber(tel);
+          return isPhoneNumber(tel, 'CD');
         });
       },
       message: props => `${props.value} un des numéros n'est pas un numero valide!`,
@@ -118,6 +123,12 @@ export class PersonDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsArray()
+  @Transform(function ({ value, obj }) {
+    return value.map(function (tel: string) {
+      const pn = new PhoneNumber(tel, obj.cityzenship);
+      return pn.getNumber();
+    });
+  })
   @ValidateIf(
     (o, tels) => {
       if (Array.isArray(tels)) {
