@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import {  IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf } from 'class-validator';
-import { Name } from 'src/export.type';
+import { IsArray, IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf } from 'class-validator';
 import { PersonDto } from '../../person.base';
+import ExperienceDto from './experience.dto';
+import EducationDto from './education.dto';
+import { Name } from 'src/export.type';
 
 export class EmployeeDto extends PersonDto {
   // @ApiProperty()
@@ -56,6 +58,17 @@ export class EmployeeDto extends PersonDto {
   @ApiProperty({ description: 'Personal Email' })
   @IsEmail()
   personal_email: string;
+
+  @ApiProperty({ description: 'List of educations' })
+  @IsArray()
+  educations: EducationDto[];
+
+  @ApiProperty({ description: 'List of experiences over the time' })
+  @IsArray()
+  experiences: ExperienceDto[];
+
+  @ApiProperty({ description: 'List of skills' })
+  skills: string[];
 
   @MaxLength(300)
   @MinLength(3, {

@@ -12,6 +12,9 @@ export class EmployeeService {
   organisationDomain = '';
   constructor(@InjectModel('Employee') private employeeModel: Model<Employee>) {}
 
+  async employeeBy(id: string): Promise<EmployeeDto | any> {
+    return this.employeeModel.findOne({ id }).exec();
+  }
   async getEmployees(): Promise<Employee[] | null | any> {
     return this.employeeModel
       .find({ deletedAt: null })

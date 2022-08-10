@@ -7,6 +7,7 @@ import { cwd } from 'process';
 import { moveSync } from 'fs-extra';
 import { isInstance } from 'class-validator';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { Employee } from './schemas/employee.schema';
 @Controller('employees')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
@@ -24,9 +25,14 @@ export class EmployeeController {
       return 'Une erreur est survenue';
     }
   }
+
   @Get()
   getEmployees() {
     return this.employeeService.getEmployees();
+  }
+  @Get('/:employeeID')
+  async employeeBy(@Param('employeeID') employeeID: string) {
+    return this.employeeService.employeeBy(employeeID);
   }
 
   @Post('/:employeeID')
@@ -77,7 +83,11 @@ export class EmployeeController {
   @Patch('/:employeeID')
   @HttpCode(200)
   @ApiOperation({ summary: 'Update employee', description: 'Update an employee' })
-  updateEmployee(@Param('employeeID') employeeID: string, @Body() employee: UpdateEmployeeDto) {
-    return this.employeeService.updateEmployee(employeeID, employee);
+  async updateEmployee(@Param('employeeID') employeeID: string, @Body() employee: UpdateEmployeeDto) {
+    const res: string | Employee = await this.employeeService.updateEmployee(employeeID, employee);
+    if (typeof res !== 'string') {
+      return res;
+    }
+    return "Une erreur est survenue, Impossible de mettre à jour l'employé";
   }
 }
