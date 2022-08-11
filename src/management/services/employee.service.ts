@@ -1,13 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Query } from 'mongoose';
 import { Name } from 'src/export.type';
-import { EmployeeDto } from '../dto/create-employee.dto';
+import EducationDTO from '../dto/education.dto';
+import { EmployeeDto } from '../dto/employee.dto';
 import { UpdateEmployeeDto } from '../dto/update-employee.dto';
 import { Employee } from '../schemas/employee.schema';
+import { log } from 'console';
+import uniqid from 'uniqid';
 
 @Injectable()
 export class EmployeeService {
+  async delete_employee(id: string): Promise<any> {
+    return await this.employeeModel.findOneAndRemove({ id }).exec();
+  }
   organisationName = '';
   organisationDomain = '';
   constructor(@InjectModel('Employee') private employeeModel: Model<Employee>) {}
@@ -41,6 +47,19 @@ export class EmployeeService {
     employeeDto['email'] = email;
     const createdemployee = new this.employeeModel(employeeDto);
     return createdemployee.save();
+  }
+
+  async add_education(employeeID: string, education: EducationDTO): Promise<Employee | void> {
+    education.id = uniqid();
+    return await this.employeeModel.findByIdAndUpdate(employeeID, { $push: { educations: education } }).exec();
+  }
+  async delete_education(employeeID: string, educationID: any): Promise<Employee | void> {
+    log('donc on y entre');
+    return await this.employeeModel
+      .findByIdAndUpdate(employeeID, {
+        $pull: { educations: { id: educationID } },
+      })
+      .exec();
   }
   async softDeleteEmployee(code: string): Promise<Employee | void> {
     return this.employeeModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });

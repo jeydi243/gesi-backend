@@ -1,6 +1,18 @@
-import { Body, Controller, Get, HttpCode, Param, Patch, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
-import { EmployeeDto } from './dto/create-employee.dto';
+import { EmployeeDto } from './dto/employee.dto';
 import { EmployeeService } from './services/employee.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { cwd } from 'process';
@@ -8,6 +20,7 @@ import { moveSync } from 'fs-extra';
 import { isInstance } from 'class-validator';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { Employee } from './schemas/employee.schema';
+import EducationDTO from './dto/education.dto';
 @Controller('employees')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
@@ -89,5 +102,37 @@ export class EmployeeController {
       return res;
     }
     return "Une erreur est survenue, Impossible de mettre à jour l'employé";
+  }
+  @Post(':employeeID/add_education')
+  @ApiOperation({
+    summary: 'Update employee by adding education',
+    description: 'Update an employee by adding education',
+  })
+  async add_education(@Query('employeeID') employeeID: string, @Body() education: EducationDTO) {
+    console.log('Add education from employee: %s', employeeID, education);
+
+    const res: any = await this.employeeService.add_education(employeeID, education);
+    return res;
+  }
+
+  @Delete('/:employeeID')
+  @ApiOperation({
+    summary: 'Delete employee completely',
+    description: 'Delete employee completely',
+  })
+  async delete_employee(@Param("employeeID") p) {
+    console.log(p);
+
+    // const res: any = await this.employeeService.delete_employee(id);
+    return true;
+  }
+
+  @Delete(':employeeID/delete_education?:educationID')
+  @ApiOperation({
+    summary: 'Update employee by adding education',
+    description: 'Update an employee by adding education',
+  })
+  async delete_education(@Query('employeeID') employeeID: string, @Param('educationID') id: string) {
+    const res: any = await this.employeeService.delete_education(employeeID, id);
   }
 }

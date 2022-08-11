@@ -5,6 +5,7 @@ import { PersonDto } from '../../person.base';
 import ExperienceDto from './experience.dto';
 import EducationDto from './education.dto';
 import { Name } from 'src/export.type';
+import { Optional } from '@nestjs/common';
 
 export class EmployeeDto extends PersonDto {
   // @ApiProperty()
@@ -61,13 +62,16 @@ export class EmployeeDto extends PersonDto {
 
   @ApiProperty({ description: 'List of educations' })
   @IsArray()
+  @Optional()
   educations: EducationDto[];
 
   @ApiProperty({ description: 'List of experiences over the time' })
   @IsArray()
+  @Optional()
   experiences: ExperienceDto[];
 
   @ApiProperty({ description: 'List of skills' })
+  @Optional()
   skills: string[];
 
   @MaxLength(300)
@@ -81,6 +85,6 @@ export class EmployeeDto extends PersonDto {
     required: true,
   })
   @ValidateIf(object => object.length <= 3 && object.every(pos => isString(pos)))
-  // @IsArray({ each: true })
-  position: string[];
+  @IsArray()
+  position: string[] | string;
 }

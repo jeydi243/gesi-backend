@@ -40,6 +40,15 @@ export class Employee extends Document {
 
   @Prop({ type: String })
   cover_letter: string;
+
+  @Prop({ type: [Map] })
+  educations: [];
+
+  @Prop({ type: [Map] })
+  experiences: [];
+
+  @Prop({ type: Array })
+  skills: string[];
 }
 
 export const EmployeeSchema: S = SchemaFactory.createForClass<Employee>(Employee);

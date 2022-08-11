@@ -12,7 +12,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { DocumentOrgDTO } from './dto/create-document.dto';
+import { DocumentOrgDTO } from './dto/document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { ManagementService } from './management.service';
 import { DocumentOrg } from './schemas/document.schema';

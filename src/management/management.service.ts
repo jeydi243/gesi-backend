@@ -2,10 +2,8 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { FiliereDTO } from './dto/create-filiere.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { EmployeeDto } from './dto/create-employee.dto';
-import { DocumentOrgDTO } from './dto/create-document.dto';
+import { DocumentOrgDTO } from './dto/document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { UpdateFiliereDto } from './dto/update-filiere.dto';
 import { Filiere } from './schemas/filiere.schema';
 import { Employee } from './schemas/employee.schema';
@@ -36,7 +34,6 @@ export class ManagementService {
   async updateDocument(code: string, documentUpdate: UpdateDocumentDto): Promise<DocumentOrg | null> {
     return this.documentOrgModel.findOneAndUpdate({ code }, { $set: { ...documentUpdate } });
   }
-
   async addFiliere(filiereDto: FiliereDTO): Promise<Filiere | void> {
     const createdfiliere = new this.filiereModel(filiereDto);
     return createdfiliere.save();
