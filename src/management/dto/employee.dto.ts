@@ -1,8 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsArray, IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf } from 'class-validator';
+import {
+  IsArray,
+  IsEmail,
+  isString,
+  IsString,
+  MaxLength,
+  MinLength,
+  ValidateIf,
+  ArrayMinSize,
+  IsDate,
+} from 'class-validator';
 import { PersonDto } from '../../person.base';
 import ExperienceDto from './experience.dto';
+import ContactDto from './contact.dto';
 import EducationDto from './education.dto';
 import { Name } from 'src/export.type';
 import { Optional } from '@nestjs/common';
@@ -40,6 +51,11 @@ export class EmployeeDto extends PersonDto {
   @ValidateIf(o => o.school_end_date > o.school_start_date)
   school_end_date: Date;
 
+  @ApiProperty({ type: Date, description: "La date d'engagement" })
+  @IsDate()
+  @Transform(v => new Date(v.value))
+  hire_date: Date;
+
   @IsString()
   @MinLength(5, {
     message: ({ value, property, constraints }) =>
@@ -61,17 +77,27 @@ export class EmployeeDto extends PersonDto {
   personal_email: string;
 
   @ApiProperty({ description: 'List of educations' })
-  @IsArray()
+  // @IsArray()
   @Optional()
+  // @ArrayMinSize(1)
   educations: EducationDto[];
 
-  @ApiProperty({ description: 'List of experiences over the time' })
-  @IsArray()
+  @ApiProperty({ description: 'List of emergency contacts' })
+  // @IsArray()
   @Optional()
+  // @ArrayMinSize(1)
+  emergencyContacts: ContactDto[];
+
+  @ApiProperty({ description: 'List of experiences over the time' })
+  @Optional()
+  // @ArrayMinSize(0)
   experiences: ExperienceDto[];
 
   @ApiProperty({ description: 'List of skills' })
+  @Transform(v => v.value.split(','))
   @Optional()
+  @IsArray()
+  // @ArrayMinSize(2)
   skills: string[];
 
   @MaxLength(300)

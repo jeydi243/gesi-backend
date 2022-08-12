@@ -108,8 +108,8 @@ export class EmployeeController {
     summary: 'Update employee by adding education',
     description: 'Update an employee by adding education',
   })
-  async add_education(@Query('employeeID') employeeID: string, @Body() education: EducationDTO) {
-    console.log('Add education from employee: %s', employeeID, education);
+  async add_education(@Param('employeeID') employeeID: string, @Body() education: EducationDTO) {
+    console.log('Add education from employee: ', employeeID, education);
 
     const res: any = await this.employeeService.add_education(employeeID, education);
     return res;
@@ -120,11 +120,11 @@ export class EmployeeController {
     summary: 'Delete employee completely',
     description: 'Delete employee completely',
   })
-  async delete_employee(@Param("employeeID") p) {
-    console.log(p);
+  async delete_employee(@Param('employeeID') employeeID: string) {
+    console.log(employeeID);
 
-    // const res: any = await this.employeeService.delete_employee(id);
-    return true;
+    const res: any = await this.employeeService.delete_employee(employeeID);
+    return res;
   }
 
   @Delete(':employeeID/delete_education?:educationID')

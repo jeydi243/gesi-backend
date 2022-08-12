@@ -46,7 +46,7 @@ export class Person {
           return isPhoneNumber(tel, 'CD');
         });
       },
-      message: props => `${props.value} un des numéros n'est pas un numero valide!`,
+      message: props => `${props.value} un des numéros n'est pas un numéro valide!`,
     },
   })
   telephones: string[];

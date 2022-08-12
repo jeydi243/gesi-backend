@@ -7,7 +7,7 @@ import { EmployeeDto } from '../dto/employee.dto';
 import { UpdateEmployeeDto } from '../dto/update-employee.dto';
 import { Employee } from '../schemas/employee.schema';
 import { log } from 'console';
-import uniqid from 'uniqid';
+import * as uniqid from 'uniqid';
 
 @Injectable()
 export class EmployeeService {

@@ -29,6 +29,9 @@ export class Employee extends Document {
   })
   email: string;
 
+  @Prop({ type: Date, required: true })
+  hire_date: Date;
+
   @Prop({ type: Date })
   school_end_date: Date;
 
@@ -41,13 +44,16 @@ export class Employee extends Document {
   @Prop({ type: String })
   cover_letter: string;
 
-  @Prop({ type: [Map] })
-  educations: [];
+  @Prop({ type: [Map], required: false })
+  educations: Array<Map<string, string>>;
 
-  @Prop({ type: [Map] })
-  experiences: [];
+  @Prop({ type: [Map], required: false })
+  experiences: Array<Map<string, string>>;
 
-  @Prop({ type: Array })
+  @Prop({ type: [Map], required: false })
+  emergencyContacts: Array<Map<string, string>>;
+
+  @Prop({ type: Array, required: false })
   skills: string[];
 }
 
