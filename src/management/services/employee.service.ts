@@ -8,14 +8,13 @@ import { UpdateEmployeeDto } from '../dto/update-employee.dto';
 import { Employee } from '../schemas/employee.schema';
 import { log } from 'console';
 import * as uniqid from 'uniqid';
+import ContactDto from '../dto/contact.dto';
+import ExperienceDto from '../dto/experience.dto';
 
 @Injectable()
 export class EmployeeService {
-  async delete_employee(id: string): Promise<any> {
-    return await this.employeeModel.findOneAndRemove({ id }).exec();
-  }
-  organisationName = '';
-  organisationDomain = '';
+  organisationName = 'test';
+  organisationDomain = 'test.org';
   constructor(@InjectModel('Employee') private employeeModel: Model<Employee>) {}
 
   async employeeBy(id: string): Promise<EmployeeDto | any> {
@@ -42,22 +41,77 @@ export class EmployeeService {
     return email;
   }
   //Employee
-  async addEmployee(employeeDto: EmployeeDto): Promise<Employee | void> {
+  async addEmployee(employeeDto: EmployeeDto): Promise<EmployeeDto | null> {
     const email = this.createEmail(employeeDto.name);
     employeeDto['email'] = email;
-    const createdemployee = new this.employeeModel(employeeDto);
-    return createdemployee.save();
+    employeeDto['educations'] = [];
+    employeeDto['experiences'] = [];
+    try {
+      const createdemployee = new this.employeeModel(employeeDto);
+
+      await createdemployee.save();
+      return;
+    } catch (error) {
+      log(error);
+      return;
+    }
   }
 
-  async add_education(employeeID: string, education: EducationDTO): Promise<Employee | void> {
+  async add_education(employeeID: string, education: EducationDTO): Promise<EducationDTO | null> {
     education.id = uniqid();
-    return await this.employeeModel.findByIdAndUpdate(employeeID, { $push: { educations: education } }).exec();
+    log({ education: JSON.stringify(education) });
+    try {
+      await this.employeeModel
+        .findByIdAndUpdate(employeeID, { $push: { educations: JSON.parse(JSON.stringify(education)) } })
+        .exec();
+      return education;
+    } catch (er) {
+      log(er);
+      return;
+    }
+    return;
+  }
+  async add_experience(employeeID: string, experience: ExperienceDto): Promise<Employee | void> {
+    experience.id = uniqid();
+    log('BUZE2: ', JSON.stringify(experience));
+    return await this.employeeModel
+      .findByIdAndUpdate(employeeID, { $push: { experiences: JSON.parse(JSON.stringify(experience)) } })
+      .exec();
+  }
+  async add_contact(employeeID: string, contact: ContactDto): Promise<Employee | void> {
+    contact.id = uniqid();
+    return await this.employeeModel
+      .findByIdAndUpdate(employeeID, { $push: { emergencyContacts: JSON.parse(JSON.stringify(contact)) } })
+      .exec();
+  }
+  async delete_employee(id: string): Promise<any> {
+    return await this.employeeModel.findOneAndRemove({ id }).exec();
   }
   async delete_education(employeeID: string, educationID: any): Promise<Employee | void> {
-    log('donc on y entre');
     return await this.employeeModel
       .findByIdAndUpdate(employeeID, {
         $pull: { educations: { id: educationID } },
+      })
+      .exec();
+  }
+  async delete_experience(employeeID: string, experienceID: any): Promise<Employee | void> {
+    return await this.employeeModel
+      .findByIdAndUpdate(employeeID, {
+        $pull: { experiences: { id: experienceID } },
+      })
+      .exec();
+  }
+  async delete_contact(employeeID: string, contactID: any): Promise<Employee | void> {
+    return await this.employeeModel
+      .findByIdAndUpdate(employeeID, {
+        $pull: { emergencyContacts: { id: contactID } },
+      })
+      .exec();
+  }
+  async remove_skills(employeeID: string, skill: string | string[]): Promise<Employee | void> {
+    return await this.employeeModel
+      .findByIdAndUpdate(employeeID, {
+        $pull: { skills: { skill } },
       })
       .exec();
   }

@@ -44,13 +44,13 @@ export class Employee extends Document {
   @Prop({ type: String })
   cover_letter: string;
 
-  @Prop({ type: [Map], required: false })
+  @Prop({ type: Array, required: false })
   educations: Array<Map<string, string>>;
 
-  @Prop({ type: [Map], required: false })
+  @Prop({ type: Array, required: false })
   experiences: Array<Map<string, string>>;
 
-  @Prop({ type: [Map], required: false })
+  @Prop({ type: Array, required: false })
   emergencyContacts: Array<Map<string, string>>;
 
   @Prop({ type: Array, required: false })

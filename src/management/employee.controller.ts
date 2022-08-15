@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
   HttpCode,
   Param,
   Patch,
@@ -11,35 +12,44 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { EmployeeDto } from './dto/employee.dto';
 import { EmployeeService } from './services/employee.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { cwd } from 'process';
 import { moveSync } from 'fs-extra';
-import { isInstance } from 'class-validator';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { Employee } from './schemas/employee.schema';
 import EducationDTO from './dto/education.dto';
+import ExperienceDto from './dto/experience.dto';
+import { log } from 'console';
+import buildLink from 'src/utils';
 @Controller('employees')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
   @Post()
+  @Header('Cache-Control', 'max-age=60')
   @HttpCode(200)
   @ApiOperation({ summary: 'Register new employee', description: 'Register a new employee' })
-  addEmployee(@Body() employee: EmployeeDto) {
-    console.log(employee);
+  @ApiCreatedResponse({
+    description: 'The employee has been successfully created.',
+    type: EmployeeDto,
+  })
+  async addEmployee(@Body() employee: EmployeeDto): Promise<EmployeeDto | null> {
+    log(employee);
     try {
-      const result = this.employeeService.addEmployee(employee);
+      const result: EmployeeDto | null = await this.employeeService.addEmployee(employee);
+      if (result) {
+        return result;
+      }
       return result;
     } catch (error) {
-      console.log(error);
-      return 'Une erreur est survenue';
+      log(error);
     }
   }
 
   @Get()
+  @Header('Cache-Control', 'max-age=60')
   getEmployees() {
     return this.employeeService.getEmployees();
   }
@@ -68,30 +78,17 @@ export class EmployeeController {
   ) {
     for (const key in files) {
       const file = files[key];
-      console.log(file[0]);
+      log(file[0]);
 
-      const destinationPath: string | null = this.buildLink(employeeID, file[0], key);
+      const destinationPath: string | null = buildLink(employeeID, file[0], key);
       if (destinationPath) {
         moveSync(files.profile_img.path, destinationPath, { overwrite: true });
       } else {
-        console.log('Destination path return null');
+        log('Destination path return null');
       }
     }
   }
-  buildLink(employeeID: string, file: Express.Multer.File, filename: string): string | null {
-    console.log('FILE in function: ', file);
-    try {
-      const ext = file.mimetype.split('/')[1];
-      const path = `${cwd()}/STORAGE/Employees/${employeeID}/files/${filename}.${ext}`;
-      return path;
-    } catch (e: any) {
-      if (isInstance(e, TypeError)) {
-        console.log('Le type');
-      }
-      console.log(e);
-      return null;
-    }
-  }
+
 
   @Patch('/:employeeID')
   @HttpCode(200)
@@ -108,11 +105,44 @@ export class EmployeeController {
     summary: 'Update employee by adding education',
     description: 'Update an employee by adding education',
   })
-  async add_education(@Param('employeeID') employeeID: string, @Body() education: EducationDTO) {
-    console.log('Add education from employee: ', employeeID, education);
+  @HttpCode(200)
+  @ApiResponse({ status: 201, description: 'The education has been successfully added.' })
+  @ApiResponse({ status: 200, description: 'The education has been successfully added.' })
+  async add_education(
+    @Param('employeeID') employeeID: string,
+    @Body() education: EducationDTO,
+  ): Promise<EducationDTO | null> {
+    log('Add education from employee: ', employeeID, education);
 
-    const res: any = await this.employeeService.add_education(employeeID, education);
-    return res;
+    const res: EducationDTO | null = await this.employeeService.add_education(employeeID, education);
+    if (res != null) {
+      return res;
+    }
+  }
+  @Post(':employeeID/add_experience')
+  @ApiOperation({
+    summary: 'Update employee by adding experience',
+    description: 'Update an employee by adding experience',
+  })
+  @HttpCode(200)
+  @ApiResponse({ status: 201, description: 'The experience has been successfully added.' })
+  @ApiResponse({ status: 200, description: 'The experience has been successfully added.' })
+  async add_experience(
+    @Param('employeeID') employeeID: string,
+    @Body() experience: ExperienceDto,
+  ): Promise<ExperienceDto | null> {
+    log('Add experience to employee: ', employeeID, experience);
+    try {
+      const res: ExperienceDto | any = await this.employeeService.add_experience(employeeID, experience);
+      if (res != null) {
+        return res;
+      }
+      return;
+    } catch (error) {
+      log();
+
+      return error;
+    }
   }
 
   @Delete('/:employeeID')
@@ -120,8 +150,9 @@ export class EmployeeController {
     summary: 'Delete employee completely',
     description: 'Delete employee completely',
   })
+  @HttpCode(200)
   async delete_employee(@Param('employeeID') employeeID: string) {
-    console.log(employeeID);
+    log(employeeID);
 
     const res: any = await this.employeeService.delete_employee(employeeID);
     return res;
@@ -132,7 +163,22 @@ export class EmployeeController {
     summary: 'Update employee by adding education',
     description: 'Update an employee by adding education',
   })
+  @HttpCode(200)
+  @ApiResponse({ status: 201, description: 'The education has been successfully deleted.' })
+  @ApiResponse({ status: 200, description: 'The education has been successfully deleted.' })
   async delete_education(@Query('employeeID') employeeID: string, @Param('educationID') id: string) {
-    const res: any = await this.employeeService.delete_education(employeeID, id);
+    try {
+      const res: any = await this.employeeService.delete_education(employeeID, id);
+    } catch (error) {}
+  }
+
+  @Delete(':employeeID/delete_experience?:experienceID')
+  @ApiOperation({
+    summary: 'Update employee by deleting experience',
+    description: 'Update an employee by deleting experience',
+  })
+  @HttpCode(200)
+  async delete_experience(@Query('employeeID') employeeID: string, @Param('experienceID') id: string) {
+    const res: any = await this.employeeService.delete_experience(employeeID, id);
   }
 }
