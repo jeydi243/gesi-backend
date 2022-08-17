@@ -1,12 +1,13 @@
 import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsDate, IsString } from 'class-validator';
+import { Allow, IsDate, IsString } from 'class-validator';
 
 export default class EducationDTO {
   @ApiProperty({ required: false, type: String })
   // @IsString()
   // @Optional()
+  @Allow()
   id: string;
 
   @ApiProperty({ type: String, required: true })

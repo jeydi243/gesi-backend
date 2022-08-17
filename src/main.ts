@@ -21,7 +21,7 @@ async function bootstrap() {
       enableDebugMessages: true,
       disableErrorMessages: false,
       validationError: { value: true },
-      forbidNonWhitelisted: true,
+      forbidNonWhitelisted: false,
     }),
   );
 

@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsDate, IsString } from 'class-validator';
+import { IsDate, IsString, Allow } from 'class-validator';
 
 export default class ExperienceDto {
+  @Allow()
   id: string;
 
   @ApiProperty({ description: 'Description of your responsabilities' })
