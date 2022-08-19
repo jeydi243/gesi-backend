@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, NativeError } from 'mongoose';
+import { Model } from 'mongoose';
 import { CreateResponsableDto } from './dto/create-responsable.dto';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateResponsableDto } from './dto/update-responsable.dto';
@@ -62,7 +62,7 @@ export class StudentsService {
     }
   }
   remove(id: string) {
-    this.studentModel.findByIdAndRemove({ _id: id }, function (err: NativeError, student: Student) {
+    this.studentModel.findByIdAndRemove({ _id: id }, function (err, student: Student) {
       if (err) {
         console.error(err.message);
         return { error: err.message };
@@ -89,11 +89,7 @@ export class StudentsService {
       .save()
       .then(result => {
         console.log(result);
-        return this.studentModel.findByIdAndUpdate(
-          { _id: idStudent },
-          { $push: { responsables: createdResponsable } },
-          { new: true },
-        );
+        return this.studentModel.findByIdAndUpdate({ _id: idStudent }, { $push: { responsables: createdResponsable } }, { new: true });
       })
       .catch(err => {
         return err;

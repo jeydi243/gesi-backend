@@ -3,8 +3,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CoursesService } from 'src/courses/courses.service';
 import { CourseSchema } from 'src/courses/schemas/course.schema';
 import { ManagementService } from 'src/management/management.service';
+import { CourseSessionSchema } from 'src/management/schemas/course_session.schema';
 import { DocumentOrgSchema } from 'src/management/schemas/document.schema';
 import { EmployeeSchema } from 'src/management/schemas/employee.schema';
+import { EventSchema } from 'src/management/schemas/event.schema';
 import { FiliereSchema } from 'src/management/schemas/filiere.schema';
 import { EmployeeService } from 'src/management/services/employee.service';
 import { PersonSchema } from 'src/person.base';
@@ -26,6 +28,13 @@ import { UsersService } from 'src/users/users.service';
       { name: 'Course', schema: CourseSchema },
       { name: 'User', schema: UserSchema },
       {
+        name: 'Event',
+        schema: EventSchema,
+        discriminators: [
+          { name: 'CourseSession', schema: CourseSessionSchema },
+        ],
+      },
+      {
         name: 'Person',
         schema: PersonSchema,
         discriminators: [
@@ -36,24 +45,8 @@ import { UsersService } from 'src/users/users.service';
       },
     ]),
   ],
-  providers: [
-    TeachersService,
-    ManagementService,
-    StudentsService,
-    EmployeeService,
-    UsersService,
-    UsersService,
-    CoursesService,
-  ],
-  exports: [
-    TeachersService,
-    ManagementService,
-    StudentsService,
-    EmployeeService,
-    UsersService,
-    UsersService,
-    CoursesService,
-  ],
+  providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService],
+  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService],
 })
 export class ResourceDbModule {
   // constructor(

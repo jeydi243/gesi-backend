@@ -28,7 +28,7 @@ export class TeachersService {
   }
   async updateById(id: string, updateProfessorDto: UpdateTeacherDto): Promise<Teacher | null> {
     try {
-      const isNotDeleted: boolean = await this.teacherModel.exists({ _id: id, isDeleted: false });
+      const isNotDeleted: any = await this.teacherModel.exists({ _id: id, isDeleted: false });
       if (isNotDeleted) return this.teacherModel.findByIdAndUpdate(id, updateProfessorDto);
       return null;
     } catch (error) {
@@ -37,7 +37,7 @@ export class TeachersService {
   }
   async updateWhere(where: UpdateTeacherDto, fieldsToUpdate: UpdateTeacherDto): Promise<Teacher | null> {
     try {
-      const isNotDeleted: boolean = await this.teacherModel.exists({ ...where, isDeleted: false });
+      const isNotDeleted: any = await this.teacherModel.exists({ ...where, isDeleted: false });
       if (isNotDeleted) {
         const updateresult = await this.teacherModel.updateMany(where, fieldsToUpdate);
         if (updateresult.modifiedCount != 0) {

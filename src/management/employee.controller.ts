@@ -13,6 +13,7 @@ import { ApiCreatedResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import EducationDTO from './dto/education.dto';
 import ExperienceDto from './dto/experience.dto';
 import buildLink from 'src/utils';
+import ContactDto from './dto/contact.dto';
 @Controller('employees')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
@@ -107,6 +108,27 @@ export class EmployeeController {
     }
   }
 
+  @Post(':employeeID/add_contact')
+  @ApiOperation({
+    summary: 'Update employee by adding contact',
+    description: 'Update an employee by adding contact',
+  })
+  @HttpCode(200)
+  @ApiResponse({ status: 201, description: 'The contact has been successfully added.' })
+  @ApiResponse({ status: 200, description: 'The contact has been successfully added.' })
+  async add_contact(@Param('employeeID') employeeID: string, @Body() contact: ContactDto): Promise<Map<string, string> | null> {
+    log('Add contact for employee: ', employeeID, contact);
+    try {
+      const res: Map<string, string> | null = await this.employeeService.add_contact(employeeID, contact);
+      if (res != null) {
+        return res;
+      }
+      new BadRequestException("Impossible d'ajouter un contact");
+    } catch (error) {
+      return error;
+    }
+  }
+
   @Post(':employeeID/add_experience')
   @ApiOperation({
     summary: 'Update employee by adding experience',
@@ -159,6 +181,28 @@ export class EmployeeController {
         return res;
       } else {
         new BadRequestException(`Can't delete education with id ${id}`);
+      }
+    } catch (error) {
+      return error;
+    }
+  }
+
+  @Delete(':employeeID/delete_contact?:contactID')
+  @ApiOperation({
+    summary: 'Update employee by deleting contact',
+    description: 'Update an employee by deleting contact',
+  })
+  @HttpCode(200)
+  @ApiResponse({ status: 201, description: 'The contact has been successfully deleted.' })
+  @ApiResponse({ status: 200, description: 'The contact has been successfully deleted.' })
+  async delete_contact(@Query('employeeID') employeeID: string, @Param('contactID') id: string) {
+    try {
+      console.log('Mais bon sang');
+      const res: boolean = await this.employeeService.delete_contact(employeeID, id);
+      if (res) {
+        return res;
+      } else {
+        new BadRequestException(`Can't delete contact with id ${id}`);
       }
     } catch (error) {
       return error;
