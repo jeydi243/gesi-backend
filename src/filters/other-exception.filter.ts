@@ -10,8 +10,10 @@ export class OtherException implements ExceptionFilter {
     const request: Request = ctx.getRequest<Request>();
 
     console.log(exception.getResponse());
+    console.log('OtherException:');
+
     const message = exception.getResponse()['message'];
-    response.status(400).json({
+    response.status(500).json({
       statusName: exception.name,
       path: request.url,
       message: message,

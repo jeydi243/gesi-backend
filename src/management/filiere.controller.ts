@@ -17,22 +17,18 @@ export class FiliereController {
   constructor(private readonly managementService: ManagementService) {}
 
   @Get('filieres')
-  @HttpCode(200)
   findFiliere() {
     return this.managementService.findAllFiliere();
   }
   @Post('filieres')
-  @HttpCode(200)
   addFiliere(@Body() body: FiliereDTO) {
     return this.managementService.addFiliere(body);
   }
   @Delete('filieres/:code')
-  @HttpCode(200)
   removeFiliere(@Query('code') code: string) {
     return this.managementService.removeFiliere(code);
   }
   @Patch('filieres/update/:code')
-  @HttpCode(200)
   updateFiliere(@Query('code') code: string, @Body() body: UpdateFiliereDto) {
     return this.managementService.updateFiliere(code, body);
   }

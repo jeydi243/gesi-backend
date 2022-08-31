@@ -6,17 +6,7 @@ import { differenceInYears } from 'date-fns';
 import * as APN from 'awesome-phonenumber';
 import PhoneNumber from 'awesome-phonenumber';
 
-import {
-  IsDateString,
-  IsEmail,
-  IsNotEmpty,
-  isPhoneNumber,
-  IsString,
-  MaxLength,
-  MinLength,
-  ValidateIf,
-  IsArray,
-} from 'class-validator';
+import { IsDateString, IsEmail, IsNotEmpty, isPhoneNumber, IsString, MaxLength, MinLength, ValidateIf, IsArray } from 'class-validator';
 import validator from 'validator';
 import { Genre, Name } from './export.type';
 
@@ -35,7 +25,33 @@ export class Person {
       }
     },
   })
-  name: string | Name;
+  first_name: string;
+
+  @Prop({
+    required: true,
+    minlength: 2,
+    maxlength: 40,
+    type: String,
+    set: (v: any) => {
+      if (typeof v === 'string') {
+        return v.toLowerCase();
+      }
+    },
+  })
+  last_name: string;
+
+  @Prop({
+    required: true,
+    minlength: 2,
+    maxlength: 40,
+    type: String,
+    set: (v: any) => {
+      if (typeof v === 'string') {
+        return v.toLowerCase();
+      }
+    },
+  })
+  middle_name: string;
 
   @Prop({
     required: true,
@@ -110,15 +126,18 @@ export class Person {
   @Prop({ type: String, required: true, default: 'CD', minlength: 2, maxlength: 3 })
   cityzenship: string;
 }
-
-export const PersonSchema: S = SchemaFactory.createForClass(Person);
+const P: S = SchemaFactory.createForClass(Person);
+P.virtual('name').get(function () {
+  return this.first_name + ' ' + this.middle_name + ' ' + this.last_name;
+});
+export const PersonSchema = P;
 
 export class PersonDto {
   // create data transfer object for Teacher class
 
   @ApiProperty({ type: String, description: "Le nom de l'employee", examples: ['Franck Kessler', 'Paul George'] })
   @IsNotEmpty()
-  name: string | Name;
+  name: Name;
 
   @ApiProperty()
   @IsNotEmpty()

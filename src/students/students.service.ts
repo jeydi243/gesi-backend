@@ -24,7 +24,7 @@ export class StudentsService {
   async findAll(): Promise<Student[] | any> {
     try {
       const students = await this.studentModel.find({});
-      console.log('We found students:', students);
+      console.log({ students });
       return students;
     } catch (err) {
       console.log('Une erreur est survenue', err);
@@ -170,7 +170,6 @@ export class StudentsService {
       const link = this.buildLink(idStudent, file, code);
       moveSync(file.path, link, { overwrite: true }); // move the file to the destination path
       foundStudent.documents.push({ code, link });
-      console.log('Donc on arrive ici');
 
       return foundStudent.save();
     } catch (e) {

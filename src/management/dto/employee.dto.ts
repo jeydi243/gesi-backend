@@ -1,16 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import {
-  IsArray,
-  IsEmail,
-  isString,
-  IsString,
-  MaxLength,
-  MinLength,
-  ValidateIf,
-  ArrayMinSize,
-  IsDate,
-} from 'class-validator';
+import { IsArray, IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf, ArrayMinSize, IsDate, IsDefined } from 'class-validator';
 import { PersonDto } from '../../person.base';
 import ExperienceDto from './experience.dto';
 import ContactDto from './contact.dto';
@@ -28,16 +18,14 @@ export class EmployeeDto extends PersonDto {
   @ApiProperty({ type: String, maxLength: 20, description: "Le nom de l'ecole/universite " })
   @MinLength(5)
   @MaxLength(30, {
-    message: ({ value, property, object }) =>
-      `${property} n'as que ${value.length} le nombre de caractere maximum est ${object}`,
+    message: ({ value, property, object }) => `${property} n'as que ${value.length} le nombre de caractere maximum est ${object}`,
   })
   school_name: string;
 
   @ApiProperty({ type: String, maxLength: 100, description: 'Le type de diplome obtenu' })
   @MinLength(5)
   @MaxLength(30, {
-    message: ({ value, property, object }) =>
-      `${property} n'as que ${value.length} le nombre de caractere maximum est ${object}`,
+    message: ({ value, property, object }) => `${property} n'as que ${value.length} le nombre de caractere maximum est ${object}`,
   })
   school_diploma_name: string;
 
@@ -58,18 +46,26 @@ export class EmployeeDto extends PersonDto {
 
   @IsString()
   @MinLength(5, {
-    message: ({ value, property, constraints }) =>
-      `${property} have ${value.length} characters, but minimum is ${constraints[0]}`,
+    message: ({ value, property, constraints }) => `${property} have ${value.length} characters, but minimum is ${constraints[0]}`,
   })
   @MaxLength(500, {
-    message: ({ value, property, constraints }) =>
-      `${property} have ${value.length} characters, but maximum is ${constraints[0]}`,
+    message: ({ value, property, constraints }) => `${property} have ${value.length} characters, but maximum is ${constraints[0]}`,
   })
   @ApiProperty({ description: 'Lettre de motivation' })
   cover_letter: string;
 
+  @IsString()
+  @MinLength(5, {
+    message: ({ value, property, constraints }) => `${property} have ${value.length} characters, but minimum is ${constraints[0]}`,
+  })
+  @MaxLength(500, {
+    message: ({ value, property, constraints }) => `${property} have ${value.length} characters, but maximum is ${constraints[0]}`,
+  })
+  @ApiProperty({ description: 'biography of employee' })
+  biography: string;
+
   @MaxLength(30, { message: 'Le maximum  de caracteres permis est 30' })
-  @ApiProperty({ description: "Domaine d'application", examples: ['Math', 'Technique'] })
+  @ApiProperty({ description: "Domaine d'application", examples: ['Math', 'Technique', 'Dessin'] })
   domain: string | string[];
 
   @ApiProperty({ description: 'Personal Email' })
@@ -100,10 +96,13 @@ export class EmployeeDto extends PersonDto {
   // @ArrayMinSize(2)
   skills: string[];
 
+  @ApiProperty({ description: 'Onboardings state of user' })
+  @Optional()
+  onboarding: Record<string, unknown>[];
+
   @MaxLength(300)
   @MinLength(3, {
-    message: ({ value, property, constraints }) =>
-      `${property} n'as que ${value} le nombre de caractere minimum est ${constraints[0]}`,
+    message: ({ value, property, constraints }) => `${property} n'as que ${value} le nombre de caractere minimum est ${constraints[0]}`,
   })
   @ApiProperty({
     examples: ['Directeur Financier', 'Developpeur Web'],

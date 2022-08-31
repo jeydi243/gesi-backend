@@ -6,7 +6,7 @@ import EducationDTO from '../dto/education.dto';
 import { EmployeeDto } from '../dto/employee.dto';
 import { UpdateEmployeeDto } from '../dto/update-employee.dto';
 import { Employee } from '../schemas/employee.schema';
-import { log } from 'console';
+import { log, error } from 'console';
 import * as uniqid from 'uniqid';
 import ContactDto from '../dto/contact.dto';
 import ExperienceDto from '../dto/experience.dto';
@@ -15,6 +15,10 @@ import { UpdateEducationDto } from '../dto/update-education.dto';
 
 @Injectable()
 export class EmployeeService {
+  async updateDocument(employeeID: string, mapDocument) {
+    const resultat = await this.employeeModel.findOneAndUpdate({ id: employeeID }, { $set: { ...mapDocument } }).exec();
+    return {};
+  }
   organisationName = 'test';
   organisationDomain = 'test.org';
   constructor(@InjectModel('Employee') private employeeModel: Model<Employee>) {}
@@ -69,18 +73,15 @@ export class EmployeeService {
   }
   //Employee
   async addEmployee(employeeDto: EmployeeDto): Promise<EmployeeDto | null> {
-    const email = this.createEmail(employeeDto.name);
-    employeeDto['email'] = email;
-    employeeDto['educations'] = [];
-    employeeDto['experiences'] = [];
-    employeeDto['emergencyContacts'] = [];
+    employeeDto['email'] = this.createEmail(employeeDto.name);
     try {
       const createdemployee = new this.employeeModel(employeeDto);
-      await createdemployee.save();
-      return;
-    } catch (error) {
-      log(error);
-      return;
+      const result = await createdemployee.save();
+      log({ result });
+      return result.toObject();
+    } catch (er) {
+      error(er);
+      return null;
     }
   }
 
@@ -103,36 +104,60 @@ export class EmployeeService {
   }
   async add_contact(employeeID: string, contact: ContactDto): Promise<Map<string, string> | null> {
     contact.id = uniqid();
+    log({ contact });
     try {
-      const result = await this.employeeModel.findByIdAndUpdate(employeeID, { $push: { emergencyContacts: JSON.parse(JSON.stringify(contact)) } }).exec();
+      const result = await this.employeeModel.findByIdAndUpdate(employeeID, { $push: { emergencyContacts: contact } }).exec();
       if (result) {
         return result.emergencyContacts.find(c => c['id'] === contact.id);
       }
+      return;
     } catch (error) {
       return error;
+    }
+  }
+  async updateBiography(employeeID: string, biography: string): Promise<string | null> {
+    try {
+      const result = await this.employeeModel.findByIdAndUpdate(employeeID, { $set: { biography } }).exec();
+      if (result != null) return result.biography;
+      return;
+    } catch (er) {
+      console.log(er);
+      return;
+    }
+  }
+  async updateOnboarding(employeeID: string, onboarding: string): Promise<Record<string, unknown>[] | null> {
+    try {
+      const result = await this.employeeModel.findByIdAndUpdate(employeeID, { $set: { onboarding } }).exec();
+      if (result != null) return result.onboarding;
+      return;
+    } catch (er) {
+      console.log(er);
+      return;
     }
   }
   async delete_employee(id: string): Promise<any> {
     return await this.employeeModel.findOneAndRemove({ id }).exec();
   }
-  async delete_education(employeeID: string, educationID: string): Promise<boolean | any> {
+  async delete_education(employeeID: string, educationID: string): Promise<boolean | any | null> {
     try {
       const result = await this.employeeModel
-        .findByIdAndUpdate(
-          employeeID,
+        .updateOne(
+          { id: employeeID },
           {
             $pull: { educations: { id: educationID } },
           },
           { runValidators: true, select: 'educations -_id' },
         )
         .exec();
-      log({ result });
-      return result.educations.find(educ => educ['id'] === educationID) != null;
+      log(result);
+      // if (result) return result.educations.find(educ => educ['id'] == educationID) == null;
+      // return null;
+      return result.modifiedCount >= 1;
     } catch (er) {
       return er;
     }
   }
-  async delete_experience(employeeID: string, experienceID: string): Promise<boolean | any> {
+  async delete_experience(employeeID: string, experienceID: string): Promise<boolean | any | null> {
     try {
       const result = await this.employeeModel
         .findByIdAndUpdate(
@@ -144,22 +169,26 @@ export class EmployeeService {
         )
         .exec();
       log({ result });
-      return result.experiences.find(exp => exp['id'] === experienceID) != null;
+      if (result) result.experiences.find(exp => exp['id'] == experienceID) == null;
+      return null;
     } catch (error) {
       return error;
     }
   }
-  async delete_contact(employeeID: string, contactID: string): Promise<boolean | any> {
+  async delete_contact(employeeID: string, contactID: string): Promise<boolean | any | null> {
     try {
       const result = await this.employeeModel
-        .findByIdAndUpdate(employeeID, {
-          $pull: { emergencyContacts: { id: contactID } },
-        })
+        .findByIdAndUpdate(
+          employeeID,
+          {
+            $pull: { emergencyContacts: { id: contactID } },
+          },
+          { runValidators: true, select: 'emergencyContacts -_id' },
+        )
         .exec();
-      const f = result.emergencyContacts.find(c => c['id'] === contactID);
-      log('Ahkaaaaaaaaaaaaaaah', f);
-      log(f);
-      return f == null;
+      log({ result });
+      if (result) result.emergencyContacts.find(c => c['id'] == contactID) == null;
+      return null;
     } catch (error) {
       return error;
     }
@@ -187,7 +216,6 @@ export class EmployeeService {
     return "Impossible de modifier cette employé, il n'existe pas";
   }
   async findAllEmployee(): Promise<Employee[] | void> {
-    //return all Employee that is not marked as deletedAt
     return this.employeeModel.find({ deletedAt: null });
   }
 }

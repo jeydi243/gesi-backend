@@ -11,7 +11,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { logger: ['error', 'warn', 'log'] });
   app.use(cookieParser());
   app.enableCors();
-  // app.use(morgan('tiny'));
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalFilters(new OtherException());
   app.useGlobalPipes(
@@ -25,12 +24,7 @@ async function bootstrap() {
     }),
   );
 
-  const config = new DocumentBuilder()
-    .setTitle('Gesi')
-    .setDescription("L'API de gestion d'université")
-    .setVersion('1.0')
-    .addTag('gesi')
-    .build();
+  const config = new DocumentBuilder().setTitle('Gesi').setDescription("L'API de gestion d'université").setVersion('1.0').addTag('gesi').build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 

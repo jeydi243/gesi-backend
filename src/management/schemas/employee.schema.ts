@@ -1,6 +1,7 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
 import { Transform } from 'class-transformer';
 import { Document, Schema as S } from 'mongoose';
+import { defaultOnboarding } from 'src/export.type';
 
 @Schema()
 export class Employee extends Document {
@@ -44,14 +45,20 @@ export class Employee extends Document {
   @Prop({ type: String })
   cover_letter: string;
 
-  @Prop({ type: Array, required: false })
+  @Prop({ type: String })
+  biography: string;
+
+  @Prop({ type: Array, required: false, default: [] })
   educations: Array<Map<string, string>>;
 
-  @Prop({ type: Array, required: false })
+  @Prop({ type: Array, required: false, default: [] })
   experiences: Array<Map<string, string>>;
 
-  @Prop({ type: Array, required: false })
+  @Prop({ type: Array, required: false, default: [] })
   emergencyContacts: Array<Map<string, string>>;
+
+  @Prop({ type: Array, default: defaultOnboarding })
+  onboarding: Record<string, unknown>[];
 
   @Prop({ type: Array, required: false })
   skills: string[];

@@ -1,4 +1,24 @@
-import { BadRequestException, Body, Controller, Delete, Get, Header, HttpCode, Param, Patch, Post, Query, Req, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Header,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Query,
+  Req,
+  UploadedFile,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
 import { log } from 'console';
 import { Request } from 'express';
 import { Employee } from './schemas/employee.schema';
@@ -8,7 +28,7 @@ import { EmployeeService } from './services/employee.service';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
 import { UpdateExperienceDto } from './dto/update-experience.dto';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { ApiCreatedResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import EducationDTO from './dto/education.dto';
 import ExperienceDto from './dto/experience.dto';
@@ -20,7 +40,6 @@ export class EmployeeController {
 
   @Post()
   @Header('Cache-Control', 'none')
-  @HttpCode(200)
   @ApiOperation({ summary: 'Register new employee', description: 'Register a new employee' })
   @ApiCreatedResponse({
     description: 'The employee has been successfully created.',
@@ -29,13 +48,15 @@ export class EmployeeController {
   async addEmployee(@Body() employee: EmployeeDto): Promise<EmployeeDto | null> {
     log(employee);
     try {
-      const result: EmployeeDto | null = await this.employeeService.addEmployee(employee);
-      if (result) {
-        return result;
+      const res: EmployeeDto | null = await this.employeeService.addEmployee(employee);
+      log({ res });
+      if (res) {
+        return res;
       }
-      return result;
-    } catch (error) {
-      log(error);
+      throw new BadRequestException("Can't add employee");
+    } catch (er) {
+      log(er);
+      return er;
     }
   }
 
@@ -50,7 +71,6 @@ export class EmployeeController {
   }
 
   @Post('/:employeeID')
-  @HttpCode(200)
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'resume_file', maxCount: 1 },
@@ -81,7 +101,6 @@ export class EmployeeController {
   }
 
   @Patch('/:employeeID')
-  @HttpCode(200)
   @ApiOperation({ summary: 'Update employee', description: 'Update an employee' })
   async updateEmployee(@Param('employeeID') employeeID: string, @Body() employee: UpdateEmployeeDto) {
     const res: string | Employee = await this.employeeService.updateEmployee(employeeID, employee);
@@ -96,7 +115,6 @@ export class EmployeeController {
     summary: 'Update employee by adding education',
     description: 'Update an employee by adding education',
   })
-  @HttpCode(200)
   @ApiResponse({ status: 201, description: 'The education has been successfully added.' })
   @ApiResponse({ status: 200, description: 'The education has been successfully added.' })
   async add_education(@Param('employeeID') employeeID: string, @Body() education: EducationDTO): Promise<EducationDTO | null> {
@@ -113,7 +131,6 @@ export class EmployeeController {
     summary: 'Update employee by adding contact',
     description: 'Update an employee by adding contact',
   })
-  @HttpCode(200)
   @ApiResponse({ status: 201, description: 'The contact has been successfully added.' })
   @ApiResponse({ status: 200, description: 'The contact has been successfully added.' })
   async add_contact(@Param('employeeID') employeeID: string, @Body() contact: ContactDto): Promise<Map<string, string> | null> {
@@ -123,9 +140,9 @@ export class EmployeeController {
       if (res != null) {
         return res;
       }
-      new BadRequestException("Impossible d'ajouter un contact");
-    } catch (error) {
-      return error;
+      throw new BadRequestException("Impossible d'ajouter un contact");
+    } catch (er) {
+      return er;
     }
   }
 
@@ -134,7 +151,6 @@ export class EmployeeController {
     summary: 'Update employee by adding experience',
     description: 'Update an employee by adding experience',
   })
-  @HttpCode(200)
   @ApiResponse({ status: 201, description: 'The experience has been successfully added.' })
   @ApiResponse({ status: 200, description: 'The experience has been successfully added.' })
   async add_experience(@Param('employeeID') employeeID: string, @Body() experience: ExperienceDto): Promise<ExperienceDto | null> {
@@ -144,7 +160,7 @@ export class EmployeeController {
       if (res != null) {
         return res;
       } else {
-        new BadRequestException("Une erreur est survenue, impossible d'ajouter l'experience");
+        throw new BadRequestException("Une erreur est survenue, impossible d'ajouter l'experience");
       }
       return;
     } catch (er) {
@@ -158,7 +174,6 @@ export class EmployeeController {
     summary: 'Delete employee completely',
     description: 'Delete employee completely',
   })
-  @HttpCode(200)
   async delete_employee(@Param('employeeID') employeeID: string) {
     log(employeeID);
 
@@ -166,62 +181,61 @@ export class EmployeeController {
     return res;
   }
 
-  @Delete(':employeeID/delete_education?:educationID')
+  @Delete(':employeeID/delete_education')
   @ApiOperation({
     summary: 'Update employee by adding education',
     description: 'Update an employee by adding education',
   })
-  @HttpCode(200)
-  @ApiResponse({ status: 201, description: 'The education has been successfully deleted.' })
-  @ApiResponse({ status: 200, description: 'The education has been successfully deleted.' })
-  async delete_education(@Query('employeeID') employeeID: string, @Param('educationID') id: string) {
+  // @ApiResponse({ status: 201, description: 'The education has been successfully deleted.' })
+  // @ApiResponse({ status: 200, description: 'The education has been successfully deleted.' })
+  async delete_education(@Query('employeeID') employeeID: string, @Body('educationID') educationID: string) {
     try {
-      const res: boolean | any = await this.employeeService.delete_education(employeeID, id);
-      if (res) {
-        return res;
-      } else {
-        new BadRequestException(`Can't delete education with id ${id}`);
-      }
+      // const res: boolean | any = await this.employeeService.delete_education(employeeID, educationID);
+      // console.log({ res });
+
+      // if (res == null) {
+      //   return res;
+      // } else {
+      // throw new NotFoundException(`Can't delete education which not exist with id ${educationID}`);
+      throw new HttpException('processing rrrrr', HttpStatus.BAD_REQUEST);
+      // }
     } catch (error) {
       return error;
     }
   }
 
-  @Delete(':employeeID/delete_contact?:contactID')
+  @Delete(':employeeID/delete_contact')
   @ApiOperation({
     summary: 'Update employee by deleting contact',
     description: 'Update an employee by deleting contact',
   })
-  @HttpCode(200)
   @ApiResponse({ status: 201, description: 'The contact has been successfully deleted.' })
   @ApiResponse({ status: 200, description: 'The contact has been successfully deleted.' })
-  async delete_contact(@Query('employeeID') employeeID: string, @Param('contactID') id: string) {
+  async delete_contact(@Param('employeeID') employeeID: string, @Body('contactID') contactID: string) {
     try {
-      console.log('Mais bon sang');
-      const res: boolean = await this.employeeService.delete_contact(employeeID, id);
-      if (res) {
+      const res: boolean | null = await this.employeeService.delete_contact(employeeID, contactID);
+      if (res != null) {
         return res;
       } else {
-        new BadRequestException(`Can't delete contact with id ${id}`);
+        return new NotFoundException(`Can't delete contact with id ${contactID}`);
       }
     } catch (error) {
       return error;
     }
   }
 
-  @Delete(':employeeID/delete_experience?:experienceID')
+  @Delete(':employeeID/delete_experience')
   @ApiOperation({
     summary: 'Update employee by deleting experience',
     description: 'Update an employee by deleting experience',
   })
-  @HttpCode(200)
-  async delete_experience(@Query('employeeID') employeeID: string, @Param('experienceID') id: string) {
+  async delete_experience(@Query('employeeID') employeeID: string, @Body('experienceID') experienceID: string) {
     try {
-      const res: boolean | any = await this.employeeService.delete_experience(employeeID, id);
-      if (res) {
+      const res: boolean | null = await this.employeeService.delete_experience(employeeID, experienceID);
+      if (res != null) {
         return res;
       } else {
-        new BadRequestException(`Can't delete experience with id ${id}`);
+        return new NotFoundException(`Can't delete experience with id ${experienceID}`);
       }
     } catch (error) {
       return error;
@@ -229,7 +243,6 @@ export class EmployeeController {
   }
 
   @Patch('/:employeeID/update_experience')
-  @HttpCode(200)
   @ApiOperation({ summary: 'Update experience for employee', description: 'Update an employee' })
   async updateExperience(@Param('employeeID') employeeID: string, @Body() experience: UpdateExperienceDto, @Req() request: Request) {
     try {
@@ -238,7 +251,7 @@ export class EmployeeController {
       if (res && Array.isArray(res)) {
         return res;
       } else {
-        new BadRequestException("Une erreur est survenue, impossible d'ajouter l'experience");
+        throw new BadRequestException("Une erreur est survenue, impossible d'ajouter l'experience");
       }
     } catch (er) {
       return er;
@@ -246,7 +259,6 @@ export class EmployeeController {
   }
 
   @Patch('/:employeeID/update_education?:educationID')
-  @HttpCode(200)
   @ApiOperation({ summary: 'Update education for employee', description: 'Update employee by changing education' })
   async updateEducation(@Param('employeeID') employeeID: string, @Body() education: UpdateEducationDto) {
     try {
@@ -257,6 +269,45 @@ export class EmployeeController {
       }
     } catch (er) {
       return er;
+    }
+  }
+  @Patch('/:employeeID/update_biography')
+  @ApiOperation({ summary: 'Update biography for employee', description: 'Update employee by changing biography' })
+  async updateBiography(@Param('employeeID') employeeID: string, @Body('biography') biography: string) {
+    try {
+      // console.log({ query: req.query }, { body: req.body }, { params: req.params }, { biography });
+      const res: string | null = await this.employeeService.updateBiography(employeeID, biography);
+      log({ res });
+      if (res != null) return res;
+      throw new BadRequestException("Biography can't be updated");
+    } catch (er) {
+      return er;
+    }
+  }
+  @Patch('/:employeeID/update_onboarding')
+  @ApiOperation({ summary: 'Update onboarding for employee', description: 'Update employee by changing onboarding' })
+  async updateOnboarding(@Param('employeeID') employeeID: string, @Body('onboarding') onboarding: string, @Req() req: Request) {
+    try {
+      console.log({ query: req.query }, { body: req.body }, { params: req.params }, { onboarding });
+      const res: Record<string, unknown>[] | null = await this.employeeService.updateOnboarding(employeeID, onboarding);
+      log({ res });
+      if (res != null) return res;
+      throw new BadRequestException("Onboarding can't be updated");
+    } catch (er) {
+      return er;
+    }
+  }
+
+  @Post('/:employeeID/update_document')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'Update document for employee', description: 'Update employee by changing document' })
+  async updateDocument(@Param('employeeID') employeeID: string, @UploadedFile() file: Express.Multer.File) {
+    try {
+      console.log({ employeeID }, { ...file });
+      const link = buildLink(employeeID, file, file.filename);
+      const res = await this.employeeService.updateDocument(employeeID, {});
+    } catch (error) {
+      console.log(error);
     }
   }
 }
