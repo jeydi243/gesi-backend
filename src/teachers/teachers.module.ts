@@ -1,21 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TeachersService } from './teachers.service';
 import { TeachersController } from './teachers.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { TeacherSchema } from './schemas/teacher.schema';
-import { PersonSchema } from 'src/person.base';
+import { ResourceDbModule } from 'src/resource-db/resource-db.module';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      {
-        name: 'Person',
-        schema: PersonSchema,
-        discriminators: [{ name: 'Teacher', schema: TeacherSchema }],
-      },
-    ]),
-  ],
+  imports: [ResourceDbModule],
   controllers: [TeachersController],
-  providers: [TeachersService],
+  providers: [],
 })
 export class TeachersModule {}

@@ -1,5 +1,7 @@
 // Select the database to use.
-use('gesi-development');
+// use('gesi-development');
+use('gesi-production');
 
 db.getCollectionNames()
-db.getCollection('professors')
+db.getCollection('employees')
+db.employees.find()

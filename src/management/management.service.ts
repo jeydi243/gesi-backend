@@ -2,10 +2,8 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { FiliereDTO } from './dto/create-filiere.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { EmployeeDto } from './dto/create-employee.dto';
-import { DocumentOrgDTO } from './dto/create-document.dto';
+import { DocumentOrgDTO } from './dto/document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { UpdateFiliereDto } from './dto/update-filiere.dto';
 import { Filiere } from './schemas/filiere.schema';
 import { Employee } from './schemas/employee.schema';
@@ -36,7 +34,6 @@ export class ManagementService {
   async updateDocument(code: string, documentUpdate: UpdateDocumentDto): Promise<DocumentOrg | null> {
     return this.documentOrgModel.findOneAndUpdate({ code }, { $set: { ...documentUpdate } });
   }
-
   async addFiliere(filiereDto: FiliereDTO): Promise<Filiere | void> {
     const createdfiliere = new this.filiereModel(filiereDto);
     return createdfiliere.save();
@@ -63,32 +60,5 @@ export class ManagementService {
   async findAllFiliere(): Promise<Filiere[] | void> {
     //return all filiere that is not marked as deletedAt
     return this.filiereModel.find({ deletedAt: null });
-  }
-
-  //Employee
-  async addEmployee(employeeDto: EmployeeDto): Promise<Employee | void> {
-    console.log("Est-ce qu'on arrive meme ici");
-
-    const createdemployee = new this.employeeModel(employeeDto);
-    return createdemployee.save();
-  }
-  async softDeleteEmployee(code: string): Promise<Employee | void> {
-    return this.employeeModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });
-  }
-  async removeEmployee(code: string): Promise<Employee | void> {
-    return this.employeeModel.findOneAndRemove({ code });
-  }
-  async updateEmployee(code: string, employeeUpdate: UpdateEmployeeDto): Promise<Filiere | null | string> {
-    const employee = await this.filiereModel.findOne({ code });
-    if (employee) {
-      return this.filiereModel.findOneAndUpdate({ code }, { $set: { ...employeeUpdate } }).exec();
-      // filiere.save();
-    }
-
-    return "Impossible de modifier cette employé, il n'existe pas";
-  }
-  async findAllEmployee(): Promise<Employee[] | void> {
-    //return all Employee that is not marked as deletedAt
-    return this.employeeModel.find({ deletedAt: null });
   }
 }

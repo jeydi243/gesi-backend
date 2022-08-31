@@ -5,13 +5,12 @@ import { TeachersModule } from './teachers/teachers.module';
 import { UsersModule } from './users/users.module';
 import * as helmet from 'helmet';
 import { ConfigModule } from '@nestjs/config';
-import { RootController } from './root.controller';
-import { UsersService } from './users/users.service';
-import { User, UserSchema } from './users/schemas/user.schema';
-import { JwtStrategy } from './users/jwt.strategy';
+
 import { CoursesModule } from './courses/courses.module';
 import { ManagementModule } from './management/management.module';
-
+import { ResourceDbModule } from './resource-db/resource-db.module';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config();
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -19,16 +18,17 @@ import { ManagementModule } from './management/management.module';
 
     MongooseModule.forRoot(
       process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
+      {},
     ),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    ResourceDbModule,
     StudentsModule,
     TeachersModule,
     UsersModule,
     CoursesModule,
     ManagementModule,
   ],
-  controllers: [RootController],
-  providers: [UsersService, RootController],
+  controllers: [],
+  providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

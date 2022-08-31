@@ -10,10 +10,11 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UsersService {
+  constructor(@InjectModel('User') private userModel: Model<User>) {}
+
   registerRootProfessor(createUserDto: Partial<CreateUserDto>) {
     throw new Error('Method not implemented.');
   }
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async register(userDto: CreateUserDto): Promise<User | null | Error> {
     const createdUser = new this.userModel(userDto);
@@ -65,18 +66,18 @@ export class UsersService {
         return err;
       });
   }
-  async findOne(username: string): Promise<(User ) | null> {
+  async findOne(username: string): Promise<User | null> {
     return this.userModel
       .findOne({
         username,
       })
       .exec();
   }
-  logout(): boolean {
+  async logout(): Promise<boolean> {
     return false;
   }
 
-  async deleteOne(idUser: string): Promise<User  | null> {
+  async deleteOne(idUser: string): Promise<User | null> {
     return this.userModel.findOneAndUpdate({ _id: idUser }, { $set: { deleteAt: Date.now() } }).exec();
   }
   async findAll(): Promise<User[] | any> {

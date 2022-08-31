@@ -1,15 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseInterceptors,
-  UploadedFile,
-  BadRequestException,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
@@ -79,11 +68,7 @@ export class StudentsController {
     return this.studentsService.getResponsable(idStudent, idResponsable);
   }
   @Patch('/:id/responsables/:idResponsable')
-  async updateResponsable(
-    @Param('id') idStudent: string,
-    @Param('idResponsable') idResponsable: string,
-    @Body() updateResponsableDto: UpdateResponsableDto,
-  ) {
+  async updateResponsable(@Param('id') idStudent: string, @Param('idResponsable') idResponsable: string, @Body() updateResponsableDto: UpdateResponsableDto) {
     return this.studentsService.updateResponsable(idResponsable, updateResponsableDto);
   }
 
@@ -102,22 +87,22 @@ export class StudentsController {
       },
     }),
   )
-  async updateDocument(
-    @Param('id') idStudent: string,
-    @Param('code') codeDocument: string,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
+  async updateDocument(@Param('id') idStudent: string, @Param('code') codeDocument: string, @UploadedFile() file: Express.Multer.File) {
     const destinationPath = this.buildLink(idStudent, file, codeDocument);
     console.log(tempDirectory, file.path);
 
     moveSync(file.path, destinationPath, { overwrite: true }); //move file to specific student storage
 
     console.log(`The file successful move to ${destinationPath}`);
-    const res: number | any = await this.studentsService.updateDocument2(idStudent, codeDocument, destinationPath);
-    if (Number.isInteger(res) && res > 0) {
-      return `Student ${idStudent} successfully change ${res} document: ${codeDocument} `;
+    try {
+      const res: number | any = await this.studentsService.updateDocument2(idStudent, codeDocument, destinationPath);
+      if (Number.isInteger(res) && res > 0) {
+        return `Student ${idStudent} successfully change ${res} document: ${codeDocument} `;
+      }
+      throw new BadRequestException(res);
+    } catch (er) {
+      return er;
     }
-    return new BadRequestException(res);
   }
   @Post('/:id/documents')
   @UseInterceptors(
@@ -134,11 +119,7 @@ export class StudentsController {
       // },
     }),
   )
-  async addDocument(
-    @Param('id') idStudent: string,
-    @Body('code') codeDocument: string,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
+  async addDocument(@Param('id') idStudent: string, @Body('code') codeDocument: string, @UploadedFile() file: Express.Multer.File) {
     return this.studentsService.addDocument(idStudent, codeDocument, file);
   }
 

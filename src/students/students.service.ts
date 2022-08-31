@@ -1,19 +1,19 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, NativeError } from 'mongoose';
+import { Model } from 'mongoose';
 import { CreateResponsableDto } from './dto/create-responsable.dto';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateResponsableDto } from './dto/update-responsable.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { Responsable,  } from './schemas/responsable.schema';
+import { Responsable } from './schemas/responsable.schema';
 import { Student } from './schemas/student.schema';
 import { move, moveSync } from 'fs-extra';
 import * as tempDirectory from 'temp-dir';
 @Injectable()
 export class StudentsService {
   constructor(
-    @InjectModel(Student.name) private studentModel: Model<Student>,
-    @InjectModel(Responsable.name)
+    @InjectModel('Student') private studentModel: Model<Student>,
+    @InjectModel('Responsable')
     private responsableModel: Model<Responsable>,
   ) {}
   async add(createStudentDto: CreateStudentDto): Promise<Student | void> {
@@ -24,7 +24,7 @@ export class StudentsService {
   async findAll(): Promise<Student[] | any> {
     try {
       const students = await this.studentModel.find({});
-      console.log('We found students:', students);
+      console.log({ students });
       return students;
     } catch (err) {
       console.log('Une erreur est survenue', err);
@@ -62,7 +62,7 @@ export class StudentsService {
     }
   }
   remove(id: string) {
-    this.studentModel.findByIdAndRemove({ _id: id }, function (err: NativeError, student: Student) {
+    this.studentModel.findByIdAndRemove({ _id: id }, function (err, student: Student) {
       if (err) {
         console.error(err.message);
         return { error: err.message };
@@ -89,11 +89,7 @@ export class StudentsService {
       .save()
       .then(result => {
         console.log(result);
-        return this.studentModel.findByIdAndUpdate(
-          { _id: idStudent },
-          { $push: { responsables: createdResponsable } },
-          { new: true },
-        );
+        return this.studentModel.findByIdAndUpdate({ _id: idStudent }, { $push: { responsables: createdResponsable } }, { new: true });
       })
       .catch(err => {
         return err;
@@ -174,7 +170,6 @@ export class StudentsService {
       const link = this.buildLink(idStudent, file, code);
       moveSync(file.path, link, { overwrite: true }); // move the file to the destination path
       foundStudent.documents.push({ code, link });
-      console.log('Donc on arrive ici');
 
       return foundStudent.save();
     } catch (e) {
