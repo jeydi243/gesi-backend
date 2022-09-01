@@ -9,6 +9,7 @@ export class OtherException implements ExceptionFilter {
     const response: Response = ctx.getResponse<Response>();
     const request: Request = ctx.getRequest<Request>();
 
+    console.log("Banduku pourquoi on n'arrive pas ici...");
     console.log(exception.getResponse());
     console.log('OtherException:');
 

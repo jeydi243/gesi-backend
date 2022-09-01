@@ -15,6 +15,7 @@ import {
   Put,
   Query,
   Req,
+  Res,
   UploadedFile,
   UploadedFiles,
   UseInterceptors,
@@ -188,19 +189,18 @@ export class EmployeeController {
   })
   // @ApiResponse({ status: 201, description: 'The education has been successfully deleted.' })
   // @ApiResponse({ status: 200, description: 'The education has been successfully deleted.' })
-  async delete_education(@Query('employeeID') employeeID: string, @Body('educationID') educationID: string) {
+  async delete_education(@Param('employeeID') employeeID: string, @Body('educationID') educationID: string) {
     try {
-      // const res: boolean | any = await this.employeeService.delete_education(employeeID, educationID);
-      // console.log({ res });
+      const res: boolean | any = await this.employeeService.delete_education(employeeID, educationID);
+      console.log({ res });
 
-      // if (res == null) {
-      //   return res;
-      // } else {
-      // throw new NotFoundException(`Can't delete education which not exist with id ${educationID}`);
-      throw new HttpException('processing rrrrr', HttpStatus.BAD_REQUEST);
-      // }
+      if (res) {
+        return res;
+      } else {
+        throw new BadRequestException(`Can't delete education which not exist with id ${educationID}`);
+      }
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 

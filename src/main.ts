@@ -8,11 +8,12 @@ import * as morganBody from 'morgan-body';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { logger: ['error', 'warn', 'log'] });
+  const app = await NestFactory.create(AppModule, { logger: ['error', 'warn'] });
   app.use(cookieParser());
   app.enableCors();
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalFilters(new OtherException());
+  // app.useGlobalInterceptors(new InterceptorHTTP());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -36,6 +37,7 @@ async function bootstrap() {
       },
     },
   });
+
   await app.listen(3000);
 }
 

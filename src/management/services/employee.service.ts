@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Name } from 'src/export.type';
@@ -140,20 +140,31 @@ export class EmployeeService {
   }
   async delete_education(employeeID: string, educationID: string): Promise<boolean | any | null> {
     try {
+      // const result = await this.employeeModel
+      //   .updateOne(
+      //     { id: employeeID },
+      //     {
+      //       $pull: { educations: { id: educationID } },
+      //     },
+      //     { runValidators: true, select: 'educations -_id' },
+      //   )
+      //   .exec();
       const result = await this.employeeModel
-        .updateOne(
-          { id: employeeID },
+        .findByIdAndUpdate(
+          employeeID,
           {
             $pull: { educations: { id: educationID } },
           },
           { runValidators: true, select: 'educations -_id' },
         )
         .exec();
-      log(result);
-      // if (result) return result.educations.find(educ => educ['id'] == educationID) == null;
+
+      log({ result });
+      if (result) return result.educations.find(educ => educ['id'] == educationID) == null;
       // return null;
-      return result.modifiedCount >= 1;
+      // return result.modifiedCount >= 1;
     } catch (er) {
+      log({ er });
       return er;
     }
   }
