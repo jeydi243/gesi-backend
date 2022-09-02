@@ -5,17 +5,13 @@ import {
   Delete,
   Get,
   Header,
-  HttpCode,
-  HttpException,
-  HttpStatus,
   NotFoundException,
   Param,
   Patch,
   Post,
-  Put,
   Query,
   Req,
-  Res,
+  UnprocessableEntityException,
   UploadedFile,
   UploadedFiles,
   UseInterceptors,
@@ -134,16 +130,16 @@ export class EmployeeController {
   })
   @ApiResponse({ status: 201, description: 'The contact has been successfully added.' })
   @ApiResponse({ status: 200, description: 'The contact has been successfully added.' })
-  async add_contact(@Param('employeeID') employeeID: string, @Body() contact: ContactDto): Promise<Map<string, string> | null> {
+  async add_contact(@Param('employeeID') employeeID: string, @Body() contact: ContactDto): Promise<ContactDto | null> {
     log('Add contact for employee: ', employeeID, contact);
     try {
-      const res: Map<string, string> | null = await this.employeeService.add_contact(employeeID, contact);
-      if (res != null) {
+      const res: ContactDto | null = await this.employeeService.add_contact(employeeID, contact);
+      if (res) {
         return res;
       }
       throw new BadRequestException("Impossible d'ajouter un contact");
     } catch (er) {
-      return er;
+      throw er;
     }
   }
 
@@ -220,7 +216,7 @@ export class EmployeeController {
         return new NotFoundException(`Can't delete contact with id ${contactID}`);
       }
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
@@ -238,23 +234,22 @@ export class EmployeeController {
         return new NotFoundException(`Can't delete experience with id ${experienceID}`);
       }
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
   @Patch('/:employeeID/update_experience')
   @ApiOperation({ summary: 'Update experience for employee', description: 'Update an employee' })
-  async updateExperience(@Param('employeeID') employeeID: string, @Body() experience: UpdateExperienceDto, @Req() request: Request) {
+  async updateExperience(@Param('employeeID') employeeID: string, @Body() experience: UpdateExperienceDto) {
     try {
       const res: [] = await this.employeeService.updateExperence(employeeID, experience);
-      log({ query: request.query }, { params: request.params }, { body: request.body });
       if (res && Array.isArray(res)) {
         return res;
       } else {
         throw new BadRequestException("Une erreur est survenue, impossible d'ajouter l'experience");
       }
     } catch (er) {
-      return er;
+      throw er;
     }
   }
 
@@ -267,8 +262,9 @@ export class EmployeeController {
       if (Array.isArray(res)) {
         return res;
       }
+      throw new UnprocessableEntityException("Can't update educations");
     } catch (er) {
-      return er;
+      throw er;
     }
   }
   @Patch('/:employeeID/update_biography')
@@ -281,7 +277,21 @@ export class EmployeeController {
       if (res != null) return res;
       throw new BadRequestException("Biography can't be updated");
     } catch (er) {
-      return er;
+      throw er;
+    }
+  }
+
+  @Patch('/:employeeID/update_password')
+  @ApiOperation({ summary: 'Update password for employee', description: 'Update employee by changing password of connexion' })
+  async updatePassword(@Param('employeeID') employeeID: string, @Body('password') password: string) {
+    try {
+      // console.log({ query: req.query }, { body: req.body }, { params: req.params }, { biography });
+      const res: boolean | null = await this.employeeService.updatePassword(employeeID, password);
+      log({ res });
+      if (res != null) return res;
+      throw new BadRequestException("Can't update user password");
+    } catch (er) {
+      throw er;
     }
   }
   @Patch('/:employeeID/update_onboarding')
@@ -294,7 +304,7 @@ export class EmployeeController {
       if (res != null) return res;
       throw new BadRequestException("Onboarding can't be updated");
     } catch (er) {
-      return er;
+      throw er;
     }
   }
 
@@ -305,7 +315,7 @@ export class EmployeeController {
     try {
       console.log({ employeeID }, { ...file });
       const link = buildLink(employeeID, file, file.filename);
-      const res = await this.employeeService.updateDocument(employeeID, {});
+      // const res = await this.employeeService.updateDocument(employeeID, docname, link);
     } catch (error) {
       console.log(error);
     }

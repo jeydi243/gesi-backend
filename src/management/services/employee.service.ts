@@ -12,16 +12,17 @@ import ContactDto from '../dto/contact.dto';
 import ExperienceDto from '../dto/experience.dto';
 import { UpdateExperienceDto } from '../dto/update-experience.dto';
 import { UpdateEducationDto } from '../dto/update-education.dto';
+import { User } from 'src/users/schemas/user.schema';
 
 @Injectable()
 export class EmployeeService {
   async updateDocument(employeeID: string, mapDocument) {
-    const resultat = await this.employeeModel.findOneAndUpdate({ id: employeeID }, { $set: { ...mapDocument } }).exec();
+    const resultat = await this.employeeModel.findOneAndUpdate({ id: employeeID }, { $set: { ...mapDocument } }, { runValidators: true, select: 'educations -_id' }).exec();
     return {};
   }
   organisationName = 'test';
   organisationDomain = 'test.org';
-  constructor(@InjectModel('Employee') private employeeModel: Model<Employee>) {}
+  constructor(@InjectModel('Employee') private employeeModel: Model<Employee>, @InjectModel('User') private userModel: Model<User>) {}
 
   async updateEducation(employeeID: string, education: UpdateEducationDto): Promise<[] | null | any> {
     try {
@@ -84,7 +85,16 @@ export class EmployeeService {
       return null;
     }
   }
-
+  async updatePassword(employeeID: string, password: string): Promise<boolean | null> {
+    try {
+      const user = await this.userModel.findOne({ idOfRole: employeeID }).exec();
+      user.password = password;
+      await user.save();
+    } catch (err) {
+      console.log(err);
+    }
+    return true;
+  }
   async add_education(employeeID: string, education: EducationDTO): Promise<EducationDTO | null> {
     education.id = uniqid();
     log({ education: JSON.stringify(education) });
@@ -102,15 +112,15 @@ export class EmployeeService {
     log('BUZE2: ', JSON.stringify(experience));
     return await this.employeeModel.findByIdAndUpdate(employeeID, { $push: { experiences: JSON.parse(JSON.stringify(experience)) } }).exec();
   }
-  async add_contact(employeeID: string, contact: ContactDto): Promise<Map<string, string> | null> {
+  async add_contact(employeeID: string, contact: ContactDto): Promise<ContactDto | null> {
     contact.id = uniqid();
     log({ contact });
     try {
-      const result = await this.employeeModel.findByIdAndUpdate(employeeID, { $push: { emergencyContacts: contact } }).exec();
+      const result = await this.employeeModel.findByIdAndUpdate(employeeID, { $push: { emergencyContacts: JSON.parse(JSON.stringify(contact)) } }).exec();
       if (result) {
-        return result.emergencyContacts.find(c => c['id'] === contact.id);
+        return contact;
       }
-      return;
+      return null;
     } catch (error) {
       return error;
     }
