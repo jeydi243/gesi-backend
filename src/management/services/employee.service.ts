@@ -1,18 +1,18 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import * as uniqid from 'uniqid';
+import { User } from 'src/users/schemas/user.schema';
 import { Name } from 'src/export.type';
-import EducationDTO from '../dto/education.dto';
-import { EmployeeDto } from '../dto/employee.dto';
-import { UpdateEmployeeDto } from '../dto/update-employee.dto';
+import { Model } from 'mongoose';
 import { Employee } from '../schemas/employee.schema';
 import { log, error } from 'console';
-import * as uniqid from 'uniqid';
-import ContactDto from '../dto/contact.dto';
-import ExperienceDto from '../dto/experience.dto';
-import { UpdateExperienceDto } from '../dto/update-experience.dto';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { EmployeeDto } from '../dto/employee.dto';
+import { UpdateEmployeeDto } from '../dto/update-employee.dto';
 import { UpdateEducationDto } from '../dto/update-education.dto';
-import { User } from 'src/users/schemas/user.schema';
+import { UpdateExperienceDto } from '../dto/update-experience.dto';
+import ContactDto from '../dto/contact.dto';
+import EducationDTO from '../dto/education.dto';
+import ExperienceDto from '../dto/experience.dto';
 
 @Injectable()
 export class EmployeeService {
@@ -22,7 +22,11 @@ export class EmployeeService {
   }
   organisationName = 'test';
   organisationDomain = 'test.org';
-  constructor(@InjectModel('Employee') private employeeModel: Model<Employee>, @InjectModel('User') private userModel: Model<User>) {}
+  constructor(@InjectModel('Employee') private employeeModel: Model<Employee>, @InjectModel('User') private userModel: Model<User>) {
+    // employeeModel.watch().on('change', function (data) {
+    //   console.log("You add new employee must create also password");
+    // });
+  }
 
   async updateEducation(employeeID: string, education: UpdateEducationDto): Promise<[] | null | any> {
     try {
@@ -50,7 +54,6 @@ export class EmployeeService {
       console.log(error);
     }
   }
-
   async employeeBy(id: string): Promise<EmployeeDto | any> {
     return this.employeeModel.findOne({ id }).exec();
   }
@@ -72,24 +75,28 @@ export class EmployeeService {
     email = email + '@' + this.organisationDomain;
     return email;
   }
-  //Employee
   async addEmployee(employeeDto: EmployeeDto): Promise<EmployeeDto | null> {
     employeeDto['email'] = this.createEmail(employeeDto.name);
     try {
       const createdemployee = new this.employeeModel(employeeDto);
       const result = await createdemployee.save();
+      // const createdUser = new this.userModel({ idOfRole,username, password,salt });
       log({ result });
       return result.toObject();
     } catch (er) {
       error(er);
-      return null;
+      throw er;
     }
   }
   async updatePassword(employeeID: string, password: string): Promise<boolean | null> {
     try {
       const user = await this.userModel.findOne({ idOfRole: employeeID }).exec();
-      user.password = password;
-      await user.save();
+      console.log({ user });
+      if (user) {
+        user.password = password;
+        await user.save();
+      }
+      return false;
     } catch (err) {
       console.log(err);
     }

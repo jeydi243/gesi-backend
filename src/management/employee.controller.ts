@@ -35,7 +35,7 @@ import ContactDto from './dto/contact.dto';
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
-  @Post()
+  @Post("")
   @Header('Cache-Control', 'none')
   @ApiOperation({ summary: 'Register new employee', description: 'Register a new employee' })
   @ApiCreatedResponse({
@@ -53,7 +53,7 @@ export class EmployeeController {
       throw new BadRequestException("Can't add employee");
     } catch (er) {
       log(er);
-      return er;
+      throw er;
     }
   }
 
@@ -288,7 +288,7 @@ export class EmployeeController {
       // console.log({ query: req.query }, { body: req.body }, { params: req.params }, { biography });
       const res: boolean | null = await this.employeeService.updatePassword(employeeID, password);
       log({ res });
-      if (res != null) return res;
+      if (res) return res;
       throw new BadRequestException("Can't update user password");
     } catch (er) {
       throw er;

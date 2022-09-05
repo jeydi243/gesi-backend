@@ -10,10 +10,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request: Request = ctx.getRequest<Request>();
     const status: number = exception.getStatus();
 
-    console.log("Banduku pourquoi on n'arrive pas ici...");
-    
-    console.log(exception.getResponse());
-    console.log(response.status);
 
     response.status(status).json({
       statusCode: status,

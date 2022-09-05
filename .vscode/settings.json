@@ -10,7 +10,17 @@
   "scm.inputFontFamily": "k2d",
   "mdb.confirmRunAll": false,
   "editor.roundedSelection": true,
-
+  "restoreTerminals.terminals": [
+    {
+      "profile": "Git Bash",
+      "splitTerminals": [
+        {
+          "name": "server",
+          "commands": ["npm run sd"]
+        }
+      ]
+    }
+  ],
   "better-comments.multilineComments": true,
   "files.autoSave": "afterDelay"
 }
