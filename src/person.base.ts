@@ -59,7 +59,8 @@ export class Person {
     validate: {
       validator: function (tels: string[]) {
         return tels.every((tel: string) => {
-          return isPhoneNumber(tel, 'CD');
+          // return isPhoneNumber(tel);
+          return true;
         });
       },
       message: props => `${props.value} un des numéros n'est pas un numéro valide!`,
@@ -135,9 +136,17 @@ export const PersonSchema = P;
 export class PersonDto {
   // create data transfer object for Teacher class
 
-  @ApiProperty({ type: String, description: "Le nom de l'employee", examples: ['Franck Kessler', 'Paul George'] })
+  @ApiProperty({ type: String, description: "Le prénom de l'employee", examples: ['Franck Kessler', 'Paul George'] })
   @IsNotEmpty()
-  name: Name;
+  firs_name: string;
+
+  @ApiProperty({ type: String, description: "Le postnom de l'employee", examples: ['Franck Kessler', 'Paul George'] })
+  @IsNotEmpty()
+  middle_name: string;
+
+  @ApiProperty({ type: String, description: "Le nom de famille de l'employee", examples: ['Franck Kessler', 'Paul George'] })
+  @IsNotEmpty()
+  last_name: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -151,9 +160,9 @@ export class PersonDto {
   @ValidateIf(
     (o, tels) => {
       if (Array.isArray(tels)) {
-        return tels.every(tel => isPhoneNumber(tel, o.cityzenship));
+        return tels.every(tel => isPhoneNumber(tel));
       }
-      return isPhoneNumber(tels, o.cityzenship);
+      return isPhoneNumber(tels);
     },
     { message: ({ value }) => `${value} contains invalid phone(s) numbers!` },
   )

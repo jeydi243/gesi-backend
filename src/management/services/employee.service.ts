@@ -16,8 +16,11 @@ import ExperienceDto from '../dto/experience.dto';
 
 @Injectable()
 export class EmployeeService {
-  async updateDocument(employeeID: string, mapDocument) {
-    const resultat = await this.employeeModel.findOneAndUpdate({ id: employeeID }, { $set: { ...mapDocument } }, { runValidators: true, select: 'educations -_id' }).exec();
+  async updateDocument(employeeID: string, docname: string, link: string) {
+    
+    const emp = await this.employeeModel.findOne({ id: employeeID }).exec();
+    emp[docname] = link;
+    emp.save();
     return {};
   }
   organisationName = 'test';
@@ -64,19 +67,16 @@ export class EmployeeService {
 
     // .projection({ deletedAt: 0, cover_letter: 0, resume: 0, school_diploma: 0 })
   }
-  createEmail(name: string | Name): string {
+  createEmail(last_name: string, middle_name: string): string {
     let email = '';
-    if (typeof name === 'string') {
-      email = name.split(' ').join('.');
-    } else {
-      email = name.last + '.' + name.middle;
-    }
+    email = last_name + '.' + middle_name;
+
     // const currentyear = new Date().getFullYear();
     email = email + '@' + this.organisationDomain;
     return email;
   }
   async addEmployee(employeeDto: EmployeeDto): Promise<EmployeeDto | null> {
-    employeeDto['email'] = this.createEmail(employeeDto.name);
+    employeeDto['email'] = this.createEmail(employeeDto.last_name, employeeDto.middle_name);
     try {
       const createdemployee = new this.employeeModel(employeeDto);
       const result = await createdemployee.save();
@@ -84,7 +84,7 @@ export class EmployeeService {
       log({ result });
       return result.toObject();
     } catch (er) {
-      error(er);
+      log(er);
       throw er;
     }
   }

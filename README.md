@@ -33,7 +33,7 @@ $ npm run start:prod
   ### Employees
   - [x] Create
   - [x] Update
-  - [ ] Soft delete
+  - [x] Soft delete
   - [ ] Affecter un evenement
   ### Teachers
   - [x] Créer

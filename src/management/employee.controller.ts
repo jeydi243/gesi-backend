@@ -27,22 +27,21 @@ import { UpdateEducationDto } from './dto/update-education.dto';
 import { UpdateExperienceDto } from './dto/update-experience.dto';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { ApiCreatedResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import EducationDTO from './dto/education.dto';
-import ExperienceDto from './dto/experience.dto';
 import buildLink from 'src/utils';
 import ContactDto from './dto/contact.dto';
+import EducationDTO from './dto/education.dto';
+import ExperienceDto from './dto/experience.dto';
 @Controller('employees')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
-  @Post("")
-  @Header('Cache-Control', 'none')
+  @Post()
   @ApiOperation({ summary: 'Register new employee', description: 'Register a new employee' })
   @ApiCreatedResponse({
     description: 'The employee has been successfully created.',
     type: EmployeeDto,
   })
-  async addEmployee(@Body() employee: EmployeeDto): Promise<EmployeeDto | null> {
+  async addEmployee(@Body() employee): Promise<EmployeeDto | null> {
     log(employee);
     try {
       const res: EmployeeDto | null = await this.employeeService.addEmployee(employee);
@@ -313,11 +312,13 @@ export class EmployeeController {
   @ApiOperation({ summary: 'Update document for employee', description: 'Update employee by changing document' })
   async updateDocument(@Param('employeeID') employeeID: string, @UploadedFile() file: Express.Multer.File) {
     try {
-      console.log({ employeeID }, { ...file });
-      const link = buildLink(employeeID, file, file.filename);
-      // const res = await this.employeeService.updateDocument(employeeID, docname, link);
+      const link = buildLink(employeeID, file, 'resume');
+      moveSync(file.path, link, { overwrite: true }); 
+      await this.employeeService.updateDocument(employeeID, 'resume', link);
+      return link;
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 }

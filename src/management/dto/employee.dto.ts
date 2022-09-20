@@ -1,43 +1,44 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsArray, IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf, ArrayMinSize, IsDate, IsDefined } from 'class-validator';
+import { IsArray, IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf, ArrayMinSize, IsDate } from 'class-validator';
 import { PersonDto } from '../../person.base';
 import ExperienceDto from './experience.dto';
 import ContactDto from './contact.dto';
 import EducationDto from './education.dto';
-import { Name } from 'src/export.type';
 import { Optional } from '@nestjs/common';
 
 export class EmployeeDto extends PersonDto {
   // @ApiProperty()
   // resume_file: File | Blob;
+
   // @ApiProperty()
   // profile_img: File | Blob;
+
   // @ApiProperty()
   // school_diploma_file: File | Blob;
-  @ApiProperty({ type: String, maxLength: 20, description: "Le nom de l'ecole/universite " })
-  @MinLength(5)
-  @MaxLength(30, {
-    message: ({ value, property, object }) => `${property} n'as que ${value.length} le nombre de caractere maximum est ${object}`,
-  })
-  school_name: string;
+  // @ApiProperty({ type: String, maxLength: 20, description: "Le nom de l'ecole/universite " })
+  // @MinLength(5)
+  // @MaxLength(30, {
+  //   message: ({ value, property, object }) => `${property} n'as que ${value.length} le nombre de caractere maximum est ${object}`,
+  // })
+  // school_name: string;
 
-  @ApiProperty({ type: String, maxLength: 100, description: 'Le type de diplome obtenu' })
-  @MinLength(5)
-  @MaxLength(30, {
-    message: ({ value, property, object }) => `${property} n'as que ${value.length} le nombre de caractere maximum est ${object}`,
-  })
-  school_diploma_name: string;
+  // @ApiProperty({ type: String, maxLength: 100, description: 'Le type de diplome obtenu' })
+  // @MinLength(5)
+  // @MaxLength(30, {
+  //   message: ({ value, property, object }) => `${property} n'as que ${value.length} le nombre de caractere maximum est ${object}`,
+  // })
+  // school_diploma_name: string;
 
-  @ApiProperty({ type: Date, description: 'Date de début des études', required: true })
-  @Transform(v => new Date(v.value))
-  @ValidateIf(o => o.school_start_date < o.school_end_date && !(o.school_start_date <= o.birthay))
-  school_start_date: Date;
+  // @ApiProperty({ type: Date, description: 'Date de début des études', required: true })
+  // @Transform(v => new Date(v.value))
+  // @ValidateIf(o => o.school_start_date < o.school_end_date && !(o.school_start_date <= o.birthay))
+  // school_start_date: Date;
 
-  @ApiProperty({ type: Date, description: 'La date de fin des etudes' })
-  @Transform(v => new Date(v.value))
-  @ValidateIf(o => o.school_end_date > o.school_start_date)
-  school_end_date: Date;
+  // @ApiProperty({ type: Date, description: 'La date de fin des etudes' })
+  // @Transform(v => new Date(v.value))
+  // @ValidateIf(o => o.school_end_date > o.school_start_date)
+  // school_end_date: Date;
 
   @ApiProperty({ type: Date, description: "La date d'engagement" })
   @IsDate()
@@ -64,7 +65,7 @@ export class EmployeeDto extends PersonDto {
   @ApiProperty({ description: 'biography of employee' })
   biography: string;
 
-  @MaxLength(30, { message: 'Le maximum  de caracteres permis est 30' })
+  @MaxLength(30, { message: 'Max of characteres is 30' })
   @ApiProperty({ description: "Domaine d'application", examples: ['Math', 'Technique', 'Dessin'] })
   domain: string | string[];
 
@@ -73,13 +74,11 @@ export class EmployeeDto extends PersonDto {
   personal_email: string;
 
   @ApiProperty({ description: 'List of educations' })
-  // @IsArray()
   @Optional()
   // @ArrayMinSize(1)
   educations: EducationDto[];
 
   @ApiProperty({ description: 'List of emergency contacts' })
-  // @IsArray()
   @Optional()
   // @ArrayMinSize(1)
   emergencyContacts: ContactDto[];

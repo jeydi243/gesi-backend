@@ -16,7 +16,8 @@
       "splitTerminals": [
         {
           "name": "server",
-          "commands": ["npm run sd"]
+          "commands": ["npm run sd"],
+          "shouldRunCommands": true
         }
       ]
     }
