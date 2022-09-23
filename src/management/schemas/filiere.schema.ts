@@ -17,6 +17,9 @@ export class Filiere extends Document {
 
   @Prop({ type: S.Types.ObjectId })
   sub_manager: string;
+
+  @Prop({ type: String, default: null })
+  deletedAt: Date | null;
 }
 
 export const FiliereSchema: S = SchemaFactory.createForClass<Filiere>(Filiere);

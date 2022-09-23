@@ -27,7 +27,7 @@ export class ManagementService {
   }
   async deleteDocument(code: string): Promise<boolean | any> {
     try {
-      const result = await this.documentOrgModel.updateOne({ code }, { $set: { deletedAt: new Date().toISOString() } }, { multi: true });
+      const result = await this.documentOrgModel.findOneAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } }, { multi: true });
       console.log({ result });
       console.log(result['deletedAt'] != null);
 
