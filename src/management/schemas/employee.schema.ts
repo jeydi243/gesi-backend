@@ -62,6 +62,9 @@ export class Employee extends Document {
 
   @Prop({ type: Array, required: false })
   skills: string[];
+
+  @Prop({ type: String, default: null })
+  deletedAt: Date | null;
 }
 
 export const EmployeeSchema: S = SchemaFactory.createForClass<Employee>(Employee);

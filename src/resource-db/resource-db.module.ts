@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CoursesService } from 'src/courses/courses.service';
 import { CourseSchema } from 'src/courses/schemas/course.schema';
-import { ManagementService } from 'src/management/management.service';
+import { ManagementService } from 'src/management/services/management.service';
 import { CourseSessionSchema } from 'src/management/schemas/course_session.schema';
 import { DocumentOrgSchema } from 'src/management/schemas/document.schema';
 import { EmployeeSchema } from 'src/management/schemas/employee.schema';

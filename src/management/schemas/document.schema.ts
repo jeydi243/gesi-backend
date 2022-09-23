@@ -11,6 +11,9 @@ export class DocumentOrg extends Document {
 
   @Prop({ type: String })
   description: string;
+
+  @Prop({ type: String, default: null })
+  deletedAt: Date | null;
 }
 
 export const DocumentOrgSchema: S = SchemaFactory.createForClass<DocumentOrg>(DocumentOrg);

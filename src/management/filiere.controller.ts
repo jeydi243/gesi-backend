@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { FiliereDTO } from './dto/create-filiere.dto';
 import { UpdateFiliereDto } from './dto/update-filiere.dto';
-import { ManagementService } from './management.service';
+import { ManagementService } from './services/management.service';
 @Controller('filiere')
 export class FiliereController {
   constructor(private readonly managementService: ManagementService) {}
