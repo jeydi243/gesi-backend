@@ -20,7 +20,7 @@ async function bootstrap() {
       whitelist: true,
       enableDebugMessages: true,
       disableErrorMessages: false,
-      validationError: { value: true },
+      validationError: { value: true, target: true },
       forbidNonWhitelisted: true,
     }),
   );

@@ -1,13 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Schema as S, Document } from 'mongoose';
+import { Teacher, TeacherSchema } from 'src/teachers/schemas/teacher.schema';
 
 @Schema({ _id: true, timestamps: true, autoIndex: true })
 export class Course extends Document {
   @Prop({ required: true, type: String })
   title: string;
 
-  @Prop({ required: true, type: S.Types.ObjectId, ref: 'Teacher' })
-  author: S.Types.ObjectId;
+  @Prop({ required: false, type: [String] })
+  images: string[];
+
+  @Prop({ required: true, type: [TeacherSchema], ref: 'Teacher' })
+  authors: Teacher[];
 
   @Prop({ required: true, type: String, length: [30, 500] })
   description: string;
@@ -20,13 +24,14 @@ export class Course extends Document {
       } else if (v instanceof Date) {
         return v;
       } else {
-        console.log(
-          `Ce champ(${v}) n'as pas pu etre convertie en date car son c'est une instance de ${v.constructor.name}`,
-        );
+        console.log(`Ce champ(${v}) n'as pas pu etre convertie en date car son c'est une instance de ${v.constructor.name}`);
       }
     },
   })
   expireDate?: Date;
+
+  @Prop({ required: true, type: [] })
+  parts: [];
 }
 
 export const CourseSchema: S = SchemaFactory.createForClass<Course>(Course);

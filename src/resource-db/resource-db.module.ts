@@ -4,7 +4,7 @@ import { CoursesService } from 'src/courses/courses.service';
 import { CourseSchema } from 'src/courses/schemas/course.schema';
 import { ManagementService } from 'src/management/services/management.service';
 import { CourseSessionSchema } from 'src/management/schemas/course_session.schema';
-import { DocumentOrgSchema } from 'src/management/schemas/document.schema';
+import { DocumentOrganisationSchema } from 'src/management/schemas/document.schema';
 import { EmployeeSchema } from 'src/management/schemas/employee.schema';
 import { EventSchema } from 'src/management/schemas/event.schema';
 import { FiliereSchema } from 'src/management/schemas/filiere.schema';
@@ -22,7 +22,7 @@ import { UsersService } from 'src/users/users.service';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: 'DocumentOrg', schema: DocumentOrgSchema },
+      { name: 'DocumentOrganisation', schema: DocumentOrganisationSchema },
       { name: 'Filiere', schema: FiliereSchema },
       { name: 'Responsable', schema: ResponsableSchema },
       { name: 'Course', schema: CourseSchema },

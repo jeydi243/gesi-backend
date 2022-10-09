@@ -1,46 +1,56 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
-import { FiliereDTO } from '../dto/create-filiere.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { DocumentOrgDTO } from '../dto/document.dto';
-import { UpdateDocumentDto } from '../dto/update-document.dto';
-import { UpdateFiliereDto } from '../dto/update-filiere.dto';
 import { Filiere } from '../schemas/filiere.schema';
 import { Employee } from '../schemas/employee.schema';
-import { DocumentOrg } from '../schemas/document.schema';
+import { Injectable } from '@nestjs/common';
+import { FiliereDTO } from '../dto/create-filiere.dto';
+import { DocumentOrganisation } from '../schemas/document.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { DocumentOrganisationDTO } from '../dto/document.dto';
+import { UpdateFiliereDto } from '../dto/update-filiere.dto';
+import { UpdateDocumentDto } from '../dto/update-document.dto';
 @Injectable()
 export class ManagementService {
-  constructor(
-    @InjectModel(DocumentOrg.name) private documentOrgModel: Model<DocumentOrg>,
-    @InjectModel('Filiere') private filiereModel: Model<Filiere>,
-    @InjectModel('Employee') private employeeModel: Model<Employee>,
-  ) {}
+  constructor(@InjectModel(DocumentOrganisation.name) private DocumentOrganisationModel: Model<DocumentOrganisation>, @InjectModel('Filiere') private filiereModel: Model<Filiere>) {}
 
-  async addDocumentSpec(docDto: DocumentOrgDTO): Promise<DocumentOrg | void> {
-    const createddoc = new this.documentOrgModel(docDto);
-    return createddoc.save();
-  }
+  async addDocumentSpec(docDto: DocumentOrganisationDTO): Promise<DocumentOrganisation | string | Error> {
+    const createddoc = new this.DocumentOrganisationModel(docDto);
+    console.log({ createddoc });
 
-  async findAllDocuments(): Promise<DocumentOrg[] | void> {
-    //return all documents that is not marked as deletedAt
-    return this.documentOrgModel.find({ deletedAt: null }).exec();
-  }
-  async deleteDocument(code: string): Promise<boolean | any> {
     try {
-      const result = await this.documentOrgModel.findOneAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } }, { multi: true });
-      console.log({ result });
-      console.log(result['deletedAt'] != null);
+      const resu = await createddoc.save();
+      console.log({ resu });
 
-      return result['deletedAt'] != null;
+      return resu;
     } catch (error) {
-      return false;
+      // console.log({ keyValue: error.keyValue });
+      // console.log({ keys: Object.keys(error) });
+      if (error.name === 'MongoServerError' && error.code == 11000) {
+        console.log('MongoServer error');
+        error['message'] = `There is duplicate key in fields ${Object.keys(error.keyValue)}`;
+      }
+      return Error(error);
     }
   }
-  async remove(code: string): Promise<DocumentOrg | void> {
-    return this.documentOrgModel.findOneAndRemove({ code });
+
+  async findAllDocuments(): Promise<DocumentOrganisation[] | []> {
+    //return all documents that is not marked as deletedAt
+    return this.DocumentOrganisationModel.find({ deletedAt: null }).exec();
   }
-  async updateDocument(code: string, documentUpdate: UpdateDocumentDto): Promise<DocumentOrg | null> {
-    return this.documentOrgModel.findOneAndUpdate({ code }, { $set: { ...documentUpdate } }).exec();
+  async deleteDocument(code: string): Promise<boolean | object> {
+    try {
+      const doc = await this.DocumentOrganisationModel.findOne({ code }).exec();
+      doc.deletedAt = new Date();
+      await doc.save();
+      return doc['deletedAt'] != null;
+    } catch (error) {
+      return error;
+    }
+  }
+  async remove(code: string): Promise<DocumentOrganisation | void> {
+    return this.DocumentOrganisationModel.findOneAndRemove({ code });
+  }
+  async updateDocument(code: string, documentUpdate: UpdateDocumentDto): Promise<DocumentOrganisation | null> {
+    return this.DocumentOrganisationModel.findOneAndUpdate({ code }, { $set: { ...documentUpdate } }).exec();
   }
   async addFiliere(filiereDto: FiliereDTO): Promise<Filiere | void> {
     const createdfiliere = new this.filiereModel(filiereDto);

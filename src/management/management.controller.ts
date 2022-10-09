@@ -1,9 +1,9 @@
 import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { DocumentOrgDTO } from './dto/document.dto';
+import { DocumentOrganisationDTO } from './dto/document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { ManagementService } from './services/management.service';
-import { DocumentOrg } from './schemas/document.schema';
+import { DocumentOrganisation } from './schemas/document.schema';
 
 @Controller('management')
 export class ManagementController {
@@ -12,7 +12,6 @@ export class ManagementController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   upload(@UploadedFile() file: Express.Multer.File) {
-    // return this.managementService.addDocumentSpec(createDoc);
     return `File ${file.filename} uploaded successfully  ${file.mimetype}`;
   }
 
@@ -22,21 +21,36 @@ export class ManagementController {
   }
 
   @Get('documents')
-  findAllDocuments() {
+  async findAllDocuments(): Promise<DocumentOrganisationDTO[] | []> {
     return this.managementService.findAllDocuments();
   }
 
   @Post('documents')
-  addDocument(@Body() createDoc: any) {
-    return this.managementService.addDocumentSpec(createDoc);
+  async addDocument(@Body() createDoc: DocumentOrganisationDTO) {
+    try {
+      console.log({ createDoc });
+
+      const res: DocumentOrganisation | string | Error = await this.managementService.addDocumentSpec(createDoc);
+      console.log({ res });
+      console.log('Type of res is ', typeof res);
+      console.log('Instanceof of res is Error', res instanceof Error);
+      console.log('Keys of res ', Object.keys(res));
+      console.log('Key _doc of res ', res['_doc']);
+      console.log('res hasOwnProperty _doc == ', res.hasOwnProperty('_doc'));
+
+      if (!(res instanceof Error)) return res;
+      else throw new BadRequestException(res, res['messagge']);
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Patch('documents/update/:code')
-  async updateDocument(@Param('code') code: string, @Body() body: any) {
+  async updateDocument(@Param('code') code: string, @Body() body: UpdateDocumentDto) {
     console.log('Try to update this document: ', code, body);
 
     try {
-      const response: DocumentOrg | null = await this.managementService.updateDocument(code, body);
+      const response: DocumentOrganisation | null = await this.managementService.updateDocument(code, body);
       console.log({ response });
 
       if (response != null) {
@@ -49,10 +63,12 @@ export class ManagementController {
   }
 
   @Delete('documents')
-  deleteDocument(@Body('code') code: string) {
+  async deleteDocument(@Body('code') code: string) {
     try {
-      const result: boolean | any = this.managementService.deleteDocument(code);
-      if (result == true) {
+      const res: boolean | any = await this.managementService.deleteDocument(code);
+      console.log({ res });
+
+      if (res === true) {
         return true;
       } else {
         throw new NotFoundException(`Can't delete document with code ${code}`);

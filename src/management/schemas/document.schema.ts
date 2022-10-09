@@ -2,7 +2,7 @@ import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
 
 @Schema({ autoIndex: true, timestamps: true, _id: true })
-export class DocumentOrg extends Document {
+export class DocumentOrganisation extends Document {
   @Prop({ required: true, type: String, unique: true, immutable: true })
   code: string;
 
@@ -16,7 +16,7 @@ export class DocumentOrg extends Document {
   deletedAt: Date | null;
 }
 
-export const DocumentOrgSchema: S = SchemaFactory.createForClass<DocumentOrg>(DocumentOrg);
+export const DocumentOrganisationSchema: S = SchemaFactory.createForClass<DocumentOrganisation>(DocumentOrganisation);
 
 // DocumentOrgSchema.pre('save', () => {
 //   // console.log('Pre-save DocumentOrg is : ', this);
