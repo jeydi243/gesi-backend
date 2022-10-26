@@ -30,6 +30,9 @@ export class Course extends Document {
   })
   expireDate?: Date;
 
+  @Prop({ required: false, type: [String] })
+  tags: string[];
+
   @Prop({ required: true, type: [] })
   parts: [];
 }

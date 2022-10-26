@@ -19,8 +19,8 @@ $ npm run start:prod
 ```
 
   ### Filière
-  - [x] Créer
-  - [x] Mettre à jour
+  - [x] Create
+  - [x] Update
   - [x] Supprimer(Soft delete)
   - [ ] Affecter un gestionnaire(manager), son adjoint
   - [ ] Changer le gestionnaire(manager)
@@ -29,12 +29,12 @@ $ npm run start:prod
   - [x] Create
   - [x] Update
   - [x] Soft delete
-  - [ ] Affecter un evenement
+  - [ ] Invite to event(as Presenter, as Participant)
   ### Employees
   - [x] Create
   - [x] Update
   - [x] Soft delete
-  - [ ] Affecter un evenement
+  - [ ] Give responsabilities
   ### Teachers
   - [x] Créer
   - [x] Mettre à jour
@@ -42,10 +42,10 @@ $ npm run start:prod
   - [ ] Affecter un cours
   - [ ] Retirer un cours
   - [ ] Affecter la gestion d'une filière
-  ### Cours
-  - [x] Créer un cours
-  - [x] Modifier un cours (ex: Author, pondération)
-  - [ ] Supprimer un cours (ex: Author)
+  ### Course
+  - [x] Create course
+  - [x] Update un course (ex: Author, pondération)
+  - [ ] Delete un cours (ex: Author)
   - [ ] Session:
     - [ ] Créer une session d'un cours avec (Id de l'auteur du cours)
     - [ ] Decaler une session
