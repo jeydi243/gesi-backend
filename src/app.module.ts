@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CoursesModule } from './courses/courses.module';
 import { ManagementModule } from './management/management.module';
 import { ResourceDbModule } from './resource-db/resource-db.module';
+import { FilesModule } from './resource-db/file.module';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 @Module({
@@ -16,10 +17,8 @@ require('dotenv').config();
     ConfigModule.forRoot({ isGlobal: true }),
     // MongooseModule.forRoot('mongodb://localhost/gesi'), //for use in production
 
-    MongooseModule.forRoot(
-      process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
-      {},
-    ),
+    MongooseModule.forRoot(process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD, {}),
+    FilesModule,
     ResourceDbModule,
     StudentsModule,
     TeachersModule,

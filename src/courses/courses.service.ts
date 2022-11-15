@@ -14,6 +14,10 @@ export class CoursesService {
     return student.save();
   }
 
+  async updateImage(img: any) {
+    //todo Implement methdo
+  }
+
   async findAll(): Promise<Course[]> {
     return this.courseModel.find().exec();
   }
