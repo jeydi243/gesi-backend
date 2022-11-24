@@ -3,23 +3,26 @@ import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { MongoGridFS } from 'mongo-gridfs';
 import { GridFSBucketReadStream } from 'mongodb';
-import { ResourceDTO } from './resource.dto';
-import { response } from 'express';
-import { PartialType } from '@nestjs/swagger';
-import { PartialResource } from './partial-resource.dto';
+import { PartialResourceDTO } from './resource.dto';
 @Injectable()
 export class ResourceService {
   private fileModel: MongoGridFS;
 
   constructor(@InjectConnection() private readonly connection: Connection) {
-    this.fileModel = new MongoGridFS(this.connection.db, 'fs');
+    this.fileModel = new MongoGridFS(this.connection.db, 'resources');
   }
 
   async readStream(id: string): Promise<GridFSBucketReadStream> {
     return await this.fileModel.readFileStream(id);
   }
+  async upload(file: DiskFile, metadata?: object) {
+    this.fileModel.uploadFile(file.path, { filename: file.originalname, contentType: file.mimetype, metadata }, true);
+  }
+  async find() {
+    return await this.fileModel.find({});
+  }
 
-  async findInfo(id: string): Promise<PartialResource> {
+  async findInfo(id: string): Promise<PartialResourceDTO> {
     const result = await this.fileModel
       .findById(id)
       .catch(err => {

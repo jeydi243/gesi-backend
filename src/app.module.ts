@@ -9,7 +9,8 @@ import { ConfigModule } from '@nestjs/config';
 import { CoursesModule } from './courses/courses.module';
 import { ManagementModule } from './management/management.module';
 import { ResourceDbModule } from './resource-db/resource-db.module';
-import { FilesModule } from './resource-db/file.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { GridFsMulterConfigService } from './resource-db/storage';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 @Module({
@@ -18,7 +19,9 @@ require('dotenv').config();
     // MongooseModule.forRoot('mongodb://localhost/gesi'), //for use in production
 
     MongooseModule.forRoot(process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD, {}),
-    FilesModule,
+    MulterModule.registerAsync({
+      useClass: GridFsMulterConfigService,
+    }),
     ResourceDbModule,
     StudentsModule,
     TeachersModule,

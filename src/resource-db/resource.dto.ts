@@ -1,7 +1,6 @@
-import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsMongoId, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
-
+import { PartialType } from '@nestjs/swagger';
 export class ResourceDTO {
   @ApiProperty()
   @IsNotEmpty()
@@ -41,3 +40,5 @@ export class ResourceDTO {
   @ApiProperty()
   uploadedBy: string;
 }
+
+export class PartialResourceDTO extends PartialType(ResourceDTO) {}

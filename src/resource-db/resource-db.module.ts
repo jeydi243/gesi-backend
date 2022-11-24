@@ -1,22 +1,25 @@
+import { UserSchema } from 'src/users/schemas/user.schema';
+import { EventSchema } from 'src/management/schemas/event.schema';
+import { CourseSchema } from 'src/courses/schemas/course.schema';
+import { UsersService } from 'src/users/users.service';
+import { PersonSchema } from 'src/person.base';
+import { FiliereSchema } from 'src/management/schemas/filiere.schema';
+import { StudentSchema } from 'src/students/schemas/student.schema';
+import { TeacherSchema } from 'src/teachers/schemas/teacher.schema';
 import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CoursesService } from 'src/courses/courses.service';
-import { CourseSchema } from 'src/courses/schemas/course.schema';
+import { EmployeeSchema } from 'src/management/schemas/employee.schema';
+import { EmployeeService } from 'src/management/services/employee.service';
+import { StudentsService } from 'src/students/students.service';
+import { TeachersService } from 'src/teachers/teachers.service';
+import { ResourceService } from './resource.service';
 import { ManagementService } from 'src/management/services/management.service';
+import { ResponsableSchema } from 'src/students/schemas/responsable.schema';
 import { CourseSessionSchema } from 'src/management/schemas/course_session.schema';
 import { DocumentOrganisationSchema } from 'src/management/schemas/document.schema';
-import { EmployeeSchema } from 'src/management/schemas/employee.schema';
-import { EventSchema } from 'src/management/schemas/event.schema';
-import { FiliereSchema } from 'src/management/schemas/filiere.schema';
-import { EmployeeService } from 'src/management/services/employee.service';
-import { PersonSchema } from 'src/person.base';
-import { ResponsableSchema } from 'src/students/schemas/responsable.schema';
-import { StudentSchema } from 'src/students/schemas/student.schema';
-import { StudentsService } from 'src/students/students.service';
-import { TeacherSchema } from 'src/teachers/schemas/teacher.schema';
-import { TeachersService } from 'src/teachers/teachers.service';
-import { UserSchema } from 'src/users/schemas/user.schema';
-import { UsersService } from 'src/users/users.service';
+// import { MulterModule } from '@nestjs/platform-express';
+// import { GridFsMulterConfigService } from './storage';
 
 @Global()
 @Module({
@@ -30,9 +33,7 @@ import { UsersService } from 'src/users/users.service';
       {
         name: 'Event',
         schema: EventSchema,
-        discriminators: [
-          { name: 'CourseSession', schema: CourseSessionSchema },
-        ],
+        discriminators: [{ name: 'CourseSession', schema: CourseSessionSchema }],
       },
       {
         name: 'Person',
@@ -45,15 +46,7 @@ import { UsersService } from 'src/users/users.service';
       },
     ]),
   ],
-  providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService],
-  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService],
+  providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService],
+  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService],
 })
-export class ResourceDbModule {
-  // constructor(
-  //   @InjectModel('Teacher') teacherModel: Model<Teacher>,
-  //   @InjectModel('Employee') private employeeModel: Model<Employee>,
-  //   @InjectModel('Student') private studentModel: Model<Student>,
-  //   @InjectModel('DocumentOrg') private documentOrgModel: Model<DocumentOrg>,
-  //   @InjectModel('Filiere') private filiereModel: Model<Filiere>,
-  // ) {}
-}
+export class ResourceDbModule {}

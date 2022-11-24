@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { assert } from 'console';
 import { Model } from 'mongoose';
 import { Document, Schema as S } from 'mongoose';
 import { CreateCourseDto } from './dto/create-course.dto';
