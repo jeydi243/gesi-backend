@@ -2,16 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { MulterModuleOptions, MulterOptionsFactory } from '@nestjs/platform-express';
 import { GridFsStorage } from 'multer-gridfs-storage';
 
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
-
 
 @Injectable()
 export class GridFsMulterConfigService implements MulterOptionsFactory {
   gridFsStorage: any;
   constructor() {
-    console.log('LOKALISE MOI DES QUE TU PEUX');
+    console.log('LOKALISE MOI DES QUE TU PEUX 1');
 
     this.gridFsStorage = new GridFsStorage({
       url: process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
@@ -21,9 +19,10 @@ export class GridFsMulterConfigService implements MulterOptionsFactory {
         return null;
       },
     });
+    // console.log(this.gridFsStorage);
   }
 
-  createMulterOptions(): MulterModuleOptions {
+  createMulterOptions(): Promise<MulterModuleOptions> | MulterModuleOptions {
     return {
       storage: this.gridFsStorage,
     };

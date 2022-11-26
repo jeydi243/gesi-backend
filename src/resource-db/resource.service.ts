@@ -9,13 +9,13 @@ export class ResourceService {
   private fileModel: MongoGridFS;
 
   constructor(@InjectConnection() private readonly connection: Connection) {
-    this.fileModel = new MongoGridFS(this.connection.db, 'resources');
+    this.fileModel = new MongoGridFS(this.connection.db, 'fs');
   }
 
   async readStream(id: string): Promise<GridFSBucketReadStream> {
     return await this.fileModel.readFileStream(id);
   }
-  async upload(file: DiskFile, metadata?: object) {
+  async upload(file: any, metadata?: object) {
     this.fileModel.uploadFile(file.path, { filename: file.originalname, contentType: file.mimetype, metadata }, true);
   }
   async find() {
