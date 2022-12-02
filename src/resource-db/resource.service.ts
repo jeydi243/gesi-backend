@@ -18,8 +18,13 @@ export class ResourceService {
   async upload(file: any, metadata?: object) {
     this.fileModel.uploadFile(file.path, { filename: file.originalname, contentType: file.mimetype, metadata }, true);
   }
-  async find() {
-    return await this.fileModel.find({});
+  async find(): Promise<PartialResourceDTO[] | any> {
+    const response = [];
+    const res: any = await this.fileModel.find({});
+    res.forEach(el => {
+      response.unshift({ filename: el.filename });
+    });
+    return response;
   }
 
   async findInfo(id: string): Promise<PartialResourceDTO> {
