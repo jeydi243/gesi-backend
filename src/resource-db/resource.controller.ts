@@ -1,15 +1,15 @@
-import { Controller, Get, HttpException, HttpStatus, Param, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes } from '@nestjs/swagger';
-import { ResourceDTO } from './resource.dto';
+import { PartialResourceDTO, ResourceDTO } from './resource.dto';
 import { ResourceService } from './resource.service';
 import { mystorage } from './storage';
 
-@Controller('courses')
-class ResourceController {
+@Controller('resources')
+export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
 
-  @Post('addimage')
+  @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('img', { storage: mystorage }))
   upload(@UploadedFile() img: Express.Multer.File | Array<Express.Multer.File>) {
@@ -42,7 +42,6 @@ class ResourceController {
           chunkSize: file.chunkSize,
           size: file.size,
           md5: file.md5,
-          message: 'No ID, multer is not working  properly',
           uploadDate: file.uploadDate,
           contentType: file.contentType,
         };
@@ -55,17 +54,18 @@ class ResourceController {
     }
   }
 
-  @Get('allimages/2')
-  async allimages() {
+  @Get()
+  async getAllResources() {
     try {
-      const files = await this.resourceService.find();
+      const files: PartialResourceDTO[] = await this.resourceService.find();
+
       return files;
     } catch (error) {
       console.log({ error });
     }
   }
 
-  @Get('info/:id')
+  @Get(':id')
   async getFileInfo(@Param('id') id: string): Promise<ResourceDTO | any> {
     const file = await this.resourceService.findInfo(id);
     const filestream = await this.resourceService.readStream(id);
@@ -78,7 +78,7 @@ class ResourceController {
     };
   }
 
-  @Get(':id')
+  @Get('file/:id')
   async getFile(@Param('id') id: string, @Res() res) {
     const file = await this.resourceService.findInfo(id);
     const filestream = await this.resourceService.readStream(id);
@@ -101,7 +101,7 @@ class ResourceController {
     return filestream.pipe(res);
   }
 
-  @Get('delete/:id')
+  @Delete(':id')
   async deleteFile(@Param('id') id: string): Promise<ResourceDTO | any> {
     const file = await this.resourceService.findInfo(id);
     const filestream = await this.resourceService.deleteFile(id);

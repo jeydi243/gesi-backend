@@ -10,7 +10,6 @@ export class GridFsMulterConfigService implements MulterOptionsFactory {
   gridFsStorage: any;
   constructor() {
     console.log('LOKALISE MOI DES QUE TU PEUX 1');
-
     this.gridFsStorage = new GridFsStorage({
       url: process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
       file: function (req, file) {
@@ -43,4 +42,5 @@ export const mystorage = new GridFsStorage({
       resolve(fileInfo);
     });
   },
+options:{}
 });

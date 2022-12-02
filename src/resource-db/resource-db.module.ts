@@ -18,6 +18,7 @@ import { ManagementService } from 'src/management/services/management.service';
 import { ResponsableSchema } from 'src/students/schemas/responsable.schema';
 import { CourseSessionSchema } from 'src/management/schemas/course_session.schema';
 import { DocumentOrganisationSchema } from 'src/management/schemas/document.schema';
+import { ResourceController } from './resource.controller';
 // import { MulterModule } from '@nestjs/platform-express';
 // import { GridFsMulterConfigService } from './storage';
 
@@ -47,6 +48,7 @@ import { DocumentOrganisationSchema } from 'src/management/schemas/document.sche
       },
     ]),
   ],
+controllers:[ResourceController],
   providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService],
   exports: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService],
 })
