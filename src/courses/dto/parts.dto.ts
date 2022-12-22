@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsMongoId, ValidateIf, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsMongoId, IsOptional } from 'class-validator';
 import { ResourceDTO } from '../../resource-db/resource.dto';
 
 export class Part {
@@ -22,7 +22,6 @@ export class Part {
   @ApiProperty()
   @IsNotEmpty()
   duration: Record<string, number>;
-
 
   resources: ResourceDTO[] | null;
 }

@@ -1,9 +1,8 @@
+import { log } from 'console';
 import * as uniqid from 'uniqid';
 import { User } from 'src/users/schemas/user.schema';
-import { Name } from 'src/export.type';
 import { Model } from 'mongoose';
 import { Employee } from '../schemas/employee.schema';
-import { log, error } from 'console';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { EmployeeDto } from '../dto/employee.dto';
@@ -17,7 +16,6 @@ import ExperienceDto from '../dto/experience.dto';
 @Injectable()
 export class EmployeeService {
   async updateDocument(employeeID: string, docname: string, link: string) {
-    
     const emp = await this.employeeModel.findOne({ id: employeeID }).exec();
     emp[docname] = link;
     emp.save();

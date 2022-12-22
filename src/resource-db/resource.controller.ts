@@ -9,7 +9,7 @@ import { mystorage } from './storage';
 export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
 
-  @Post()
+  @Post("v1")
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('img', { storage: mystorage }))
   upload(@UploadedFile() img: Express.Multer.File | Array<Express.Multer.File>) {
@@ -66,7 +66,7 @@ export class ResourceController {
   }
 
   @Get(':id')
-  async getFileInfo(@Param('id') id: string): Promise<ResourceDTO | any> {
+  async getResourceInfo(@Param('id') id: string): Promise<ResourceDTO | any> {
     const file = await this.resourceService.findInfo(id);
     const filestream = await this.resourceService.readStream(id);
     if (!filestream) {
@@ -79,7 +79,7 @@ export class ResourceController {
   }
 
   @Get('file/:id')
-  async getFile(@Param('id') id: string, @Res() res) {
+  async getResource(@Param('id') id: string, @Res() res) {
     const file = await this.resourceService.findInfo(id);
     const filestream = await this.resourceService.readStream(id);
     if (!filestream) {
@@ -90,7 +90,7 @@ export class ResourceController {
   }
 
   @Get('download/:id')
-  async downloadFile(@Param('id') id: string, @Res() res) {
+  async downloadResource(@Param('id') id: string, @Res() res) {
     const file = await this.resourceService.findInfo(id);
     const filestream = await this.resourceService.readStream(id);
     if (!filestream) {
@@ -102,7 +102,7 @@ export class ResourceController {
   }
 
   @Delete(':id')
-  async deleteFile(@Param('id') id: string): Promise<ResourceDTO | any> {
+  async deleteResource(@Param('id') id: string): Promise<ResourceDTO | any> {
     const file = await this.resourceService.findInfo(id);
     const filestream = await this.resourceService.deleteFile(id);
     if (!filestream) {

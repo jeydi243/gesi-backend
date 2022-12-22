@@ -7,8 +7,8 @@ import { UpdateResponsableDto } from './dto/update-responsable.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Responsable } from './schemas/responsable.schema';
 import { Student } from './schemas/student.schema';
-import { move, moveSync } from 'fs-extra';
-import * as tempDirectory from 'temp-dir';
+import { moveSync } from 'fs-extra';
+
 @Injectable()
 export class StudentsService {
   constructor(
