@@ -16,11 +16,10 @@ import { TeachersService } from 'src/teachers/teachers.service';
 import { ResourceService } from './resource.service';
 import { ManagementService } from 'src/management/services/management.service';
 import { ResponsableSchema } from 'src/students/schemas/responsable.schema';
+import { ResourceController } from './resource.controller';
 import { CourseSessionSchema } from 'src/management/schemas/course_session.schema';
 import { DocumentOrganisationSchema } from 'src/management/schemas/document.schema';
-import { ResourceController } from './resource.controller';
 // import { MulterModule } from '@nestjs/platform-express';
-// import { GridFsMulterConfigService } from './storage';
 
 
 @Global()

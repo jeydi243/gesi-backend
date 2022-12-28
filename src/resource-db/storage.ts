@@ -22,6 +22,8 @@ export class GridFsMulterConfigService implements MulterOptionsFactory {
   }
 
   createMulterOptions(): Promise<MulterModuleOptions> | MulterModuleOptions {
+    console.log('Is this function is called even once');
+
     return {
       storage: this.gridFsStorage,
     };
@@ -42,5 +44,5 @@ export const mystorage = new GridFsStorage({
       resolve(fileInfo);
     });
   },
-options:{}
+  options: {},
 });
