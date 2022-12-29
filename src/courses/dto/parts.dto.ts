@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsMongoId, IsOptional } from 'class-validator';
-import { ResourceDTO } from '../../resource-db/resource.dto';
+import { ResourceDTO } from '../../resource/resource.dto';
 
 export class Part {
   @ApiProperty()

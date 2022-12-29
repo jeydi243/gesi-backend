@@ -8,9 +8,9 @@ import { ConfigModule } from '@nestjs/config';
 
 import { CoursesModule } from './courses/courses.module';
 import { ManagementModule } from './management/management.module';
-import { ResourceDbModule } from './resource-db/resource-db.module';
+import { ResourceDbModule } from './resource/resource.module';
 import { MulterModule } from '@nestjs/platform-express';
-import { GridFsMulterConfigService } from './resource-db/storage';
+import { GridFsMulterConfigService } from './resource/storage';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 @Module({

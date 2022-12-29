@@ -4,7 +4,7 @@ import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Types } from 'mongoose';
 import { ApiConsumes } from '@nestjs/swagger';
-import { ResourceService } from 'src/resource-db/resource.service';
+import { ResourceService } from 'src/resource/resource.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 
 
