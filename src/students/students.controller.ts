@@ -8,7 +8,6 @@ import { Student } from './schemas/student.schema';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { moveSync } from 'fs-extra';
 import * as tempDirectory from 'temp-dir';
-import { DocumentOrganisation } from 'src/export.type';
 
 @Controller('students')
 export class StudentsController {

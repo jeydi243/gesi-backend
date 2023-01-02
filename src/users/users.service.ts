@@ -1,4 +1,4 @@
-import { Model, Schema as S, Types as T } from 'mongoose';
+import { Model, Types as T } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from './dto/create-user.dto';

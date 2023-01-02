@@ -4,12 +4,13 @@ import { Connection } from 'mongoose';
 import { MongoGridFS } from 'mongo-gridfs';
 import { GridFSBucketReadStream } from 'mongodb';
 import { PartialResourceDTO } from './resource.dto';
+
 @Injectable()
 export class ResourceService {
   private fileModel: MongoGridFS;
 
   constructor(@InjectConnection() private readonly connection: Connection) {
-    this.fileModel = new MongoGridFS(this.connection.db, 'fs');
+    this.fileModel = new MongoGridFS(this.connection.db, 'mbangu');
   }
 
   async readStream(id: string): Promise<GridFSBucketReadStream> {
@@ -31,6 +32,7 @@ export class ResourceService {
     const result = await this.fileModel
       .findById(id)
       .catch(err => {
+        console.log(err);
         throw new HttpException('Resource not found', HttpStatus.NOT_FOUND);
       })
       .then(result => result);

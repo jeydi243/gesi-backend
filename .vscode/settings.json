@@ -1,7 +1,7 @@
 {
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 200,
-  "prettier.jsxBracketSameLine": false,
+  "bracketSameLine": false,
   "window.autoDetectColorScheme": true,
   "workbench.preferredLightColorTheme": "GitHub Light Default",
   "workbench.preferredDarkColorTheme": "Community Material Theme Darker",

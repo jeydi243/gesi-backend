@@ -1,11 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { assert } from 'console';
-import { Model } from 'mongoose';
-import { Document, Schema as S } from 'mongoose';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Injectable } from '@nestjs/common';
 import { Course } from './schemas/course.schema';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class CoursesService {
@@ -17,6 +15,7 @@ export class CoursesService {
 
   async updateImage(img: any) {
     //todo Implement methdo
+    console.log(img);
   }
 
   async findAll(): Promise<Course[]> {
@@ -26,7 +25,7 @@ export class CoursesService {
   findOne(id: number) {
     return `This action returns a #${id} course`;
   }
-  findByAuthor(author: S.Types.ObjectId) {
+  findByAuthor(author: Types.ObjectId) {
     return this.courseModel.find({ author: author });
   }
 

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { StudentsController } from './students.controller';
-import { ResourceDbModule } from 'src/resource-db/resource-db.module';
+import { ResourceDbModule } from 'src/resource/resource.module';
 
 @Module({
   imports: [

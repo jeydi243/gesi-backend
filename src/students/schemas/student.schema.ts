@@ -6,7 +6,7 @@ import { ListLevel, ListStatus, DocumentOrganisation } from 'src/export.type';
 
 // export type StudentDocument = Student & Document;
 
-@Schema()
+@Schema({})
 export class Student extends Document {
   @Prop({ required: false })
   matricule: string;

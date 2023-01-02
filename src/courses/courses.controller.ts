@@ -2,9 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFiles, UseIn
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { Schema as S } from 'mongoose';
+import { Types } from 'mongoose';
 import { ApiConsumes } from '@nestjs/swagger';
-import { ResourceService } from 'src/resource-db/resource.service';
+import { ResourceService } from 'src/resource/resource.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 
 
@@ -41,7 +41,7 @@ export class CoursesController {
   }
 
   @Get('byauthor/:idauthor')
-  findByAuthor(@Param('author') author: S.Types.ObjectId) {
+  findByAuthor(@Param('author') author: Types.ObjectId) {
     return this.coursesService.findByAuthor(author);
   }
 

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsArray, IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf, ArrayMinSize, IsDate } from 'class-validator';
+import { IsArray, IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf, IsDate } from 'class-validator';
 import { PersonDto } from '../../person.base';
 import ExperienceDto from './experience.dto';
 import ContactDto from './contact.dto';
@@ -66,7 +66,7 @@ export class EmployeeDto extends PersonDto {
   biography: string;
 
   @MaxLength(30, { message: 'Max of characteres is 30' })
-  @ApiProperty({ description: "Domaine d'application", examples: ['Math', 'Technique', 'Dessin'] })
+  @ApiProperty({ description: "Domaine d'application", example: ['Math', 'Technique', 'Dessin'] })
   domain: string | string[];
 
   @ApiProperty({ description: 'Personal Email' })
@@ -104,7 +104,7 @@ export class EmployeeDto extends PersonDto {
     message: ({ value, property, constraints }) => `${property} n'as que ${value} le nombre de caractere minimum est ${constraints[0]}`,
   })
   @ApiProperty({
-    examples: ['Directeur Financier', 'Developpeur Web'],
+    example: ['Directeur Financier', 'Developpeur Web'],
     description: 'Position in company',
     required: true,
   })

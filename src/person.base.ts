@@ -3,7 +3,6 @@ import { Schema as S } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { differenceInYears } from 'date-fns';
-import * as APN from 'awesome-phonenumber';
 import PhoneNumber from 'awesome-phonenumber';
 
 import { IsDateString, IsEmail, IsNotEmpty, isPhoneNumber, IsString, MaxLength, MinLength, ValidateIf, IsArray } from 'class-validator';
@@ -136,15 +135,15 @@ export const PersonSchema = P;
 export class PersonDto {
   // create data transfer object for Teacher class
 
-  @ApiProperty({ type: String, description: "Le prénom de l'employee", examples: ['Franck Kessler', 'Paul George'] })
+  @ApiProperty({ type: String, description: "Le prénom de l'employee", example: ['Franck Kessler', 'Paul George'] })
   @IsNotEmpty()
   firs_name: string;
 
-  @ApiProperty({ type: String, description: "Le postnom de l'employee", examples: ['Franck Kessler', 'Paul George'] })
+  @ApiProperty({ type: String, description: "Le postnom de l'employee", example: ['Franck Kessler', 'Paul George'] })
   @IsNotEmpty()
   middle_name: string;
 
-  @ApiProperty({ type: String, description: "Le nom de famille de l'employee", examples: ['Franck Kessler', 'Paul George'] })
+  @ApiProperty({ type: String, description: "Le nom de famille de l'employee", example: ['Franck Kessler', 'Paul George'] })
   @IsNotEmpty()
   last_name: string;
 

@@ -4,7 +4,8 @@ import { IsDate, IsString, Allow } from 'class-validator';
 
 export default class ExperienceDto {
   @Allow()
-  id: string;
+  @ApiProperty({ description: 'ID of experience' })
+  id?: string;
 
   @ApiProperty({ description: 'Description of your responsabilities' })
   @IsString()
