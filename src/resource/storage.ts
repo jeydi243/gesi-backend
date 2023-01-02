@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MulterModuleOptions, MulterOptionsFactory } from '@nestjs/platform-express';
-import * as GridFsStorage from 'multer-gridfs-storage';
+import { GridFsStorage } from 'multer-gridfs-storage';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
@@ -9,21 +9,23 @@ require('dotenv').config();
 export class GridFsMulterConfigService implements MulterOptionsFactory {
   gridFsStorage: any;
   constructor() {
-    console.log('LOKALISE MOI DES QUE TU PEUX 1');
+    console.log('Initialise GridFsMulterConfigService ... %s', process.env.NODE_ENV);
     this.gridFsStorage = new GridFsStorage({
       url: process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
       file: function (req, file) {
-        console.log('Mais mi chi youwé gridFsStorage ...in NODE_ENV ', req, file);
-
-        return null;
+        return new Promise((resolve, reject) => {
+          const filename = file.originalname.trim();
+          const fileInfo = {
+            filename: filename,
+          };
+          resolve(fileInfo);
+        });
       },
     });
     // console.log(this.gridFsStorage);
   }
 
   createMulterOptions(): Promise<MulterModuleOptions> | MulterModuleOptions {
-    console.log('Is this function is called even once');
-
     return {
       storage: this.gridFsStorage,
     };

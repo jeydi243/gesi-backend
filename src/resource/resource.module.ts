@@ -19,12 +19,16 @@ import { ResponsableSchema } from 'src/students/schemas/responsable.schema';
 import { ResourceController } from './resource.controller';
 import { CourseSessionSchema } from 'src/management/schemas/course_session.schema';
 import { DocumentOrganisationSchema } from 'src/management/schemas/document.schema';
+import { GridFsMulterConfigService } from './storage';
+import { MulterModule } from '@nestjs/platform-express';
 // import { MulterModule } from '@nestjs/platform-express';
-
 
 @Global()
 @Module({
   imports: [
+    MulterModule.registerAsync({
+      useClass: GridFsMulterConfigService,
+    }),
     MongooseModule.forFeature([
       { name: 'DocumentOrganisation', schema: DocumentOrganisationSchema },
       { name: 'Filiere', schema: FiliereSchema },
@@ -47,7 +51,7 @@ import { DocumentOrganisationSchema } from 'src/management/schemas/document.sche
       },
     ]),
   ],
-controllers:[ResourceController],
+  controllers: [ResourceController],
   providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService],
   exports: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService],
 })
