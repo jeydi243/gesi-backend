@@ -9,7 +9,7 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
 
-  @Post("v1")
+  @Post('v1')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('img', { storage: mystorage }))
   uploadV1(@UploadedFile() img: Express.Multer.File | Array<Express.Multer.File>) {
@@ -33,7 +33,8 @@ export class ResourceController {
         };
       } else {
         const file = img;
-        reponse = {version: 'v1',
+        reponse = {
+          version: 'v1',
           originalname: file.originalname,
           mimetype: file.mimetype,
           id: file.id,
@@ -54,6 +55,7 @@ export class ResourceController {
       return error;
     }
   }
+
   @Post('v2')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('img'))
@@ -62,7 +64,8 @@ export class ResourceController {
     try {
       if (Array.isArray(img)) {
         const file = img[0];
-        reponse = {version: 'v2',
+        reponse = {
+          version: 'v2',
           originalname: file.originalname,
           mimetype: file.mimetype,
           id: file.id,
@@ -77,7 +80,8 @@ export class ResourceController {
         };
       } else {
         const file = img;
-        reponse = {version: 'v2',
+        reponse = {
+          version: 'v2',
           originalname: file.originalname,
           mimetype: file.mimetype,
           id: file.id,
@@ -110,22 +114,25 @@ export class ResourceController {
     }
   }
 
-  @Get(':id')
+  @Get('info/:id')
   async getResourceInfo(@Param('id') id: string): Promise<ResourceDTO | any> {
-    const file = await this.resourceService.findInfo(id);
-    const filestream = await this.resourceService.readStream(id);
-    if (!filestream) {
-      throw new HttpException('An error occurred while retrieving file info', HttpStatus.EXPECTATION_FAILED);
+    console.log('Want to get resource info');
+    //63bae5a465e3f03815bc43d1
+    try {
+      const file = await this.resourceService.findResourceInfo(id);
+      return {
+        message: 'File has been detected',
+        file: file,
+      };
+    } catch (error) {
+      console.log({ error });
     }
-    return {
-      message: 'File has been detected',
-      file: file,
-    };
   }
 
   @Get('file/:id')
-  async getResource(@Param('id') id: string, @Res() res) {
-    const file = await this.resourceService.findInfo(id);
+  async getResourceFile(@Param('id') id: string, @Res() res) {
+    console.log('Want to get resource file');
+    const file = await this.resourceService.findResourceInfo(id);
     const filestream = await this.resourceService.readStream(id);
     if (!filestream) {
       throw new HttpException('An error occurred while retrieving file', HttpStatus.EXPECTATION_FAILED);
@@ -136,7 +143,7 @@ export class ResourceController {
 
   @Get('download/:id')
   async downloadResource(@Param('id') id: string, @Res() res) {
-    const file = await this.resourceService.findInfo(id);
+    const file = await this.resourceService.findResourceInfo(id);
     const filestream = await this.resourceService.readStream(id);
     if (!filestream) {
       throw new HttpException('An error occurred while retrieving file', HttpStatus.EXPECTATION_FAILED);
@@ -147,15 +154,20 @@ export class ResourceController {
   }
 
   @Delete(':id')
-  async deleteResource(@Param('id') id: string): Promise<ResourceDTO | any> {
-    const file = await this.resourceService.findInfo(id);
-    const filestream = await this.resourceService.deleteFile(id);
-    if (!filestream) {
-      throw new HttpException('An error occurred during file deletion', HttpStatus.EXPECTATION_FAILED);
+  async deleteResourceByID(@Param('id') id: string): Promise<ResourceDTO | any> {
+    console.log('Delete resource with id %s', id);
+    try {
+      const resource_info = await this.resourceService.findResourceInfo(id);
+      const filestream = await this.resourceService.deleteResource(id);
+      if (!filestream) {
+        throw new HttpException('An error occurred during file deletion', HttpStatus.EXPECTATION_FAILED);
+      }
+      return {
+        message: 'Resource has been deleted',
+        resource: resource_info,
+      };
+    } catch (error) {
+      console.log({ error });
     }
-    return {
-      message: 'File has been deleted',
-      file: file,
-    };
   }
 }

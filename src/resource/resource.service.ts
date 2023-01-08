@@ -1,7 +1,7 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
-import { MongoGridFS } from 'mongo-gridfs';
+import { IGridFSObject, MongoGridFS } from 'mongo-gridfs';
 import { GridFSBucketReadStream } from 'mongodb';
 import { PartialResourceDTO } from './resource.dto';
 
@@ -10,7 +10,7 @@ export class ResourceService {
   private fileModel: MongoGridFS;
 
   constructor(@InjectConnection() private readonly connection: Connection) {
-    this.fileModel = new MongoGridFS(this.connection.db, 'mbangu');
+    this.fileModel = new MongoGridFS(this.connection.db, 'fs');
   }
 
   async readStream(id: string): Promise<GridFSBucketReadStream> {
@@ -22,13 +22,12 @@ export class ResourceService {
   async find(): Promise<PartialResourceDTO[] | any> {
     const response = [];
     const res: any = await this.fileModel.find({});
-    res.forEach(el => {
-      response.unshift({ filename: el.filename });
+    res.forEach((elg: IGridFSObject) => {
+      response.unshift({ filename: elg.filename });
     });
     return response;
   }
-
-  async findInfo(id: string): Promise<PartialResourceDTO> {
+  async findResourceInfo(id: string): Promise<PartialResourceDTO> {
     const result = await this.fileModel
       .findById(id)
       .catch(err => {
@@ -45,7 +44,7 @@ export class ResourceService {
     };
   }
 
-  async deleteFile(id: string): Promise<boolean> {
+  async deleteResource(id: string): Promise<boolean> {
     return await this.fileModel.delete(id);
   }
 }

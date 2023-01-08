@@ -16,7 +16,7 @@ require('dotenv').config();
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot(process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD, {}),
+    MongooseModule.forRoot(process.env.NODE_ENV === 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD, {}),
     UsersModule,
     CoursesModule,
     TeachersModule,

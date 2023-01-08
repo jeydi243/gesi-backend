@@ -11,7 +11,7 @@ export class GridFsMulterConfigService implements MulterOptionsFactory {
   constructor() {
     console.log('Initialise GridFsMulterConfigService ... %s', process.env.NODE_ENV);
     this.gridFsStorage = new GridFsStorage({
-      url: process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
+      url: process.env.NODE_ENV === 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
       file: function (req, file) {
         return new Promise((resolve, reject) => {
           const filename = file.originalname.trim();
@@ -33,7 +33,7 @@ export class GridFsMulterConfigService implements MulterOptionsFactory {
 }
 
 export const mystorage = new GridFsStorage({
-  url: process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
+  url: process.env.NODE_ENV === 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
   file: (req, file) => {
     console.log('BANDUKU POURQUOI CELUI-CI MARCHE... in NODE_ENV');
 
