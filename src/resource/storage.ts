@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MulterModuleOptions, MulterOptionsFactory } from '@nestjs/platform-express';
-import { GridFsStorage } from 'multer-gridfs-storage';
+import * as GridFsStorage  from 'multer-gridfs-storage';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();

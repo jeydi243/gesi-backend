@@ -1,5 +1,4 @@
-import { Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Res, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
-import { mystorage } from './storage';
+import { Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Res, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { ApiConsumes } from '@nestjs/swagger';
 import { ResourceService } from './resource.service';
 import { PartialResourceDTO, ResourceDTO } from './resource.dto';
@@ -9,57 +8,12 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
 
-  @Post('v1')
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('img', { storage: mystorage }))
-  uploadV1(@UploadedFile() img: Express.Multer.File | Array<Express.Multer.File>) {
-    let reponse;
-    try {
-      if (Array.isArray(img)) {
-        const file = img[0];
-        reponse = {
-          version: 'v1',
-          originalname: file.originalname,
-          mimetype: file.mimetype,
-          id: file.id,
-          filename: file.filename,
-          metadata: file.metadata,
-          bucketName: file.bucketName,
-          chunkSize: file.chunkSize,
-          size: file.size,
-          md5: file.md5,
-          uploadDate: file.uploadDate,
-          contentType: file.contentType,
-        };
-      } else {
-        const file = img;
-        reponse = {
-          version: 'v1',
-          originalname: file.originalname,
-          mimetype: file.mimetype,
-          id: file.id,
-          filename: file.filename,
-          metadata: file.metadata,
-          bucketName: file.bucketName,
-          chunkSize: file.chunkSize,
-          size: file.size,
-          md5: file.md5,
-          uploadDate: file.uploadDate,
-          contentType: file.contentType,
-        };
-      }
-      console.log({ reponse });
-      return reponse;
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
-  }
-
-  @Post('v2')
+  @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('img'))
   uploadV2(@UploadedFiles() img: Express.Multer.File | Array<Express.Multer.File>) {
+    console.log("C'est sa qui m'enerve");
+
     let reponse;
     try {
       if (Array.isArray(img)) {
@@ -157,14 +111,12 @@ export class ResourceController {
   async deleteResourceByID(@Param('id') id: string): Promise<ResourceDTO | any> {
     console.log('Delete resource with id %s', id);
     try {
-      const resource_info = await this.resourceService.findResourceInfo(id);
       const filestream = await this.resourceService.deleteResource(id);
-      if (!filestream) {
+      if (filestream) {
         throw new HttpException('An error occurred during file deletion', HttpStatus.EXPECTATION_FAILED);
       }
       return {
-        message: 'Resource has been deleted',
-        resource: resource_info,
+        message: `Resource with id ${id} has been deleted`,
       };
     } catch (error) {
       console.log({ error });

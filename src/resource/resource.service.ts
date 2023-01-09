@@ -1,16 +1,22 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { IGridFSObject, MongoGridFS } from 'mongo-gridfs';
 import { GridFSBucketReadStream } from 'mongodb';
 import { PartialResourceDTO } from './resource.dto';
+import { createModel } from 'mongoose-gridfs';
 
 @Injectable()
 export class ResourceService {
   private fileModel: MongoGridFS;
+  private resourceModel: any;
 
   constructor(@InjectConnection() private readonly connection: Connection) {
     this.fileModel = new MongoGridFS(this.connection.db, 'fs');
+    this.resourceModel = createModel({
+      modelName: 'fs',
+      connection: connection,
+    });
   }
 
   async readStream(id: string): Promise<GridFSBucketReadStream> {
@@ -27,24 +33,34 @@ export class ResourceService {
     });
     return response;
   }
-  async findResourceInfo(id: string): Promise<PartialResourceDTO> {
-    const result = await this.fileModel
-      .findById(id)
-      .catch(err => {
-        console.log(err);
-        throw new HttpException('Resource not found', HttpStatus.NOT_FOUND);
-      })
-      .then(result => result);
-    return {
-      filename: result.filename,
-      length: result.length,
-      chunkSize: result.chunkSize,
-      md5: result.md5,
-      contentType: result.contentType,
-    };
+  async findResourceInfo(id: string): Promise<PartialResourceDTO | null> {
+    try {
+      const result = await this.fileModel.findById(id);
+
+      return {
+        filename: result.filename,
+        length: result.length,
+        chunkSize: result.chunkSize,
+        md5: result.md5,
+        contentType: result.contentType,
+      };
+    } catch (error) {
+      console.log(error.code);
+      return error.message;
+    }
   }
 
-  async deleteResource(id: string): Promise<boolean> {
-    return await this.fileModel.delete(id);
+  async deleteResource(_id: string): Promise<boolean> {
+    try {
+      const found = await this.findResourceInfo(_id);
+      if (found) return await this.resourceModel.unlink({ _id });
+      return true;
+    } catch (error) {
+      console.log(error);
+
+      return false;
+    }
+
+    // return await this.fileModel.delete(id);
   }
 }

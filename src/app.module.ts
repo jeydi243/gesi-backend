@@ -5,7 +5,6 @@ import { TeachersModule } from './teachers/teachers.module';
 import { UsersModule } from './users/users.module';
 import * as helmet from 'helmet';
 import { ConfigModule } from '@nestjs/config';
-
 import { CoursesModule } from './courses/courses.module';
 import { ManagementModule } from './management/management.module';
 import { ResourceDbModule } from './resource/resource.module';

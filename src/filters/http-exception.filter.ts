@@ -40,6 +40,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       path: httpAdapter.getRequestUrl(ctx.getRequest()),
       request: ctx.getRequest().query,
+      message: exception['stack'],
     };
 
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
