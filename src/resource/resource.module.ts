@@ -52,7 +52,7 @@ import { MulterModule } from '@nestjs/platform-express';
     ]),
   ],
   controllers: [ResourceController],
-  providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService],
+  providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService,GridFsMulterConfigService],
   exports: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService],
 })
 export class ResourceDbModule {}

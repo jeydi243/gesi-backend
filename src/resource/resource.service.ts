@@ -4,13 +4,18 @@ import { Connection } from 'mongoose';
 import { IGridFSObject, MongoGridFS } from 'mongo-gridfs';
 import { GridFSBucketReadStream } from 'mongodb';
 import { PartialResourceDTO } from './resource.dto';
-
+import { createModel } from 'mongoose-gridfs';
 @Injectable()
 export class ResourceService {
   private fileModel: MongoGridFS;
+  private test: any;
 
   constructor(@InjectConnection() private readonly connection: Connection) {
     this.fileModel = new MongoGridFS(this.connection.db, 'fs');
+    this.test = createModel({
+      modelName: 'fs',
+      connection: connection,
+    });
   }
 
   async readStream(id: string): Promise<GridFSBucketReadStream> {
@@ -45,6 +50,7 @@ export class ResourceService {
   }
 
   async deleteResource(id: string): Promise<boolean> {
-    return await this.fileModel.delete(id);
+    return await this.test.unlink({ _id: id });
+    // return await this.fileModel.delete(id);
   }
 }

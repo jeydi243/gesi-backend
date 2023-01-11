@@ -1,5 +1,4 @@
 import { Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Res, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
-import { mystorage } from './storage';
 import { ApiConsumes } from '@nestjs/swagger';
 import { ResourceService } from './resource.service';
 import { PartialResourceDTO, ResourceDTO } from './resource.dto';
@@ -9,54 +8,7 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
 
-  @Post('v1')
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('img', { storage: mystorage }))
-  uploadV1(@UploadedFile() img: Express.Multer.File | Array<Express.Multer.File>) {
-    let reponse;
-    try {
-      if (Array.isArray(img)) {
-        const file = img[0];
-        reponse = {
-          version: 'v1',
-          originalname: file.originalname,
-          mimetype: file.mimetype,
-          id: file.id,
-          filename: file.filename,
-          metadata: file.metadata,
-          bucketName: file.bucketName,
-          chunkSize: file.chunkSize,
-          size: file.size,
-          md5: file.md5,
-          uploadDate: file.uploadDate,
-          contentType: file.contentType,
-        };
-      } else {
-        const file = img;
-        reponse = {
-          version: 'v1',
-          originalname: file.originalname,
-          mimetype: file.mimetype,
-          id: file.id,
-          filename: file.filename,
-          metadata: file.metadata,
-          bucketName: file.bucketName,
-          chunkSize: file.chunkSize,
-          size: file.size,
-          md5: file.md5,
-          uploadDate: file.uploadDate,
-          contentType: file.contentType,
-        };
-      }
-      console.log({ reponse });
-      return reponse;
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
-  }
-
-  @Post('v2')
+  @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('img'))
   uploadV2(@UploadedFiles() img: Express.Multer.File | Array<Express.Multer.File>) {
@@ -66,17 +18,17 @@ export class ResourceController {
         const file = img[0];
         reponse = {
           version: 'v2',
-          originalname: file.originalname,
-          mimetype: file.mimetype,
           id: file.id,
+          md5: file.md5,
+          mimetype: file.mimetype,
           filename: file.filename,
           metadata: file.metadata,
-          bucketName: file.bucketName,
           chunkSize: file.chunkSize,
+          bucketName: file.bucketName,
           size: file.size,
-          md5: file.md5,
           uploadDate: file.uploadDate,
           contentType: file.contentType,
+          originalname: file.originalname,
         };
       } else {
         const file = img;
