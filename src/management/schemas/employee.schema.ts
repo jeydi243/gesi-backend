@@ -5,8 +5,8 @@ import { defaultOnboarding } from 'src/export.type';
 
 @Schema()
 export class Employee extends Document {
-  @Prop({ type: String })
-  profile_img: string;
+  @Prop({ type: String, default: null })
+  profile_image: string | null;
 
   @Prop({ type: [String] })
   @Transform(({ value }) => [value])

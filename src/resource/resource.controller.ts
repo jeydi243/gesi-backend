@@ -9,6 +9,7 @@ export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
 
   @Post()
+  @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('img'))
   uploadV2(@UploadedFiles() img: Express.Multer.File | Array<Express.Multer.File>) {
@@ -20,17 +21,17 @@ export class ResourceController {
         const file = img[0];
         reponse = {
           version: 'v2',
-          originalname: file.originalname,
-          mimetype: file.mimetype,
           id: file.id,
+          md5: file.md5,
+          mimetype: file.mimetype,
           filename: file.filename,
           metadata: file.metadata,
-          bucketName: file.bucketName,
           chunkSize: file.chunkSize,
+          bucketName: file.bucketName,
           size: file.size,
-          md5: file.md5,
           uploadDate: file.uploadDate,
           contentType: file.contentType,
+          originalname: file.originalname,
         };
       } else {
         const file = img;

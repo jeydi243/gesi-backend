@@ -25,8 +25,8 @@ import { EmployeeService } from './services/employee.service';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
 import { UpdateExperienceDto } from './dto/update-experience.dto';
-import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
-import { ApiCreatedResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { ApiConsumes, ApiCreatedResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import buildLink from 'src/utils';
 import ContactDto from './dto/contact.dto';
 import EducationDTO from './dto/education.dto';
@@ -34,6 +34,21 @@ import ExperienceDto from './dto/experience.dto';
 @Controller('employees')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
+
+  @Post('/:employeeID/profile_image')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FilesInterceptor('profile_image'))
+  async setProfileImage(@UploadedFiles() profile_image: Express.Multer.File | Array<Express.Multer.File>, @Param('employeeID') employeeID: string) {
+    try {
+      console.log('Change profile image for employee %s', employeeID);
+      console.log({ profile_image });
+
+      const response: boolean | string = await this.employeeService.updateProfileImage(employeeID, profile_image[0].id);
+      return response === true ? response : 'Profile image not modified';
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   @Post()
   @ApiOperation({ summary: 'Register new employee', description: 'Register a new employee' })
@@ -313,7 +328,7 @@ export class EmployeeController {
   async updateDocument(@Param('employeeID') employeeID: string, @UploadedFile() file: Express.Multer.File) {
     try {
       const link = buildLink(employeeID, file, 'resume');
-      moveSync(file.path, link, { overwrite: true }); 
+      moveSync(file.path, link, { overwrite: true });
       await this.employeeService.updateDocument(employeeID, 'resume', link);
       return link;
     } catch (error) {

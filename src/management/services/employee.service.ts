@@ -1,4 +1,4 @@
-import { log } from 'console';
+import { assert, log } from 'console';
 import * as uniqid from 'uniqid';
 import { User } from 'src/users/schemas/user.schema';
 import { Model } from 'mongoose';
@@ -15,6 +15,20 @@ import ExperienceDto from '../dto/experience.dto';
 
 @Injectable()
 export class EmployeeService {
+  async updateProfileImage(employeeID: string, resource_id: string): Promise<boolean | string> {
+    console.assert(resource_id != 'undifined');
+    try {
+      console.log({ resource_id });
+
+      const resp = await this.employeeModel.findOneAndUpdate({ id: employeeID }, { $set: { profile_image: resource_id } }).exec();
+
+      if (resp) return resp['profile_image'] != null;
+      else return "Aucun employee avec l'ID trouvé";
+    } catch (error) {
+      console.log(error);
+      return error['message'];
+    }
+  }
   async updateDocument(employeeID: string, docname: string, link: string) {
     const emp = await this.employeeModel.findOne({ id: employeeID }).exec();
     emp[docname] = link;
