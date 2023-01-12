@@ -1,7 +1,14 @@
 // Select the database to use.
 // use('gesi-development');
-use('gesi-production');
-
-db.getCollectionNames()
-db.getCollection('employees')
-db.employees.find()
+// use('gesi-development');
+use admin;
+db.createUser(
+   {
+     user: "admin",
+     pwd: "admin", // or cleartext password
+     roles: [ 
+       { role: "userAdminAnyDatabase", db: "admin" },
+       { role: "readWriteAnyDatabase", db: "admin" } 
+     ]
+   }
+ )

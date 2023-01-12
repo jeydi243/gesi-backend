@@ -7,8 +7,6 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 @Controller('resources')
 export class ResourceController {
   constructor(private readonly resourceService: ResourceService) {}
-
-  @Post()
   @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('img'))
