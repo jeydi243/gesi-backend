@@ -13,14 +13,26 @@ export class CoursesService {
     return student.save();
   }
 
-  async updateDefaultCourseImage(courseID: string, resource_id: string): Promise<boolean | string> {
+  async addCourseImage(courseID: string, resourceIDs: string | string[], setDefault = false): Promise<Record<string, any>> {
+    let wasdefaulted = false;
+    let message = '';
     try {
-      const resp = await this.courseModel.findOneAndUpdate({ id: courseID }, { $set: { profile_image: resource_id } }).exec();
-      if (!resp) return `Aucun employee avec l'ID ${courseID}`;
-      if (resp['profile_image'] != null) return resp['profile_image'] != null;
+      let objList: any = Array.isArray(resourceIDs) ? resourceIDs : [resourceIDs];
+
+      objList = objList.map(id => {
+        return { id, default: false };
+      });
+
+      const resp = await this.courseModel.findOneAndUpdate({ id: courseID }, { $push: { images: { $each: [...objList] } } }).exec();
+      if (!Array.isArray(resourceIDs) && setDefault && resp) {
+        wasdefaulted = await this.setDefaultCourseImage(courseID, resourceIDs);
+      }
+      if (!resp) message = `No course with ID ${courseID}`;
+      if (resp.images.findIndex(el => el.id === resourceIDs) != -1) message = 'The image was added to course images';
+      return { message, wasdefaulted };
     } catch (error) {
       console.log(error);
-      return error['message'];
+      return { ...error };
     }
   }
 
@@ -28,8 +40,16 @@ export class CoursesService {
     try {
       const resp1 = await this.courseModel.findOneAndUpdate({ id: courseID, images: { $elemMatch: { default: true } } }, { $set: { 'images.$.default': false } }).exec();
       const resp = await this.courseModel.findOneAndUpdate({ id: courseID, images: { $elemMatch: { id: resourceID } } }, { $set: { 'images.$.default': true } }).exec();
-    } catch (error) {}
-    return false;
+      const id_old_default = resp1.images.find(el => el['default'] === true)['id'];
+      const id_new_default = resp.images.find(el => el['default'] === true)['id'];
+      console.log({ id_old_default }, { id_new_default });
+
+      return id_old_default != id_new_default;
+    } catch (error) {
+      console.log(error);
+
+      return false;
+    }
   }
 
   async findAll(): Promise<Course[]> {

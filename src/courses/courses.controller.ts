@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFiles, UseInterceptors, Query } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
@@ -21,24 +21,29 @@ export class CoursesController {
 
   @Post('/:courseID/course_image')
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FilesInterceptor('course_image'))
-  async setDefaultCourseImage(@UploadedFiles() course_image: Express.Multer.File | Array<Express.Multer.File>, @Param('courseID') courseID: string) {
+  @UseInterceptors(FilesInterceptor('images'))
+  async uploadCourseImage(@UploadedFiles() images: Array<Express.Multer.File>, @Param('courseID') courseID: string) {
     try {
       console.log('Change default image for course id %s', courseID);
-      console.log({ course_image });
-
-      const response: boolean | string = await this.coursesService.updateDefaultCourseImage(courseID, course_image[0].id);
-      return response === true ? response : 'Profile image not modified';
+      console.log({ images });
+      const imagesID: string[] = images.map(el => el.id);
+      const response: Record<string, any> = await this.coursesService.addCourseImage(courseID, imagesID);
+      return response;
     } catch (error) {
       console.log(error);
+      return { ...error };
     }
   }
 
-  @Post()
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FilesInterceptor('file'))
-  changeCourseImage(@UploadedFiles() files) {
-    return this.coursesService.setDefaultCourseImage(files);
+  @Patch('/:courseID/set_default')
+  async setDefaultCourseImage(@Param('courseID') courseID: string, @Query() query: Record<string, string>) {
+    try {
+      const tr = await this.coursesService.setDefaultCourseImage(courseID, query.resourceID);
+      return tr;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   }
 
   @Get()
