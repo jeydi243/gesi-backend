@@ -7,8 +7,8 @@ export class Course extends Document {
   @Prop({ required: true, type: String })
   title: string;
 
-  @Prop({ required: false, type: [String] })
-  images: string[];
+  @Prop({ required: false })
+  images: Record<string, any>[];
 
   @Prop({ required: true, type: [TeacherSchema], ref: 'Teacher' })
   authors: Teacher[];

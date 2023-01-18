@@ -90,6 +90,9 @@ export class Person {
   })
   personal_email: number;
 
+  @Prop({ type: String, default: null })
+  profile_image: string | null;
+
   @Prop({
     type: Date,
     required: true,

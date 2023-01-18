@@ -7,7 +7,6 @@ import { ApiConsumes } from '@nestjs/swagger';
 import { ResourceService } from 'src/resource/resource.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 //require('dotenv').config();
 
@@ -20,11 +19,26 @@ export class CoursesController {
     return this.coursesService.create(createCourseDto);
   }
 
+  @Post('/:courseID/course_image')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FilesInterceptor('course_image'))
+  async setDefaultCourseImage(@UploadedFiles() course_image: Express.Multer.File | Array<Express.Multer.File>, @Param('courseID') courseID: string) {
+    try {
+      console.log('Change default image for course id %s', courseID);
+      console.log({ course_image });
+
+      const response: boolean | string = await this.coursesService.updateDefaultCourseImage(courseID, course_image[0].id);
+      return response === true ? response : 'Profile image not modified';
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('file'))
   changeCourseImage(@UploadedFiles() files) {
-    return this.coursesService.updateImage(files);
+    return this.coursesService.setDefaultCourseImage(files);
   }
 
   @Get()

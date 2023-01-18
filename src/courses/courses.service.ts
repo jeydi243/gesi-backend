@@ -13,9 +13,23 @@ export class CoursesService {
     return student.save();
   }
 
-  async updateImage(img: any) {
-    //todo Implement methdo
-    console.log(img);
+  async updateDefaultCourseImage(courseID: string, resource_id: string): Promise<boolean | string> {
+    try {
+      const resp = await this.courseModel.findOneAndUpdate({ id: courseID }, { $set: { profile_image: resource_id } }).exec();
+      if (!resp) return `Aucun employee avec l'ID ${courseID}`;
+      if (resp['profile_image'] != null) return resp['profile_image'] != null;
+    } catch (error) {
+      console.log(error);
+      return error['message'];
+    }
+  }
+
+  async setDefaultCourseImage(courseID: string, resourceID: string): Promise<boolean> {
+    try {
+      const resp1 = await this.courseModel.findOneAndUpdate({ id: courseID, images: { $elemMatch: { default: true } } }, { $set: { 'images.$.default': false } }).exec();
+      const resp = await this.courseModel.findOneAndUpdate({ id: courseID, images: { $elemMatch: { id: resourceID } } }, { $set: { 'images.$.default': true } }).exec();
+    } catch (error) {}
+    return false;
   }
 
   async findAll(): Promise<Course[]> {
