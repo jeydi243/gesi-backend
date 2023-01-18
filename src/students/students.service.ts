@@ -21,6 +21,17 @@ export class StudentsService {
     return createdStudent.save();
   }
 
+  async updateProfileImage(studentID: string, resource_id: string): Promise<boolean | string> {
+    try {
+      const resp = await this.studentModel.findOneAndUpdate({ id: studentID }, { $set: { profile_image: resource_id } }).exec();
+      if (!resp) return `No student with ID ${studentID}`;
+      else if (resp['profile_image'] != '63bf2dda6afe67abeb28c994') return resp['profile_image'];
+    } catch (error) {
+      console.log(error);
+      return error['message'];
+    }
+  }
+
   async findAll(): Promise<Student[] | any> {
     try {
       const students = await this.studentModel.find({});

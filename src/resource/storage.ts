@@ -15,6 +15,7 @@ export class GridFsMulterConfigService implements MulterOptionsFactory {
       file: function (req, file) {
         console.log("Cette fonction s'execute pour chaque fichier");
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         return new Promise((resolve, reject) => {
           const filename = file.originalname.trim();
           const fileInfo = {

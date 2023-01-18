@@ -1,13 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, BadRequestException, UploadedFiles } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { CreateResponsableDto } from './dto/create-responsable.dto';
 import { UpdateResponsableDto } from './dto/update-responsable.dto';
 import { Student } from './schemas/student.schema';
-import { FileInterceptor } from '@nestjs/platform-express/multer';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express/multer';
 import { moveSync } from 'fs-extra';
 import * as tempDirectory from 'temp-dir';
+import { ApiConsumes } from '@nestjs/swagger';
 
 @Controller('students')
 export class StudentsController {
@@ -20,6 +21,21 @@ export class StudentsController {
       return { student };
     } catch (err) {
       return err.message;
+    }
+  }
+
+  @Post('/:studentID/profile_image')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FilesInterceptor('profile_image'))
+  async setProfileImage(@UploadedFiles() profile_image: Express.Multer.File | Array<Express.Multer.File>, @Param('studentID') studentID: string) {
+    try {
+      console.log('Change profile image for student %s', studentID);
+      console.log({ profile_image });
+
+      const response: boolean | string = await this.studentsService.updateProfileImage(studentID, profile_image[0].id);
+      return response === true ? response : 'Profile image not modified';
+    } catch (error) {
+      console.log(error);
     }
   }
 

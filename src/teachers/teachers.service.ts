@@ -17,6 +17,18 @@ export class TeachersService {
       return error;
     }
   }
+
+  async updateProfileImage(teacherID: string, resource_id: string): Promise<boolean | string> {
+    try {
+      const resp = await this.teacherModel.findOneAndUpdate({ id: teacherID }, { $set: { profile_image: resource_id } }).exec();
+      if (!resp) return `No teacher with ID ${teacherID}`;
+      if (resp['profile_image'] != null) return resp['profile_image'] != null;
+    } catch (error) {
+      console.log(error);
+      return error['message'];
+    }
+  }
+
   findAll() {
     return this.teacherModel.find();
   }
