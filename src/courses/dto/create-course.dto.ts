@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsMongoId } from 'class-validator';
+import { IsArray, IsNotEmpty, IsMongoId, IsString, ArrayNotEmpty } from 'class-validator';
 
 export class CreateCourseDto {
   @IsNotEmpty()
@@ -7,23 +7,33 @@ export class CreateCourseDto {
   title: string;
 
   @ApiProperty()
+  @IsString()
   description: string;
 
   @ApiProperty()
   @IsNotEmpty()
-  author: string;
+  @ArrayNotEmpty()
+  authors: string[];
 
   @ApiProperty()
-  @IsNotEmpty()
-  images: string;
+  @IsArray()
+  images: string[];
 
   @ApiProperty()
-  @IsNotEmpty()
   @IsArray()
   parts: [];
 
   @ApiProperty()
+  @IsArray()
+  tags: string[];
+
+  @ApiProperty()
   @IsNotEmpty()
-  @IsMongoId()
+  @IsMongoId({ message: args => `${args.value} is not valid ${args.property}` })
   createdBy: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  expiredate: string;
 }

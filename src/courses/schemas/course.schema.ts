@@ -28,13 +28,16 @@ export class Course extends Document {
       }
     },
   })
-  expireDate?: Date;
+  expiredate?: Date | null;
 
   @Prop({ required: false, type: [String] })
   tags: string[];
 
   @Prop({ required: true, type: [] })
   parts: [];
+
+  @Prop({ required: true, type: String })
+  createdBy: string;
 }
 
 export const CourseSchema: S = SchemaFactory.createForClass<Course>(Course);
