@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString, ValidateIf, isDate } from 'class-validator';
+import { IsEmail, IsString, ValidateIf, isDate, IsMongoId } from 'class-validator';
 
 export default class OrganizationDto {
   @ApiProperty({ description: 'Name of the organization' })
@@ -25,4 +25,8 @@ export default class OrganizationDto {
   @ApiProperty({ description: 'ID of experience' })
   @IsString()
   organization_parent_id: string | null;
+
+  @ApiProperty({ description: 'ID of creator' })
+  @IsMongoId()
+  createdBy: string;
 }

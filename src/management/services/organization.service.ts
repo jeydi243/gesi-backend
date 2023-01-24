@@ -9,7 +9,7 @@ import { Organization } from '../schemas/organization.schema';
 export class OrganizationService {
   constructor(@InjectModel('Employee') private orgModel: Model<Organization>) {
     orgModel.watch().on('change', function (data) {
-      console.log('You add new employee must create also password');
+      log('You add new employee must create also password %s', data);
     });
   }
   async addOrg(orgDto: OrganizationDto): Promise<OrganizationDto | null> {
@@ -22,6 +22,24 @@ export class OrganizationService {
     } catch (er) {
       log(er);
       throw er;
+    }
+  }
+
+  async allOrg(): Promise<Organization[] | Record<string, any>> {
+    return this.orgModel.find({ deletedAt: null });
+  }
+
+  async deleteOrg(filter: Record<string, any>) {
+    return await this.orgModel.findOneAndRemove(filter).exec();
+  }
+
+  async updateOrg(filter, updateValues): Promise<Organization | Record<string, any>> {
+    try {
+      const result = await this.orgModel.findOneAndUpdate(filter, { $set: { ...updateValues } }).exec();
+      return result;
+    } catch (er) {
+      console.log(er);
+      return er;
     }
   }
 }
