@@ -22,12 +22,12 @@ export class CoursesController {
   @Post('/:courseID/course_image')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('images'))
-  async uploadCourseImage(@UploadedFiles() images: Array<Express.Multer.File>, @Param('courseID') courseID: string) {
+  async addCourseImage(@UploadedFiles() images: Array<Express.Multer.File>, @Param('courseID') courseID: string, @Body('setDefault') setDefault: boolean) {
     try {
       console.log('Change default image for course id %s', courseID);
       console.log({ images });
       const imagesID: string[] = images.map(el => el.id);
-      const response: Record<string, any> = await this.coursesService.addCourseImage(courseID, imagesID);
+      const response: Record<string, any> = await this.coursesService.addCourseImage(courseID, imagesID, setDefault);
       return response;
     } catch (error) {
       console.log(error);
