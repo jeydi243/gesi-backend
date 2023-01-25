@@ -176,13 +176,7 @@ export class PersonDto {
     message: ({ value, object }) => `${value} must be different ${object['email']}, which is you other email`,
   })
   @IsEmail({ message: ({ value }) => `${value} is not a valid email` })
-  personal_email: string | Name;
-
-  // @ApiProperty()
-  // @IsNotEmpty()
-  // @ValidateIf(o => o.email != o.personal_email, { message: "$value doit etre différent de l'Email personel" })
-  // @IsEmail({ message: ({ value }) => `${value} is not a valid email` })
-  // email: string | Name; //Email fourni par l'établissement
+  email: string [];
 
   @ApiProperty()
   @IsNotEmpty()
