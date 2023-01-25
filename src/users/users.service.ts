@@ -12,11 +12,7 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 export class UsersService {
   constructor(@InjectModel('User') private userModel: Model<User>) {}
 
-  registerRootProfessor(createUserDto: Partial<CreateUserDto>) {
-    throw new Error('Method not implemented.');
-  }
-
-  async register(userDto: CreateUserDto): Promise<User | null | Error> {
+  async register(userDto: CreateUserDto | any): Promise<User | null | Error> {
     const createdUser = new this.userModel(userDto);
 
     return bcrypt
@@ -76,7 +72,6 @@ export class UsersService {
   async logout(): Promise<boolean> {
     return false;
   }
-
   async deleteOne(idUser: string): Promise<User | null> {
     return this.userModel.findOneAndUpdate({ _id: idUser }, { $set: { deleteAt: Date.now() } }).exec();
   }

@@ -12,7 +12,6 @@ export class CreateUserDto {
   @ApiProperty({ required: true, minLength: 6, maxLength: 20, type: String })
   password: string;
 
-  @IsNotEmpty()
   @ApiProperty({
     required: true,
     minLength: 6,
@@ -20,6 +19,7 @@ export class CreateUserDto {
     type: String,
     enum: UserRole,
   })
+  @IsNotEmpty()
   role: string;
 
   @Optional()

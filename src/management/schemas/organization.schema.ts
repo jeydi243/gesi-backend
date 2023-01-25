@@ -18,7 +18,7 @@ export class Organization extends Document {
   @Prop({ type: Date, required: true })
   date_creation: Date;
 
-  @Prop({ type: String, required: false })
+  @Prop({ type: String, required: false, default: null })
   organization_parent_id: string | null;
 
   @Prop({ type: String, required: true })

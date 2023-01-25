@@ -51,6 +51,10 @@ export class Student extends Document {
 
 export const StudentSchema: S = SchemaFactory.createForClass<Student>(Student);
 
-// StudentSchema.pre('save', () => {
-//   console.log('Pre-save Student is : ', this);
-// });
+StudentSchema.pre('save', () => {
+  console.log('Pre-save Student is : ', this);
+});
+
+StudentSchema.post('save', function (doc) {
+  console.log('%s has been saved', doc._id);
+});

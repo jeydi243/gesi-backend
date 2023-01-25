@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateResponsableDto } from './dto/create-responsable.dto';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateResponsableDto } from './dto/update-responsable.dto';
@@ -8,17 +8,21 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 import { Responsable } from './schemas/responsable.schema';
 import { Student } from './schemas/student.schema';
 import { moveSync } from 'fs-extra';
+import { OrganizationService } from 'src/management/services/organization.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class StudentsService {
   constructor(
     @InjectModel('Student') private studentModel: Model<Student>,
+    private readonly userService: UsersService,
     @InjectModel('Responsable')
     private responsableModel: Model<Responsable>,
   ) {}
   async add(createStudentDto: CreateStudentDto): Promise<Student | void> {
     const createdStudent = new this.studentModel(createStudentDto);
-    return createdStudent.save();
+    const saved: Student & { _id: Types.ObjectId } = await createdStudent.save();
+    this.userService.register(saved);
   }
 
   async updateProfileImage(studentID: string, resource_id: string): Promise<boolean | string> {
