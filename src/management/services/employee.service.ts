@@ -18,9 +18,8 @@ export class EmployeeService {
   async updateProfileImage(employeeID: string, resource_id: string): Promise<boolean | string> {
     try {
       const resp = await this.employeeModel.findOneAndUpdate({ id: employeeID }, { $set: { profile_image: resource_id } }).exec();
-      if (!resp)return `Aucun employee avec l'ID ${employeeID}`;
+      if (!resp) return `Aucun employee avec l'ID ${employeeID}`;
       if (resp['profile_image'] != null) return resp['profile_image'] != null;
-       
     } catch (error) {
       console.log(error);
       return error['message'];
@@ -85,7 +84,7 @@ export class EmployeeService {
     return email;
   }
   async addEmployee(employeeDto: EmployeeDto): Promise<EmployeeDto | null> {
-    employeeDto['email'] = this.createEmail(employeeDto.last_name, employeeDto.middle_name);
+    employeeDto['email'] = [this.createEmail(employeeDto.last_name, employeeDto.middle_name)];
     try {
       const createdemployee = new this.employeeModel(employeeDto);
       const result = await createdemployee.save();

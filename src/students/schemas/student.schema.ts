@@ -18,7 +18,7 @@ export class Student extends Document {
 
   @Prop({
     type: String,
-    required: true,
+    required: false,
     default: 'CANDIDAT',
     validate: {
       validator: function (value: string) {
@@ -31,13 +31,13 @@ export class Student extends Document {
 
   @Prop({
     type: String,
-    required: true,
+    required: false,
     default: 'Prépa',
     validate: {
       validator: function (value: string) {
         return ListLevel.includes(value);
       },
-      message: props => `${props.value} n'est pas valide - ${ListLevel}!`,
+      message: ({ value }) => `${value} n'est pas valide - ${ListLevel}!`,
     },
   })
   level: string;

@@ -1,13 +1,12 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Transform } from 'class-transformer';
 import { Schema as S } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
+import { Genre, Name } from './export.type';
 import { differenceInYears } from 'date-fns';
-import PhoneNumber from 'awesome-phonenumber';
-
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsDateString, IsEmail, IsNotEmpty, isPhoneNumber, IsString, MaxLength, MinLength, ValidateIf, IsArray } from 'class-validator';
 import validator from 'validator';
-import { Genre, Name } from './export.type';
+import PhoneNumber from 'awesome-phonenumber';
 
 // use awesome-phonenumber
 
@@ -172,11 +171,8 @@ export class PersonDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @ValidateIf(o => o.email != o.personal_email, {
-    message: ({ value, object }) => `${value} must be different ${object['email']}, which is you other email`,
-  })
   @IsEmail({ message: ({ value }) => `${value} is not a valid email` })
-  email: string [];
+  email: string[];
 
   @ApiProperty()
   @IsNotEmpty()
@@ -187,11 +183,11 @@ export class PersonDto {
   })
   gender: string;
 
+  @ApiProperty({ type: Date, description: 'Birthday' })
   @Transform(v => new Date(v.value).toISOString())
   @IsDateString({}, { message: ({ value, property }) => `${value} for ${property} is not valid date string` })
-  @ApiProperty({ type: Date, description: 'Birthday' })
-  @ValidateIf(o => differenceInYears(new Date(), o.birthay) <= 23, {
-    message: pr => 'Apparement vous avez moins de 23 ans',
+  @ValidateIf(o => differenceInYears(new Date(), o.birthay) <= 19, {
+    message: pr => 'Apparement vous avez moins de 19 ans',
   })
   birthday: Date;
 
