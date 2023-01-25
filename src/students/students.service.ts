@@ -10,6 +10,7 @@ import { Student } from './schemas/student.schema';
 import { moveSync } from 'fs-extra';
 import { OrganizationService } from 'src/management/services/organization.service';
 import { UsersService } from 'src/users/users.service';
+import { log } from 'console';
 
 @Injectable()
 export class StudentsService {
@@ -19,10 +20,16 @@ export class StudentsService {
     @InjectModel('Responsable')
     private responsableModel: Model<Responsable>,
   ) {}
-  async add(createStudentDto: CreateStudentDto): Promise<Student | void> {
-    const createdStudent = new this.studentModel(createStudentDto);
-    const saved: Student & { _id: Types.ObjectId } = await createdStudent.save();
-    this.userService.register(saved);
+  async add(createStudentDto: CreateStudentDto): Promise<Student | null> {
+    let saved_Student: Student & { _id: Types.ObjectId } = null;
+    try {
+      const createdStudent = new this.studentModel(createStudentDto);
+      saved_Student = await createdStudent.save();
+      this.userService.register(saved_Student);
+    } catch (error) {
+      log(error);
+      return saved_Student;
+    }
   }
 
   async updateProfileImage(studentID: string, resource_id: string): Promise<boolean | string> {

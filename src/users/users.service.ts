@@ -5,7 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './schemas/user.schema';
 import * as bcrypt from 'bcrypt';
-
+import * as generatepass from 'password-generator';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class UsersService {
 
   async register(userDto: CreateUserDto | any): Promise<User | null | Error> {
     const createdUser = new this.userModel(userDto);
-
+    createdUser.password = generatepass(12, true, null, `${userDto.__t}`);
     return bcrypt
       .genSalt()
       .then((salt: string) => {

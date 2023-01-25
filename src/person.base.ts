@@ -138,15 +138,15 @@ export const PersonSchema = P;
 export class PersonDto {
   // create data transfer object for Teacher class
 
-  @ApiProperty({ type: String, description: "Le prénom de l'employee", example: ['Franck Kessler', 'Paul George'] })
+  @ApiProperty({ type: String, description: 'The first name', example: ['Franck Kessler', 'Paul George'] })
   @IsNotEmpty()
-  firs_name: string;
+  first_name: string;
 
-  @ApiProperty({ type: String, description: "Le postnom de l'employee", example: ['Franck Kessler', 'Paul George'] })
+  @ApiProperty({ type: String, description: 'The middle name', example: ['Franck Kessler', 'Paul George'] })
   @IsNotEmpty()
   middle_name: string;
 
-  @ApiProperty({ type: String, description: "Le nom de famille de l'employee", example: ['Franck Kessler', 'Paul George'] })
+  @ApiProperty({ type: String, description: 'The last name (Family)', example: ['Franck Kessler', 'Paul George'] })
   @IsNotEmpty()
   last_name: string;
 
@@ -203,8 +203,8 @@ export class PersonDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @MinLength(2, { message: "$value n'est pas un code de pays valide " })
-  @MaxLength(3, { message: "$value n'est pas un code de pays valide " })
+  @MinLength(2, { message: ({ value }) => `${value} is not equal or upper 2 characters` })
+  @MaxLength(3, { message: ({ value }) => `${value} is not equal or under 3 characters` })
   cityzenship: string;
 
   @ApiProperty({ type: String, description: 'Address of person' })
