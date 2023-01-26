@@ -1,10 +1,10 @@
 import { Transform } from 'class-transformer';
 import { Schema as S } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { Genre, Name } from './export.type';
+import { Genre } from './export.type';
 import { differenceInYears } from 'date-fns';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsDateString, IsEmail, IsNotEmpty, isPhoneNumber, IsString, MaxLength, MinLength, ValidateIf, IsArray } from 'class-validator';
+import { IsDateString, IsEmail, IsNotEmpty, isPhoneNumber, IsString, MaxLength, MinLength, ValidateIf, IsArray, IsNumber } from 'class-validator';
 import validator from 'validator';
 import PhoneNumber from 'awesome-phonenumber';
 
@@ -133,7 +133,30 @@ P.virtual('name').get(function () {
   return this.first_name + ' ' + this.middle_name + ' ' + this.last_name;
 });
 export const PersonSchema = P;
+export class addressDto {
+  @ApiProperty()
+  @IsString()
+  avenue: string;
 
+  @IsString()
+  @ApiProperty()
+  quartier?: string;
+
+  @ApiProperty()
+  @IsString()
+  commune: string;
+
+  @ApiProperty()
+  @IsString()
+  ville?: string;
+
+  @ApiProperty()
+  numero?: string;
+
+  @ApiProperty()
+  @IsNumber({ allowNaN: true })
+  zip_code?: number;
+}
 export class PersonDto {
   // create data transfer object for Teacher class
 
@@ -187,7 +210,7 @@ export class PersonDto {
   @Transform(v => new Date(v.value).toISOString())
   @IsDateString({}, { message: ({ value, property }) => `${value} for ${property} is not valid date string` })
   @ValidateIf(o => differenceInYears(new Date(), o.birthay) <= 19, {
-    message: pr => 'Apparement vous avez moins de 19 ans',
+    message: (pr) => 'Apparement vous avez moins de 19 ans',
   })
   birthday: Date;
 
@@ -197,7 +220,7 @@ export class PersonDto {
   @MaxLength(3, { message: ({ value }) => `${value} is not equal or under 3 characters` })
   cityzenship: string;
 
-  @ApiProperty({ type: String, description: 'Address of person' })
+  @ApiProperty({ description: 'Address of person' })
   @IsNotEmpty()
-  address: string;
+  address: addressDto;
 }
