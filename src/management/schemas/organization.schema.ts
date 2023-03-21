@@ -9,6 +9,9 @@ export class Organization extends Document {
   @Prop({ type: String, maxlength: 10 })
   code: string;
 
+  @Prop({ type: String, maxlength: 10 })
+  type: string;
+
   @Prop({ type: String, maxlength: 500 })
   description: string;
 

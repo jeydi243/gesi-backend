@@ -10,6 +10,10 @@ export default class OrganizationDto {
   @IsString()
   code: string;
 
+  @ApiProperty({ description: 'Type of the organization' })
+  @IsString()
+  type: string;
+
   @ApiProperty({ description: 'Description of the organization' })
   @IsString()
   description: string;
