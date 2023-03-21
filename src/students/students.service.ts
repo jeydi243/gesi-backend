@@ -8,7 +8,6 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 import { Responsable } from './schemas/responsable.schema';
 import { Student } from './schemas/student.schema';
 import { moveSync } from 'fs-extra';
-import { OrganizationService } from 'src/management/services/organization.service';
 import { UsersService } from 'src/users/users.service';
 import { log } from 'console';
 

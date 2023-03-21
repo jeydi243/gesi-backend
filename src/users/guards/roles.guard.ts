@@ -11,15 +11,24 @@ export class RolesGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     // * List des roles permis d'acceder à cette route
     // * Ces roles sont définis dans le decorator @Roles
-    const roles: string[] = this.reflector.get<string[]>('roles', context.getClass());
+    const authorizedRoles: string[] = this.reflector.get<string[]>('roles', context.getClass());
     const req = context.switchToHttp().getRequest();
-    const currentUserRole = req.user.role;
-    console.log('Current role is : ', currentUserRole);
-    if (roles.includes(currentUserRole)) {
+    const userRoles: string[] = req.user?.roles;
+    console.log({ authorizedRoles }, { userRoles }, { user: req.user });
+    if (req.user) {
+      throw new UnauthorizedException({ message: `You are not logged in` });
+    } else if (this.checkCommonRoles(userRoles, authorizedRoles)) {
       return true;
+    } else throw new UnauthorizedException({ message: `En tant que ${userRoles}, vous ne pouvez pas accèder à cette route. Permissions acces to: ${authorizedRoles}` });
+  }
+  checkCommonRoles(arr1: string[], arr2: string[]): boolean {
+    if (Array.isArray(arr1) && Array.isArray(arr2)) {
+      for (let i = 0; i < arr1.length; i++) {
+        if (arr2.includes(arr1[i])) {
+          return true;
+        }
+      }
     }
-    throw new UnauthorizedException(
-      `En tant que ${currentUserRole}, vous ne pouvez pas accèder à cette route. \n Permissions acces to: ${roles}`,
-    );
+    return false; // looped through all elements and none are present in arr2
   }
 }

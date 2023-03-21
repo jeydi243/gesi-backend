@@ -1,7 +1,7 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
 import { Transform } from 'class-transformer';
 import { Document, Schema as S } from 'mongoose';
-import { defaultOnboarding } from 'src/export.type';
+import { defaultOnboarding } from 'src/config/export.type';
 
 @Schema()
 export class Employee extends Document {

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
-import { DocumentOrganisation, ListLevel, ListStatus } from 'src/export.type';
-import { PersonDto } from 'src/person.base';
+import { DocumentOrganisation, ListLevel, ListStatus } from 'src/config/export.type';
+import { PersonDto } from 'src/config/person.base';
 
 export class CreateStudentDto extends PersonDto {
   @ApiProperty({

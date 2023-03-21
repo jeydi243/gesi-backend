@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsArray, IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf, IsDate } from 'class-validator';
-import { PersonDto } from '../../person.base';
+import { PersonDto } from '../../config/person.base';
 import ExperienceDto from './experience.dto';
 import ContactDto from './contact.dto';
 import EducationDto from './education.dto';

@@ -2,8 +2,8 @@ import { HttpException, HttpStatus, ValidationError, ValidationPipe } from '@nes
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
-import { HttpExceptionFilter } from './filters/http-exception.filter';
-import { OtherException } from './filters/other-exception.filter';
+import { HttpExceptionFilter } from './config/http-exception.filter';
+import { OtherException } from './config/other-exception.filter';
 import * as morganBody from 'morgan-body';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -63,7 +63,7 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(7000);
+  await app.listen(9000);
 }
 
 bootstrap();

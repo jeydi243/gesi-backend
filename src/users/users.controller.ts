@@ -1,43 +1,23 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  NotFoundException,
-  HttpException,
-  HttpStatus,
-  UseGuards,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, HttpException, HttpStatus, UseGuards, InternalServerErrorException } from '@nestjs/common';
+import { User } from './schemas/user.schema';
+import { Roles } from './decorators/role.decorator';
+import { Student } from 'src/students/schemas/student.schema';
+import { UserRole } from 'src/config/export.type';
+import { RolesGuard } from './guards/roles.guard';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './schemas/user.schema';
-import { LoginDto } from './dto/login-user.dto';
-import { User as UserDec } from './decorators/user.decorator';
-import { JwtService } from '@nestjs/jwt';
+import { LoginUserDto } from './dto/login-user.dto';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import * as bcrypt from 'bcrypt';
-import { TokenInterface } from './dto/token.interface';
-import { UpdatePasswordDto } from './dto/update-password.dto';
-import { RolesGuard } from './guards/roles.guard';
-import { Roles } from './decorators/role.decorator';
+import { User as UserDec } from './decorators/user.decorator';
 import { StudentsService } from 'src/students/students.service';
 import { TeachersService } from 'src/teachers/teachers.service';
-import { UserRole } from 'src/export.type';
-import { Student } from 'src/students/schemas/student.schema';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Controller('users')
 // * JwtAuthGuard et RolesGuard sont des guards executé a la suite, l'ordre est important
 export class UsersController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly studentService: StudentsService,
-    private readonly professorService: TeachersService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private readonly usersService: UsersService, private readonly studentService: StudentsService, private readonly professorService: TeachersService) {}
 
   @Post('register')
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -54,48 +34,10 @@ export class UsersController {
   }
 
   @Post('login')
-  async login(@Body() loginDto: LoginDto): Promise<{ [key: string]: any } | string | any> {
+  async login(@Body() loginDto: LoginUserDto): Promise<{ [key: string]: any } | string | any> {
     try {
-      const user: User | null = await this.usersService.findOne(loginDto.username);
-
-      if (!user) {
-        throw new HttpException(
-          {
-            status: HttpStatus.NOT_FOUND,
-            error: 'This user does not exist',
-          },
-          HttpStatus.NOT_FOUND,
-        );
-      }
-      const hashedPassword = user.password;
-      const { password: plainTextPassword } = loginDto;
-      const isPassMatch: boolean = bcrypt.compareSync(plainTextPassword, hashedPassword);
-      if (!isPassMatch) {
-        console.log('Le mot de passe est incorrect: ', hashedPassword, plainTextPassword);
-        throw new HttpException(
-          {
-            status: HttpStatus.FORBIDDEN,
-            error: 'Vous avez entré un mauvais mot de passe',
-          },
-          HttpStatus.FORBIDDEN,
-        );
-        // return 'Le mot de passe est ne correspond 2';
-      } else {
-        console.log('Le mot de passe est correct');
-        const tokenInterface: TokenInterface = {
-          username: user.username,
-          idOfUser: user.id,
-          role: user.role,
-          roleUserID: user.idOfRole,
-        };
-        const token: string = this.jwtService.sign(tokenInterface);
-
-        // return { token };
-        return { user, token };
-        setTimeout(() => {
-          // return this.determinerRole(user.role, token, user.idOfRole);
-        }, 3000);
-      }
+      const user: any = await this.usersService.login(loginDto);
+      return user;
     } catch (err) {
       console.log(err.stack);
       return err;
@@ -164,7 +106,7 @@ export class UsersController {
     }
   }
   async determinerRole(role: string, token: string, id: string) {
-    const reponse: { [key: string]: any } = { token };
+    // const reponse: { [key: string]: any } = { token };
     switch (role) {
       case 'Etudiant':
         const res: any = this.studentService.findOne(id);

@@ -5,7 +5,7 @@ import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { Roles } from 'src/users/decorators/role.decorator';
 import { RolesGuard } from 'src/users/guards/roles.guard';
 import { JwtAuthGuard } from 'src/users/guards/jwt.guard';
-import { UserRole } from 'src/export.type';
+import { UserRole } from 'src/config/export.type';
 import { ApiConsumes } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
 

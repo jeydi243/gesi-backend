@@ -1,18 +1,16 @@
-import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
+import { Global, Module } from '@nestjs/common';
+// import { JwtModule } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
+import { UsersService } from './users.service';
+import { MyJwtStrategy } from './myjwt.strategy';
 import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
-import { TeachersModule } from 'src/teachers/teachers.module';
-import { StudentsModule } from 'src/students/students.module';
+import { UsersController } from './users.controller';
 
+@Global()
 @Module({
-  imports: [
-    PassportModule.register({ defaultStrategy: 'jwt', property: 'user' }),
-    JwtModule.register({ secret: 'jeydi243' }),
-    TeachersModule,
-    StudentsModule,
-  ],
+  imports: [PassportModule.register({ defaultStrategy: 'jwt', property: 'user' })],
   controllers: [UsersController],
-  providers: [],
+  providers: [MyJwtStrategy, JwtService, UsersService],
+  exports: [MyJwtStrategy, JwtService, UsersService],
 })
 export class UsersModule {}

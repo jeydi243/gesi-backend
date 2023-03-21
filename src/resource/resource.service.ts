@@ -49,7 +49,6 @@ export class ResourceService {
       return error.message;
     }
   }
-
   async deleteResource(_id: string): Promise<boolean> {
     try {
       const found = await this.findResourceInfo(_id);

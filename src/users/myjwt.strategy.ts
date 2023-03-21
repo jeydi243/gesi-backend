@@ -7,7 +7,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { TokenInterface } from './dto/token.interface';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class MyJwtStrategy extends PassportStrategy(Strategy) {
   constructor(private usersService: UsersService, private configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -16,16 +16,18 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: TokenInterface) {
+  async validate(username: string, password) {
     try {
-      const user: User = await this.usersService.findOne(payload.username);
+      console.log({ username }, { password });
+
+      const user: User = await this.usersService.findOne(username);
       if (!user) {
-        throw new UnauthorizedException(`User doesn't exist with ${JSON.stringify(payload)}`);
+        throw new UnauthorizedException({ message: `User doesn't exist with ${JSON.stringify(password)}` });
       }
-      const { username, role, idOfRole, id: idOfUser } = user;
-      return { username, role, idOfRole, idOfUser };
+      // const { username, role, idOfRole, id: idOfUser } = user;
+      return { username, /*role, idOfRole, idOfUser*/ };
     } catch (error) {
-      console.log(error);
+      console.log({ error });
     }
   }
 }

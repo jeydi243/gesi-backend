@@ -2,7 +2,7 @@ import { UserSchema } from 'src/users/schemas/user.schema';
 import { EventSchema } from 'src/management/schemas/event.schema';
 import { CourseSchema } from 'src/courses/schemas/course.schema';
 import { UsersService } from 'src/users/users.service';
-import { PersonSchema } from 'src/person.base';
+import { PersonSchema } from 'src/config/person.base';
 import { FiliereSchema } from 'src/management/schemas/filiere.schema';
 import { StudentSchema } from 'src/students/schemas/student.schema';
 import { TeacherSchema } from 'src/teachers/schemas/teacher.schema';
@@ -22,7 +22,7 @@ import { DocumentOrganisationSchema } from 'src/management/schemas/document.sche
 import { GridFsMulterConfigService } from './storage';
 import { MulterModule } from '@nestjs/platform-express';
 // import { MulterModule } from '@nestjs/platform-express';
-
+import { JwtModule, JwtService } from '@nestjs/jwt';
 @Global()
 @Module({
   imports: [
@@ -52,7 +52,7 @@ import { MulterModule } from '@nestjs/platform-express';
     ]),
   ],
   controllers: [ResourceController],
-  providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService,GridFsMulterConfigService],
-  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService],
+  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, CoursesService, ResourceService, UsersService],
+  providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, CoursesService, ResourceService, GridFsMulterConfigService],
 })
 export class ResourceDbModule {}
