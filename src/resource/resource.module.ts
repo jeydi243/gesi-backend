@@ -2,7 +2,7 @@ import { UserSchema } from 'src/users/schemas/user.schema';
 import { EventSchema } from 'src/management/schemas/event.schema';
 import { CourseSchema } from 'src/courses/schemas/course.schema';
 import { UsersService } from 'src/users/users.service';
-import { PersonSchema } from 'src/person.base';
+import { PersonSchema } from 'src/config/person.base';
 import { FiliereSchema } from 'src/management/schemas/filiere.schema';
 import { StudentSchema } from 'src/students/schemas/student.schema';
 import { TeacherSchema } from 'src/teachers/schemas/teacher.schema';

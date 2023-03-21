@@ -26,7 +26,7 @@ import { RolesGuard } from './guards/roles.guard';
 import { Roles } from './decorators/role.decorator';
 import { StudentsService } from 'src/students/students.service';
 import { TeachersService } from 'src/teachers/teachers.service';
-import { UserRole } from 'src/export.type';
+import { UserRole } from 'src/config/export.type';
 import { Student } from 'src/students/schemas/student.schema';
 
 @Controller('users')

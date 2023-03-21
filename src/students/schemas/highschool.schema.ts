@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
-import { Name } from 'src/export.type';
+import { Name } from 'src/config/export.type';
 import validator from 'validator';
 
 

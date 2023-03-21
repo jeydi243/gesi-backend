@@ -2,7 +2,7 @@ import { HighSchool } from './highschool.schema';
 import { Responsable } from './responsable.schema';
 import { Document, Schema as S } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ListLevel, ListStatus, DocumentOrganisation } from 'src/export.type';
+import { ListLevel, ListStatus, DocumentOrganisation } from 'src/config/export.type';
 
 // export type StudentDocument = Student & Document;
 
