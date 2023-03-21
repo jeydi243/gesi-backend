@@ -13,6 +13,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UsersService {
+  // userModel: any = '22';
   constructor(@InjectModel('User') private readonly userModel: Model<User>, private jwtService: JwtService) {}
 
   async register(userDto: CreateUserDto | any): Promise<User | null | Error> {

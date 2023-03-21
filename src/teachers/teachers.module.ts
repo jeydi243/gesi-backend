@@ -3,6 +3,7 @@ import { TeachersController } from './teachers.controller';
 import { ResourceDbModule } from 'src/resource/resource.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { GridFsMulterConfigService } from 'src/resource/storage';
+import { TeachersService } from './teachers.service';
 
 @Global()
 @Module({
@@ -12,6 +13,7 @@ import { GridFsMulterConfigService } from 'src/resource/storage';
     }),
   ],
   controllers: [TeachersController],
-  providers: [],
+  providers: [TeachersService],
+  exports: [TeachersService],
 })
 export class TeachersModule {}
