@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtService } from '@nestjs/jwt';
 import { User } from './schemas/user.schema';
 import * as bcrypt from 'bcrypt';
 import * as generatepass from 'password-generator';
@@ -10,7 +11,7 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel('User') private userModel: Model<User>) {}
+  constructor(@InjectModel('User') private readonly userModel: Model<User>,) {}
 
   async register(userDto: CreateUserDto | any): Promise<User | null | Error> {
     const createdUser = new this.userModel(userDto);
@@ -61,6 +62,10 @@ export class UsersService {
         console.log('Une erreur a été détectée : ' + err + '\n \n');
         return err;
       });
+  }
+
+  async login(user: any) {
+    // return { token: this.jwtservice.sign({ user: user, sub: 1 }) };
   }
   async findOne(username: string): Promise<User | null> {
     return this.userModel

@@ -22,10 +22,12 @@ import { DocumentOrganisationSchema } from 'src/management/schemas/document.sche
 import { GridFsMulterConfigService } from './storage';
 import { MulterModule } from '@nestjs/platform-express';
 // import { MulterModule } from '@nestjs/platform-express';
-
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { UsersModule } from 'src/users/users.module';
 @Global()
 @Module({
   imports: [
+    JwtModule.register({ secret: 'jeydi243' }),
     MulterModule.registerAsync({
       useClass: GridFsMulterConfigService,
     }),
@@ -52,7 +54,7 @@ import { MulterModule } from '@nestjs/platform-express';
     ]),
   ],
   controllers: [ResourceController],
-  providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService,GridFsMulterConfigService],
-  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService],
+  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, CoursesService, ResourceService, UsersService],
+  providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, CoursesService, ResourceService, GridFsMulterConfigService],
 })
 export class ResourceDbModule {}

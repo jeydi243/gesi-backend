@@ -164,7 +164,7 @@ export class UsersController {
     }
   }
   async determinerRole(role: string, token: string, id: string) {
-    const reponse: { [key: string]: any } = { token };
+    // const reponse: { [key: string]: any } = { token };
     switch (role) {
       case 'Etudiant':
         const res: any = this.studentService.findOne(id);

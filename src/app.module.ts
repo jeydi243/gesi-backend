@@ -8,6 +8,8 @@ import { ConfigModule } from '@nestjs/config';
 import { CoursesModule } from './courses/courses.module';
 import { ManagementModule } from './management/management.module';
 import { ResourceDbModule } from './resource/resource.module';
+import { MyJwtStrategy } from './users/myjwt.strategy';
+import { JwtModule } from '@nestjs/jwt';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
@@ -15,6 +17,7 @@ require('dotenv').config();
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD, { directConnection: true, replicaSet: 'foo' }),
+    JwtModule.register({ secret: 'jeydi243' }),
     UsersModule,
     CoursesModule,
     TeachersModule,
@@ -23,7 +26,7 @@ require('dotenv').config();
     ResourceDbModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [MyJwtStrategy],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
