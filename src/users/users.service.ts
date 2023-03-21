@@ -1,5 +1,5 @@
 import { Model, Types as T } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -8,10 +8,12 @@ import { User } from './schemas/user.schema';
 import * as bcrypt from 'bcrypt';
 import * as generatepass from 'password-generator';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { TokenInterface } from './dto/token.interface';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>,) {}
+  constructor(@InjectModel('User') private readonly userModel: Model<User>, private jwtService: JwtService) {}
 
   async register(userDto: CreateUserDto | any): Promise<User | null | Error> {
     const createdUser = new this.userModel(userDto);
@@ -64,8 +66,46 @@ export class UsersService {
       });
   }
 
-  async login(user: any) {
-    // return { token: this.jwtservice.sign({ user: user, sub: 1 }) };
+  async login(loginuserDTO: LoginUserDto) {
+    const user: any = this.userModel.findOne({ username: loginuserDTO.username }).exec();
+    if (!user) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'This user does not exist',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const hashedPassword = user.password;
+    const { password: plainTextPassword } = loginuserDTO;
+    const isPassMatch: boolean = bcrypt.compareSync(plainTextPassword, hashedPassword);
+    if (!isPassMatch) {
+      console.log('Le mot de passe est incorrect: ', hashedPassword, plainTextPassword);
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'Vous avez entré un mauvais mot de passe',
+        },
+        HttpStatus.FORBIDDEN,
+      );
+      // return 'Le mot de passe est ne correspond 2';
+    } else {
+      console.log('Le mot de passe est correct');
+      const tokenInterface: TokenInterface = {
+        username: user.username,
+        idOfUser: user.id,
+        role: user.role,
+        roleUserID: user.idOfRole,
+      };
+      const token: string = this.jwtService.sign(tokenInterface);
+
+      // return { token };
+      return { user, token };
+      setTimeout(() => {
+        // return this.determinerRole(user.role, token, user.idOfRole);
+      }, 3000);
+    }
   }
   async findOne(username: string): Promise<User | null> {
     return this.userModel

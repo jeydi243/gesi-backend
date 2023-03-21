@@ -17,7 +17,7 @@ import { ManagementService } from './services/management.service';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client'),
     }),
-    ResourceDbModule,
+
   ],
   controllers: [ManagementController, EmployeeController],
   providers: [GridFsMulterConfigService, EmployeeService, OrganizationService, ManagementService],

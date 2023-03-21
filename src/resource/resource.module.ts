@@ -23,11 +23,9 @@ import { GridFsMulterConfigService } from './storage';
 import { MulterModule } from '@nestjs/platform-express';
 // import { MulterModule } from '@nestjs/platform-express';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { UsersModule } from 'src/users/users.module';
 @Global()
 @Module({
   imports: [
-    JwtModule.register({ secret: 'jeydi243' }),
     MulterModule.registerAsync({
       useClass: GridFsMulterConfigService,
     }),
