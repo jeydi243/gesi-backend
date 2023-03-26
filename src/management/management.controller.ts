@@ -1,9 +1,9 @@
 import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { DocumentOrganisationDTO } from './dto/document.dto';
+import { DocumentOrganizationDTO } from './dto/document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { ManagementService } from './services/management.service';
-import { DocumentOrganisation } from './schemas/document.schema';
+import { DocumentOrganization } from './schemas/document.schema';
 
 @Controller('management')
 export class ManagementController {
@@ -21,16 +21,16 @@ export class ManagementController {
   }
 
   @Get('documents')
-  async findAllDocuments(): Promise<DocumentOrganisationDTO[] | []> {
+  async findAllDocuments(): Promise<DocumentOrganizationDTO[] | []> {
     return this.managementService.findAllDocuments();
   }
 
   @Post('documents')
-  async addDocument(@Body() createDoc: DocumentOrganisationDTO) {
+  async addDocument(@Body() createDoc: DocumentOrganizationDTO) {
     try {
       console.log({ createDoc });
 
-      const res: DocumentOrganisation | string | Error = await this.managementService.addDocumentSpec(createDoc);
+      const res: DocumentOrganization | string | Error = await this.managementService.addDocumentSpec(createDoc);
       console.log({ res });
       console.log('Type of res is ', typeof res);
       console.log('Instanceof of res is Error', res instanceof Error);
@@ -50,7 +50,7 @@ export class ManagementController {
     console.log('Try to update this document: ', code, body);
 
     try {
-      const response: DocumentOrganisation | null = await this.managementService.updateDocument(code, body);
+      const response: DocumentOrganization | null = await this.managementService.updateDocument(code, body);
       console.log({ response });
 
       if (response != null) {

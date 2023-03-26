@@ -3,16 +3,16 @@ import { Filiere } from '../schemas/filiere.schema';
 import { Employee } from '../schemas/employee.schema';
 import { Injectable } from '@nestjs/common';
 import { FiliereDTO } from '../dto/create-filiere.dto';
-import { DocumentOrganisation } from '../schemas/document.schema';
+import { DocumentOrganization } from '../schemas/document.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { DocumentOrganisationDTO } from '../dto/document.dto';
+import { DocumentOrganizationDTO } from '../dto/document.dto';
 import { UpdateFiliereDto } from '../dto/update-filiere.dto';
 import { UpdateDocumentDto } from '../dto/update-document.dto';
 @Injectable()
 export class ManagementService {
-  constructor(@InjectModel(DocumentOrganisation.name) private DocumentOrganisationModel: Model<DocumentOrganisation>, @InjectModel('Filiere') private filiereModel: Model<Filiere>) {}
+  constructor(@InjectModel(DocumentOrganization.name) private DocumentOrganisationModel: Model<DocumentOrganization>, @InjectModel('Filiere') private filiereModel: Model<Filiere>) {}
 
-  async addDocumentSpec(docDto: DocumentOrganisationDTO): Promise<DocumentOrganisation | string | Error> {
+  async addDocumentSpec(docDto: DocumentOrganizationDTO): Promise<DocumentOrganization | string | Error> {
     const createddoc = new this.DocumentOrganisationModel(docDto);
     console.log({ createddoc });
 
@@ -32,7 +32,7 @@ export class ManagementService {
     }
   }
 
-  async findAllDocuments(): Promise<DocumentOrganisation[] | []> {
+  async findAllDocuments(): Promise<DocumentOrganization[] | []> {
     //return all documents that is not marked as deletedAt
     return this.DocumentOrganisationModel.find({ deletedAt: null }).exec();
   }
@@ -46,10 +46,10 @@ export class ManagementService {
       return error;
     }
   }
-  async remove(code: string): Promise<DocumentOrganisation | void> {
+  async remove(code: string): Promise<DocumentOrganization | void> {
     return this.DocumentOrganisationModel.findOneAndRemove({ code });
   }
-  async updateDocument(code: string, documentUpdate: UpdateDocumentDto): Promise<DocumentOrganisation | null> {
+  async updateDocument(code: string, documentUpdate: UpdateDocumentDto): Promise<DocumentOrganization | null> {
     return this.DocumentOrganisationModel.findOneAndUpdate({ code }, { $set: { ...documentUpdate } }).exec();
   }
   async addFiliere(filiereDto: FiliereDTO): Promise<Filiere | void> {

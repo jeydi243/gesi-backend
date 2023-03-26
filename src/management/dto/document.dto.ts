@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 
-export class DocumentOrganisationDTO {
+export class DocumentOrganizationDTO {
   @IsNotEmpty()
   @MinLength(6)
   @MaxLength(10, { message: 'Code must be longer than 6 characters' })

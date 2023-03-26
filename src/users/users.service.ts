@@ -12,7 +12,7 @@ import { TokenInterface } from './dto/token.interface';
 import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
-export class UsersService {
+export class UsersService { 
   // userModel: any = '22';
   constructor(@InjectModel('User') private readonly userModel: Model<User>, private jwtService: JwtService) {}
 
@@ -66,7 +66,6 @@ export class UsersService {
         return err;
       });
   }
-
   async login(loginuserDTO: LoginUserDto) {
     const user: any = this.userModel.findOne({ username: loginuserDTO.username }).exec();
     if (!user) {

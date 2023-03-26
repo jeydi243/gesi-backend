@@ -23,12 +23,12 @@ require('dotenv').config();
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client'),
     }),
+    ResourceDbModule,
     UsersModule,
     CoursesModule,
     TeachersModule,
     StudentsModule,
     ManagementModule,
-    ResourceDbModule,
   ],
   controllers: [],
   providers: [MyJwtStrategy],
