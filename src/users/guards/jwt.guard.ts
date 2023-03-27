@@ -1,7 +1,6 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { MyJwtStrategy } from '../strategy/myjwt.strategy';
 import { MyStrategy } from 'src/config/export.type';
 
 // ! Ce guard ajoute un objet user à la requète, lorsqu'il valide le token envoyé dans la requete

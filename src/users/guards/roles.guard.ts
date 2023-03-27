@@ -1,7 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { UsersService } from '../users.service';
 
 // ! Ce guard doit etre executé a la suite de JwtAuthGuard,
 // ! car il beneficie de l'object user dans la requete
