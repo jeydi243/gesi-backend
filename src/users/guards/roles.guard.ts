@@ -8,18 +8,22 @@ import { UsersService } from '../users.service';
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
+
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     // * List des roles permis d'acceder à cette route
     // * Ces roles sont définis dans le decorator @Roles
-    const authorizedRoles: string[] = this.reflector.get<string[]>('roles', context.getClass());
+    const requiredRoles: string[] = this.reflector.get<string[]>('roles', context.getClass());
     const req = context.switchToHttp().getRequest();
     const userRoles: string[] = req.user?.roles;
-    console.log({ authorizedRoles }, { userRoles }, { user: req.user });
+
+    console.log('ROLESGUARD: ', { requiredRoles }, { userRoles }, { user: req.user });
+    // console.log({ req });
+
     if (req.user || !userRoles) {
       throw new UnauthorizedException({ message: `You are not logged in or have not role defined` });
-    } else if (this.checkCommonRoles(userRoles, authorizedRoles)) {
+    } else if (this.checkCommonRoles(userRoles, requiredRoles)) {
       return true;
-    } else throw new UnauthorizedException({ message: `En tant que ${userRoles}, vous ne pouvez pas accèder à cette route. Permissions acces to: ${authorizedRoles}` });
+    } else throw new UnauthorizedException({ message: `En tant que ${userRoles}, vous ne pouvez pas accèder à cette route. Permissions acces to: ${requiredRoles}` });
   }
   checkCommonRoles(arr1: string[], arr2: string[]): boolean {
     if (Array.isArray(arr1) && Array.isArray(arr2)) {

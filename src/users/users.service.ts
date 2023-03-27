@@ -34,7 +34,7 @@ export class UsersService {
 
       .then((user: User) => {
         console.log('New user created with id: ', user._id);
-        return this.jwtService.sign({ user });
+        return this.jwtService.sign({ user }, { secret: 'jeydi243' });
       })
       .catch(err => {
         console.log('Une erreur a été détectée : ' + err + '\n \n');

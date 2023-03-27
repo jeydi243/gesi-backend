@@ -5,9 +5,10 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { TokenInterface } from './dto/token.interface';
+import { MyStrategy } from 'src/config/export.type';
 
 @Injectable()
-export class MyJwtStrategy extends PassportStrategy(Strategy) {
+export class MyJwtStrategy extends PassportStrategy(Strategy, MyStrategy.MY_JWT_STRATEGY) {
   constructor(private usersService: UsersService, private configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -25,7 +26,7 @@ export class MyJwtStrategy extends PassportStrategy(Strategy) {
         throw new UnauthorizedException({ message: `User doesn't exist with ${JSON.stringify(password)}` });
       }
       // const { username, role, idOfRole, id: idOfUser } = user;
-      return { username, /*role, idOfRole, idOfUser*/ };
+      return { username /*role, idOfRole, idOfUser*/ };
     } catch (error) {
       console.log({ error });
     }
