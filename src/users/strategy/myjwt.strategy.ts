@@ -19,17 +19,17 @@ export class MyJwtStrategy extends PassportStrategy(Strategy, MyStrategy.MY_JWT_
     });
   }
 
-  async validate(request, payload: string, done: VerifiedCallback): Promise<any> {
+  async validate(request, payload: string): Promise<any> {
     try {
       console.log({ payload });
 
-      const user: User = await this.usersService.findOne(payload);
+      const user: User = await this.usersService.findOne(payload.user.username);
       if (!user) {
         throw new UnauthorizedException({ message: `User doesn't exist with ${JSON.stringify(payload)}` });
       }
       // const { username, role, idOfRole, id: idOfUser } = user;
       //c'est ici que l'objet user doit etre ajouter a la requete autrement dit req.user est crée grace a l'objet qu'on renvoie ici
-      return done({ payload });
+      return payload;
     } catch (error) {
       console.log({ error });
     }

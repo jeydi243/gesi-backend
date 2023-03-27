@@ -12,7 +12,7 @@ export class JwtAuthGuard extends AuthGuard(MyStrategy.MY_JWT_STRATEGY) {
   constructor(private reflector: Reflector) {
     super();
   }
-  canActivate(context: ExecutionContext): boolean {
+  canActivate(context: ExecutionContext) {
     const requiredRoles = this.reflector.get<string[]>('roles', context.getHandler());
     if (!requiredRoles) {
       return true;
@@ -21,15 +21,15 @@ export class JwtAuthGuard extends AuthGuard(MyStrategy.MY_JWT_STRATEGY) {
     const user = request.user;
     console.log('JWTGUARD:', { user }, { requiredRoles } /*, { request }*/);
 
-    return true;
+    return super.canActivate(context);
   }
 
   handleRequest(err, user, info) {
     // You can throw an exception based on either "info" or "err" arguments
-    console.log({ info });
+    console.log({ err, user, info });
 
     if (err || !user) {
-      throw err || new UnauthorizedException('bandakwe');
+      throw err || new UnauthorizedException("Can't handle request please verify");
     }
     return user;
   }
