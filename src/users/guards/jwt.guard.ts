@@ -2,12 +2,13 @@ import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/com
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { MyJwtStrategy } from '../myjwt.strategy';
+import { MyStrategy } from 'src/config/export.type';
 
 // ! Ce guard ajoute un objet user à la requète, lorsqu'il valide le token envoyé dans la requete
 // ! par l'entremise du header Authorization
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
+export class JwtAuthGuard extends AuthGuard(MyStrategy.MY_JWT_STRATEGY) {
   constructor(private reflector: Reflector) {
     super();
   }

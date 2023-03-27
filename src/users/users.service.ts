@@ -101,7 +101,7 @@ export class UsersService {
         role: user.role,
         roleUserID: user.idOfRole,
       };
-      const token: string = this.jwtService.sign(tokenInterface);
+      const token: string = this.jwtService.sign(tokenInterface, { secret: process.env.JWT_SECRET });
 
       // return { token };
       return { user, token };

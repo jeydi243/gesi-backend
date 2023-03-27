@@ -2,7 +2,7 @@ import { User } from './schemas/user.schema';
 import { UsersService } from './users.service';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { ExtractJwt, Strategy, VerifiedCallback } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { TokenInterface } from './dto/token.interface';
 import { MyStrategy } from 'src/config/export.type';
@@ -14,10 +14,12 @@ export class MyJwtStrategy extends PassportStrategy(Strategy, MyStrategy.MY_JWT_
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: configService.get('JWT_SECRET'),
+      passReqToCallback: true,
+      usernameField: 'usernameField',
     });
   }
 
-  async validate(username: string, password) {
+  async validate(username: string, password, done: VerifiedCallback): Promise<any> {
     try {
       console.log({ username }, { password });
 
@@ -26,7 +28,7 @@ export class MyJwtStrategy extends PassportStrategy(Strategy, MyStrategy.MY_JWT_
         throw new UnauthorizedException({ message: `User doesn't exist with ${JSON.stringify(password)}` });
       }
       // const { username, role, idOfRole, id: idOfUser } = user;
-      return { username /*role, idOfRole, idOfUser*/ };
+      done({ username /*role, idOfRole, idOfUser*/ });
     } catch (error) {
       console.log({ error });
     }

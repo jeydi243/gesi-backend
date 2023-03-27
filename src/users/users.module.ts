@@ -6,12 +6,13 @@ import { MyJwtStrategy } from './myjwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { UsersController } from './users.controller';
 import { MyStrategy } from 'src/config/export.type';
+import { Strategy } from 'passport-local';
 
 @Global()
 @Module({
   imports: [PassportModule.register({ defaultStrategy: MyStrategy.MY_JWT_STRATEGY, property: 'user' }), JwtModule.register({ secret: process.env.JWT_SECRET })],
   controllers: [UsersController],
-  providers: [MyJwtStrategy, JwtService, UsersService, JwtModule],
-  exports: [MyJwtStrategy, JwtService, UsersService, JwtModule],
+  providers: [MyJwtStrategy, JwtService, UsersService],
+  exports: [JwtService, UsersService],
 })
 export class UsersModule {}

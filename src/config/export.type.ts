@@ -44,3 +44,6 @@ export enum UserRole {
 export enum MyStrategy {
   MY_JWT_STRATEGY = 'MY_JWT_STRATEGY',
 }
+
+
+// MyStrategy.MY_JWT_STRATEGY
