@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
-import { MyJwtStrategy } from './users/myjwt.strategy';
+import { MyJwtStrategy } from './users/strategy/myjwt.strategy';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { CoursesModule } from './courses/courses.module';
 import { MongooseModule } from '@nestjs/mongoose';
