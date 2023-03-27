@@ -2,9 +2,9 @@ import { User } from '../schemas/user.schema';
 import { UsersService } from '../users.service';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy, VerifiedCallback } from 'passport-jwt';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { TokenInterface } from '../dto/token.interface';
+// import { TokenInterface } from '../dto/token.interface';
 import { MyStrategy } from 'src/config/export.type';
 
 @Injectable()

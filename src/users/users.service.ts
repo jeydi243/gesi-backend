@@ -97,9 +97,9 @@ export class UsersService {
       console.log('Le mot de passe est correct');
       const tokenInterface: TokenInterface = {
         username: user.username,
-        idOfUser: user.id,
+        user_id: user.id,
         role: user.role,
-        roleUserID: user.idOfRole,
+        role_id: user.idOfRole,
       };
       const token: string = this.jwtService.sign(tokenInterface, { secret: process.env.JWT_SECRET });
 
@@ -138,8 +138,9 @@ export class UsersService {
         return err.message;
       });
   }
-  removeBy(idUser: string, updateUserDto: UpdateUserDto) {
-    return `This action removes a #${idUser} user`;
+  removeBy(updatedUserDto: UpdateUserDto) {
+    return this.userModel.remove(updatedUserDto).exec();
+    // return `This action removes user #${{id}} `;
   }
   async updatePassword(idUser: number, updatePasswordDto: UpdatePasswordDto): Promise<boolean> {
     try {

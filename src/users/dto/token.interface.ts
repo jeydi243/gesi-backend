@@ -1,6 +1,6 @@
 export interface TokenInterface {
-  idOfUser: string;
   username: string;
   role: string;
-  roleUserID: string;
+  user_id: string;
+  role_id: string;
 }

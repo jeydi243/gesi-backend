@@ -6,7 +6,6 @@ import { MyJwtStrategy } from './strategy/myjwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { UsersController } from './users.controller';
 import { MyStrategy } from 'src/config/export.type';
-import { Strategy } from 'passport-local';
 
 @Global()
 @Module({
