@@ -15,8 +15,8 @@ export class RolesGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
     const userRoles: string[] = req.user?.roles;
     console.log({ authorizedRoles }, { userRoles }, { user: req.user });
-    if (req.user) {
-      throw new UnauthorizedException({ message: `You are not logged in` });
+    if (req.user || !userRoles) {
+      throw new UnauthorizedException({ message: `You are not logged in or have not role defined` });
     } else if (this.checkCommonRoles(userRoles, authorizedRoles)) {
       return true;
     } else throw new UnauthorizedException({ message: `En tant que ${userRoles}, vous ne pouvez pas accèder à cette route. Permissions acces to: ${authorizedRoles}` });

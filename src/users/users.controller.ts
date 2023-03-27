@@ -20,9 +20,9 @@ export class UsersController {
   constructor(private readonly usersService: UsersService, private readonly studentService: StudentsService, private readonly professorService: TeachersService) {}
 
   @Post('register')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR)
-  register(@Body() createUserDto: CreateUserDto): Promise<CreateUserDto | null | Error> {
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR)
+  register(@Body() createUserDto: CreateUserDto): Promise<string | null> {
     return this.usersService.register(createUserDto);
   }
 

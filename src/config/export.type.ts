@@ -31,13 +31,13 @@ export const defaultOnboarding = [
   { field: 'office_tour', state: false, description: 'Duis quis excepteur nulla aliqua amet fugiat do dolor dolor minim exercitation minim veniam.' },
 ];
 export enum UserRole {
-  ACADEMIQUE = 'ACADEMIQUE',
   ADMINISTRATIF = 'ADMINISTRATIF',
+  ACADEMIQUE = 'ACADEMIQUE',
+  ADMINISTRATEUR = 'ADMINISTRATEUR',
   ADMINISTRATEURBUDGET = 'ADMINISTRATEURBUDGET',
   CAISSIER = 'CAISSIER',
   ETUDIANT = 'ETUDIANT',
   PROFESSEUR = 'PROFESSEUR',
   RESPONSABLEBIBLIOTHEQUE = 'RESPONSABLEBIBLIOTHEQUE',
-  ADMINISTRATEUR = 'ADMINISTRATEUR',
   SUPERADMINISTRATEUR = 'SUPERADMINISTRATEUR',
 }

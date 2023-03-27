@@ -11,25 +11,23 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     super();
   }
   canActivate(context: ExecutionContext): boolean {
-    const roles = this.reflector.get<string[]>('roles', context.getHandler());
-    if (!roles) {
+    const requiredRoles = this.reflector.get<string[]>('roles', context.getHandler());
+    if (!requiredRoles) {
       return true;
     }
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-
-    // return matchRoles(roles, user.roles);
-    console.log({ user });
-
-    console.log('You can pass', request.headers);
+    console.log('JWTGUARD:', { user }, { requiredRoles } /*, { request }*/);
 
     return true;
   }
 
   handleRequest(err, user, info) {
     // You can throw an exception based on either "info" or "err" arguments
+    console.log({ info });
+
     if (err || !user) {
-      throw err || new UnauthorizedException("bandakwe");
+      throw err || new UnauthorizedException('bandakwe');
     }
     return user;
   }

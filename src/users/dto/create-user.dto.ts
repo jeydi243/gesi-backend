@@ -5,22 +5,19 @@ import { UserRole } from 'src/config/export.type';
 
 export class CreateUserDto {
   @IsNotEmpty()
-  @ApiProperty({ required: true, minLength: 6, maxLength: 20, type: String })
+  @ApiProperty({ required: true, minLength: 4, maxLength: 20, type: String })
   username: string;
 
   @IsNotEmpty()
-  @ApiProperty({ required: true, minLength: 6, maxLength: 20, type: String })
+  @ApiProperty({ required: true, minLength: 4, maxLength: 20, type: String })
   password: string;
 
   @ApiProperty({
     required: true,
-    minLength: 6,
-    maxLength: 20,
-    type: String,
-    enum: UserRole,
+    type: Array<UserRole>,
   })
   @IsNotEmpty()
-  role: string;
+  roles: string[];
 
   @Optional()
   @IsNotEmpty()

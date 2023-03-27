@@ -8,9 +8,9 @@ import { Organization } from '../schemas/organization.schema';
 @Injectable()
 export class OrganizationService {
   constructor(@InjectModel('Organization') private orgModel: Model<Organization>) {
-    orgModel.watch().on('change', function (data) {
-      log('You add new organization must create also password %s', data);
-    });
+    // orgModel.watch().on('change', function (data) {
+    //   log('You add new organization must create also password %s', data);
+    // });
   }
   async addOrg(orgDto: OrganizationDto): Promise<OrganizationDto | null> {
     try {

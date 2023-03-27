@@ -8,7 +8,7 @@ import { UserRole } from 'src/config/export.type';
 export class User extends Document {
   @Prop({
     required: true,
-    minlength: 6,
+    minlength: 4,
     maxlength: 20,
     type: String,
     unique: true,
@@ -26,10 +26,11 @@ export class User extends Document {
   @Prop()
   salt: string;
 
-  @Prop({ type: S.Types.ObjectId, enum: UserRole })
+  @Prop({ type: S.Types.ObjectId, ref: 'Person' })
   idOfRole: string;
 
-  @Prop({ enum: UserRole })
-  role: string;
+  @Prop({ type: [String] })
+  roles: string[];
 }
+
 export const UserSchema: S = SchemaFactory.createForClass<User>(User);

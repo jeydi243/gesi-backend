@@ -16,7 +16,7 @@ export class UsersService {
   // userModel: any = '22';
   constructor(@InjectModel('User') private readonly userModel: Model<User>, private jwtService: JwtService) {}
 
-  async register(userDto: CreateUserDto | any): Promise<User | null | Error> {
+  async register(userDto: CreateUserDto | any): Promise<string | null> {
     const createdUser = new this.userModel(userDto);
     createdUser.password = generatepass(12, true, null, `${userDto.__t}`);
     return bcrypt
@@ -34,7 +34,7 @@ export class UsersService {
 
       .then((user: User) => {
         console.log('New user created with id: ', user._id);
-        return user;
+        return this.jwtService.sign({ user });
       })
       .catch(err => {
         console.log('Une erreur a été détectée : ' + err + '\n \n');
@@ -67,8 +67,8 @@ export class UsersService {
       });
   }
 
-  async login(loginuserDTO: LoginUserDto) {
-    const user: any = this.userModel.findOne({ username: loginuserDTO.username }).exec();
+  async login(loginuserDTO: LoginUserDto): Promise<TokenInterface & any> {
+    const user: any = await this.userModel.findOne({ username: loginuserDTO.username }).exec();
     if (!user) {
       throw new HttpException(
         {
@@ -79,7 +79,9 @@ export class UsersService {
       );
     }
     const hashedPassword = user.password;
-    const { password: plainTextPassword } = loginuserDTO;
+    const plainTextPassword = loginuserDTO.password;
+    // console.log({ hashedPassword }, { plainTextPassword }, { user });
+
     const isPassMatch: boolean = bcrypt.compareSync(plainTextPassword, hashedPassword);
     if (!isPassMatch) {
       console.log('Le mot de passe est incorrect: ', hashedPassword, plainTextPassword);

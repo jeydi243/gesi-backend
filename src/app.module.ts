@@ -1,5 +1,4 @@
 import { join } from 'path';
-import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { MyJwtStrategy } from './users/myjwt.strategy';
@@ -19,10 +18,11 @@ require('dotenv').config();
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD, { directConnection: true, replicaSet: 'foo' }),
-    JwtModule.register({ secret: 'jeydi243' }),
+    
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client'),
     }),
+
     UsersModule,
     CoursesModule,
     TeachersModule,

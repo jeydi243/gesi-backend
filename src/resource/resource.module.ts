@@ -21,8 +21,8 @@ import { CourseSessionSchema } from 'src/management/schemas/course_session.schem
 import { DocumentOrganisationSchema } from 'src/management/schemas/document.schema';
 import { GridFsMulterConfigService } from './storage';
 import { MulterModule } from '@nestjs/platform-express';
-// import { MulterModule } from '@nestjs/platform-express';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { OrganizationSchema } from 'src/management/schemas/organization.schema';
+
 @Global()
 @Module({
   imports: [
@@ -31,8 +31,9 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
     }),
     MongooseModule.forFeature([
       { name: 'DocumentOrganisation', schema: DocumentOrganisationSchema },
-      { name: 'Filiere', schema: FiliereSchema },
+      { name: 'Organization', schema: OrganizationSchema },
       { name: 'Responsable', schema: ResponsableSchema },
+      { name: 'Filiere', schema: FiliereSchema },
       { name: 'Course', schema: CourseSchema },
       { name: 'User', schema: UserSchema },
       {
@@ -52,7 +53,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
     ]),
   ],
   controllers: [ResourceController],
-  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, CoursesService, ResourceService, UsersService],
-  providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, CoursesService, ResourceService, GridFsMulterConfigService],
+  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, CoursesService, ResourceService, UsersService, MongooseModule],
+  providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, CoursesService, ResourceService, GridFsMulterConfigService, MongooseModule],
 })
 export class ResourceDbModule {}
