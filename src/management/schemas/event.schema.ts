@@ -1,7 +1,7 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
 
-@Schema({ discriminatorKey: 'type' })
+@Schema({ discriminatorKey: 'type', timestamps: true })
 export class Event extends Document {
   @Prop({ required: true })
   id: string;
@@ -29,6 +29,10 @@ export class Event extends Document {
 
   @Prop({ type: Array, required: false })
   exceptionDates: Array<Date>;
+
+  @Prop({ type: Date })
+  deleteAt: Date | null;
+
 }
 
 export const EventSchema: S = SchemaFactory.createForClass<Event>(Event);

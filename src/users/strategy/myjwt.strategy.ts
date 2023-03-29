@@ -12,26 +12,27 @@ export class MyJwtStrategy extends PassportStrategy(Strategy, MyStrategy.MY_JWT_
   constructor(private usersService: UsersService, private configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
+      ignoreExpiration: true,
       secretOrKey: configService.get('JWT_SECRET'),
-      passReqToCallback: true,
+      // passReqToCallback: true,
       // usernameField: 'usernameField',
     });
   }
 
-  async validate(request, payload: any): Promise<any> {
+  async validate(user: any): Promise<any> {
     try {
-      console.log({ payload });
+      // console.log({ user });
 
-      const user: User = await this.usersService.findOne(payload?.user.username);
-      if (!user) {
-        throw new UnauthorizedException({ message: `User doesn't exist with username ${payload?.user.username}` });
+      const userFound: User = await this.usersService.findOne(user?.username);
+      if (!userFound) {
+        throw new UnauthorizedException({ message: `User doesn't exist with username ${user?.username}` });
       }
       // const { username, role, idOfRole, id: idOfUser } = user;
       //c'est ici que l'objet user doit etre ajouter a la requete autrement dit req.user est crée grace a l'objet qu'on renvoie ici
-      return payload;
+      return user;
     } catch (error) {
       console.log({ error });
+      return {};
     }
   }
 }

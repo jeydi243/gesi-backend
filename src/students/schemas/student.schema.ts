@@ -47,6 +47,7 @@ export class Student extends Document {
 
   @Prop({ required: true, default: 'Etudiant' })
   documents: DocumentOrganisation[];
+
 }
 
 export const StudentSchema: S = SchemaFactory.createForClass<Student>(Student);

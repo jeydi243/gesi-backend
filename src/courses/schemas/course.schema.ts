@@ -38,6 +38,9 @@ export class Course extends Document {
 
   @Prop({ required: true, type: String })
   createdBy: string;
+
+  @Prop({ type: Date })
+  deleteAt: Date | null;
 }
 
 export const CourseSchema: S = SchemaFactory.createForClass<Course>(Course);

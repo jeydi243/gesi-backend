@@ -5,7 +5,7 @@ import { defaultOnboarding } from 'src/config/export.type';
 
 @Schema()
 export class Employee extends Document {
-  @Prop({ type: String, default: "63bfbca56318d5cde41f2fc8" }) //ID of default resource for profile picture
+  @Prop({ type: String, default: '63bfbca56318d5cde41f2fc8' }) //ID of default resource for profile picture
   profile_image: string | null;
 
   @Prop({ type: [String] })
@@ -13,22 +13,13 @@ export class Employee extends Document {
   position: string;
 
   @Prop({ type: String })
-  resume_file: string;
+  resume_file: string | null;
 
   @Prop({ type: String })
   school_name: string;
 
   @Prop({ type: Date })
   school_start_date: Date;
-
-  @Prop({ type: String, unique: true })
-  personal_email: string;
-
-  @Prop({
-    type: String,
-    unique: true,
-  })
-  email: string;
 
   @Prop({ type: Date, required: true })
   hire_date: Date;

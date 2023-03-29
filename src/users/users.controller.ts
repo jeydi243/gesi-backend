@@ -46,7 +46,7 @@ export class UsersController {
 
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR)
+  @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR, UserRole.ETUDIANT)
   async findAll() {
     return this.usersService.findAll();
   }
@@ -90,21 +90,26 @@ export class UsersController {
     }
   }
 
-  @Delete('delete-me')
+  @Delete('delete-me/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR)
+  @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR, UserRole.ETUDIANT)
   async remove(@Param('id') id: string, @UserDec() userDec) {
+    // console.log({ userDec, id });
+
     try {
-      const user: User | null = await this.usersService.deleteOne(userDec.id);
-      if (!user) {
-        throw new NotFoundException("Can't mark this user as deleted");
+      const result: any | null = await this.usersService.deleteOneById(id);
+      if (!result) {
+        console.log({ result });
+
+        throw new NotFoundException("Can't delete user with id " + id);
       }
-      return user;
+      return result;
     } catch (error) {
       console.log(error);
-      return error;
+      throw error;
     }
   }
+
   async determinerRole(role: string, token: string, id: string) {
     // const reponse: { [key: string]: any } = { token };
     switch (role) {

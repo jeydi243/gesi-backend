@@ -4,7 +4,7 @@ import { UserRole } from 'src/config/export.type';
 
 // export type UserDocument = User & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class User extends Document {
   @Prop({
     required: true,
@@ -31,6 +31,9 @@ export class User extends Document {
 
   @Prop({ type: [String] })
   roles: string[];
+
+  @Prop({ type: Date, default: null })
+  deleteAt: Date | null;
 }
 
 export const UserSchema: S = SchemaFactory.createForClass<User>(User);

@@ -12,9 +12,17 @@ import { UpdateExperienceDto } from '../dto/update-experience.dto';
 import ContactDto from '../dto/contact.dto';
 import EducationDTO from '../dto/education.dto';
 import ExperienceDto from '../dto/experience.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class EmployeeService {
+  organisationName = 'test';
+  organisationDomain = 'test.org';
+  constructor(@InjectModel('Employee') private employeeModel: Model<Employee>, @InjectModel('User') private userModel: Model<User>, private readonly userService: UsersService) {
+    // employeeModel.watch().on('change', function (data) {
+    //   console.log("You add new employee must create also password");
+    // });
+  }
   async updateProfileImage(employeeID: string, resource_id: string): Promise<boolean | string> {
     try {
       const resp = await this.employeeModel.findOneAndUpdate({ id: employeeID }, { $set: { profile_image: resource_id } }).exec();
@@ -31,14 +39,6 @@ export class EmployeeService {
     emp.save();
     return {};
   }
-  organisationName = 'test';
-  organisationDomain = 'test.org';
-  constructor(@InjectModel('Employee') private employeeModel: Model<Employee>, @InjectModel('User') private userModel: Model<User>) {
-    // employeeModel.watch().on('change', function (data) {
-    //   console.log("You add new employee must create also password");
-    // });
-  }
-
   async updateEducation(employeeID: string, education: UpdateEducationDto): Promise<[] | null | any> {
     try {
       const resp = await this.employeeModel
@@ -84,12 +84,13 @@ export class EmployeeService {
     return email;
   }
   async addEmployee(employeeDto: EmployeeDto): Promise<EmployeeDto | null> {
-    employeeDto['email'] = [this.createEmail(employeeDto.last_name, employeeDto.middle_name)];
+    employeeDto['email'] = [this.createEmail(employeeDto.last_name.split(' ')[0], employeeDto.middle_name.split(' ')[0])];
     try {
       const createdemployee = new this.employeeModel(employeeDto);
       const result = await createdemployee.save();
       // const createdUser = new this.userModel({ idOfRole,username, password,salt });
       log({ result });
+      await this.userService.register({ ...result, username: 'zododo', role: 'EMPLOYEE' });
       return result.toObject();
     } catch (er) {
       log(er);

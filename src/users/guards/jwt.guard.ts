@@ -18,14 +18,14 @@ export class JwtAuthGuard extends AuthGuard(MyStrategy.MY_JWT_STRATEGY) {
     }
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    console.log('JWTGUARD:', { user }, { requiredRoles } /*, { request }*/);
+    // console.log('JWTGUARD:', { requiredRoles } /*, { request }*/);
 
     return super.canActivate(context);
   }
 
   handleRequest(err, user, info) {
     // You can throw an exception based on either "info" or "err" arguments
-    console.log({ err, user, info });
+    // console.log({ err, user, info });
 
     if (err || !user) {
       throw err || new UnauthorizedException("Can't handle request please verify");

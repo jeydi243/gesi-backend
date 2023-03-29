@@ -68,26 +68,15 @@ export class Person {
 
   @Prop({
     required: true,
+    unique: true,
     validate: {
-      validator: function (v: any) {
-        return validator.isEmail(v);
+      validator: function (v: string[]) {
+        return v.some(v => !validator.isEmail(v));
       },
-      message: props => `${props.value} is not a valid email!`,
+      message: props => `${props.value} contains invalid email!`,
     },
   })
-  email: string;
-
-  @Prop({
-    required: true,
-    validate: {
-      validator: function (v: any) {
-        return validator.isEmail(v);
-      },
-      message: (props: any) => `${props} is not a valid email!`,
-    },
-    type: String,
-  })
-  personal_email: number;
+  email: string[];
 
   @Prop({ type: String, default: null })
   profile_image: string | null;
@@ -127,6 +116,9 @@ export class Person {
 
   @Prop({ type: String, required: true, default: 'CD', minlength: 2, maxlength: 3 })
   cityzenship: string;
+
+  @Prop({ type: Date, default: null })
+  deleteAt: Date | null;
 }
 const P: S = SchemaFactory.createForClass(Person);
 P.virtual('name').get(function () {
@@ -210,7 +202,7 @@ export class PersonDto {
   @Transform(v => new Date(v.value).toISOString())
   @IsDateString({}, { message: ({ value, property }) => `${value} for ${property} is not valid date string` })
   @ValidateIf(o => differenceInYears(new Date(), o.birthay) <= 19, {
-    message: (pr) => 'Apparement vous avez moins de 19 ans',
+    message: pr => 'Apparement vous avez moins de 19 ans',
   })
   birthday: Date;
 
