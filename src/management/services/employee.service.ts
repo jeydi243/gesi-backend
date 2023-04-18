@@ -18,7 +18,7 @@ import { UsersService } from 'src/users/users.service';
 export class EmployeeService {
   organisationName = 'test';
   organisationDomain = 'test.org';
-  constructor(@InjectModel('Employee') private employeeModel: Model<Employee>, @InjectModel('User') private userModel: Model<User>, private readonly userService: UsersService) {
+  constructor(@InjectModel('Employee') private employeeModel: Model<Employee>, @InjectModel('User') private userModel: Model<User>, private userService: UsersService) {
     // employeeModel.watch().on('change', function (data) {
     //   console.log("You add new employee must create also password");
     // });
@@ -75,26 +75,32 @@ export class EmployeeService {
 
     // .projection({ deletedAt: 0, cover_letter: 0, resume: 0, school_diploma: 0 })
   }
-  createEmail(last_name: string, middle_name: string): string {
+  createEmail(first_name: string, last_name: string, middle_name: string): string[] {
     let email = '';
-    email = last_name + '.' + middle_name;
+    email = last_name?.split(' ')[0] + '.' + middle_name?.split(' ')[0] || first_name?.split(' ')[0];
 
     // const currentyear = new Date().getFullYear();
     email = email + '@' + this.organisationDomain;
-    return email;
+    return [email];
   }
-  async addEmployee(employeeDto: EmployeeDto): Promise<EmployeeDto | null> {
-    employeeDto['email'] = [this.createEmail(employeeDto.last_name.split(' ')[0], employeeDto.middle_name.split(' ')[0])];
+  getUsername(employeeDto: EmployeeDto): string {
+    const { last_name, middle_name, first_name } = employeeDto;
+
+    return last_name[0] + middle_name[0] + first_name[0] + 2022;
+  }
+  async addEmployee(employeeDto: EmployeeDto): Promise<Record<string, unknown> | null> {
+    // console.log(employeeDto);
+
+    employeeDto['email'] = this.createEmail(employeeDto.first_name, employeeDto.last_name, employeeDto.middle_name);
     try {
       const createdemployee = new this.employeeModel(employeeDto);
       const result = await createdemployee.save();
-      // const createdUser = new this.userModel({ idOfRole,username, password,salt });
       log({ result });
-      await this.userService.register({ ...result, username: 'zododo', role: 'EMPLOYEE' });
-      return result.toObject();
+      return await this.userService.register({ role_id: result.id, username: this.getUsername(employeeDto), roles: ['EMPLOYEE'] });
+      // return result.toObject();
     } catch (er) {
       log(er);
-      throw er;
+      return er;
     }
   }
   async updatePassword(employeeID: string, password: string): Promise<boolean | null> {

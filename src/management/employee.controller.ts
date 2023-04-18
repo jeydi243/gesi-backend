@@ -56,10 +56,10 @@ export class EmployeeController {
     description: 'The employee has been successfully created.',
     type: EmployeeDto,
   })
-  async addEmployee(@Body() employee): Promise<EmployeeDto | null> {
+  async addEmployee(@Body() employee): Promise<EmployeeDto | null | Record<string, unknown>> {
     log(employee);
     try {
-      const res: EmployeeDto | null = await this.employeeService.addEmployee(employee);
+      const res: Record<string, unknown> | null = await this.employeeService.addEmployee(employee);
       log({ res });
       if (res) {
         return res;

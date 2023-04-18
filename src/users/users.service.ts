@@ -16,16 +16,15 @@ export class UsersService {
   // userModel: any = '22';
   constructor(@InjectModel('User') private readonly userModel: Model<User>, private jwtService: JwtService) {}
 
-  async register(userDto: CreateUserDto | any): Promise<any | null> {
+  async register(userDto: CreateUserDto | any): Promise<Record<string, unknown> | null> {
     try {
       const createdUser = new this.userModel(userDto);
       createdUser.password = generatepass(12, true, null, `${userDto.__t}`);
-      const salt: string = await bcrypt.genSalt();
-      createdUser.salt = salt;
+      createdUser.salt = await bcrypt.genSalt();
       const hashedPassword: string = await bcrypt.hash(userDto.password, createdUser.salt);
       createdUser.password = hashedPassword;
       createdUser.save();
-      const user = this.userModel.findOne({ username: userDto.username });
+      // const user = this.userModel.findOne({ username: userDto.username });
       return { username: userDto.username, password: createdUser.password };
       // return this.jwtService.sign({ user }, { secret: process.env.JWT_SECRET });
     } catch (error) {
@@ -111,7 +110,7 @@ export class UsersService {
     return false;
   }
   async deleteOneById(idUser: string): Promise<any | null> {
-    console.log('Lol',idUser);
+    console.log('Lol', idUser);
 
     return await this.userModel.findByIdAndUpdate(idUser, { $set: { deleteAt: Date.now() } }, { new: true }).exec();
   }

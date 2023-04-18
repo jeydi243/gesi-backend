@@ -22,7 +22,7 @@ export class UsersController {
   @Post('register')
   // @UseGuards(JwtAuthGuard, RolesGuard)
   // @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR)
-  register(@Body() createUserDto: CreateUserDto): Promise<string | null> {
+  register(@Body() createUserDto: CreateUserDto): Promise<string | null | Record<string, unknown>> {
     return this.usersService.register(createUserDto);
   }
 

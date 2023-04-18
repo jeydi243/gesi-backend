@@ -69,10 +69,6 @@ export class EmployeeDto extends PersonDto {
   @ApiProperty({ description: "Domaine d'application", example: ['Math', 'Technique', 'Dessin'] })
   domain: string | string[];
 
-  @ApiProperty({ description: 'Personal Email' })
-  @IsEmail()
-  personal_email: string;
-
   @ApiProperty({ description: 'List of educations' })
   @Optional()
   // @ArrayMinSize(1)

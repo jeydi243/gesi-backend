@@ -4,13 +4,13 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Genre } from './export.type';
 import { differenceInYears } from 'date-fns';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsDateString, IsEmail, IsNotEmpty, isPhoneNumber, IsString, MaxLength, MinLength, ValidateIf, IsArray, IsNumber } from 'class-validator';
+import { IsDateString, IsEmail, IsNotEmpty, isPhoneNumber, IsString, MaxLength, MinLength, ValidateIf, IsArray, IsNumber, isEmail } from 'class-validator';
 import validator from 'validator';
 import PhoneNumber from 'awesome-phonenumber';
 
 // use awesome-phonenumber
 
-@Schema({ timestamps: true, _id: true, autoIndex: true })
+@Schema({ timestamps: true, _id: true, autoIndex: true, discriminatorKey: 'type' })
 export class Person {
   @Prop({
     required: true,
@@ -70,8 +70,12 @@ export class Person {
     required: true,
     unique: true,
     validate: {
-      validator: function (v: string[]) {
-        return v.some(v => !validator.isEmail(v));
+      validator: function (v: string[] | string): boolean {
+        if (Array.isArray(v)) {
+          return v.some(v => validator.isEmail(v));
+        } else {
+          return validator.isEmail(v);
+        }
       },
       message: props => `${props.value} contains invalid email!`,
     },
@@ -186,7 +190,21 @@ export class PersonDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsEmail({ message: ({ value }) => `${value} is not a valid email` })
+  @Transform(({ value }) => {
+    if (Array.isArray(value)) {
+      return value;
+    } else {
+      return [value];
+    }
+  })
+  @ValidateIf((obj, value) => {
+    if (Array.isArray(value)) {
+      return value.some(v => !isEmail(v));
+    } else {
+      return isEmail(value);
+    }
+  })
+  // @IsEmail({ message: ({ value }) => `${value} is not a valid email` })
   email: string[];
 
   @ApiProperty()
