@@ -3,7 +3,7 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { MyJwtStrategy } from './users/strategy/myjwt.strategy';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { CoursesModule } from './courses/courses.module';
+import { ContentsModule } from './contents/contents.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { StudentsModule } from './students/students.module';
 import { TeachersModule } from './teachers/teachers.module';
@@ -24,7 +24,7 @@ require('dotenv').config();
     }),
 
     UsersModule,
-    CoursesModule,
+    ContentsModule,
     TeachersModule,
     StudentsModule,
     ManagementModule,

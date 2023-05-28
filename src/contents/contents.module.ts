@@ -1,8 +1,8 @@
 import { Global, Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import { GridFsMulterConfigService } from 'src/resource/storage';
-import { CoursesController } from './courses.controller';
-import { CoursesService } from './courses.service';
+import { ContentsController } from './contents.controller';
+import { ContentsService } from './contents.service';
 
 @Global()
 @Module({
@@ -11,8 +11,8 @@ import { CoursesService } from './courses.service';
       useClass: GridFsMulterConfigService,
     }),
   ],
-  controllers: [CoursesController],
-  providers: [CoursesService],
-  exports: [CoursesService],
+  controllers: [ContentsController],
+  providers: [ContentsService],
+  exports: [ContentsService],
 })
-export class CoursesModule {}
+export class ContentsModule {}

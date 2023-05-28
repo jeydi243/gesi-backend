@@ -42,9 +42,9 @@ $ npm run start:prod
   - [ ] Affecter un cours
   - [ ] Retirer un cours
   - [ ] Affecter la gestion d'une filière
-  ### Course
-  - [x] Create course
-  - [x] Update un course (ex: Author, pondération)
+  ### Content
+  - [x] Create content
+  - [x] Update un content (ex: Author, pondération)
   - [ ] Delete un cours (ex: Author)
   - [ ] Session:
     - [ ] Créer une session d'un cours avec (Id de l'auteur du cours)

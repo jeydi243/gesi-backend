@@ -3,7 +3,7 @@ import { Schema as S, Document } from 'mongoose';
 import { Teacher, TeacherSchema } from 'src/teachers/schemas/teacher.schema';
 
 @Schema({ _id: true, timestamps: true, autoIndex: true })
-export class Course extends Document {
+export class Content extends Document {
   @Prop({ required: true, type: String })
   title: string;
 
@@ -43,4 +43,4 @@ export class Course extends Document {
   deleteAt: Date | null;
 }
 
-export const CourseSchema: S = SchemaFactory.createForClass<Course>(Course);
+export const ContentSchema: S = SchemaFactory.createForClass<Content>(Content);
