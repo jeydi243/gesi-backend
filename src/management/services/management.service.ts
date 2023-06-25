@@ -10,6 +10,7 @@ import { DocumentOrganisationDTO } from '../dto/document.dto';
 import { UpdateFiliereDTO } from '../dto/update-filiere.dto';
 import { UpdateDocumentDTO } from '../dto/update-document.dto';
 import ClasseDTO from '../dto/classe.dto';
+import LookupsDTO from '../dto/lookups.dto';
 @Injectable()
 export class ManagementService {
   constructor(
@@ -78,6 +79,10 @@ export class ManagementService {
   async addClasse(classeDTO: ClasseDTO): Promise<Classe | void> {
     const createdclasse = new this.classeModel(classeDTO);
     return createdclasse.save();
+  }
+  async addLookups(lookupsDTO: LookupsDTO): Promise<Lookups> {
+    const createdlookups = new this.lookupsModel(lookupsDTO);
+    return createdlookups.save();
   }
   async softDeleteFiliere(code: string): Promise<Filiere | void> {
     return this.filiereModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });

@@ -23,6 +23,7 @@ import { GridFsMulterConfigService } from './storage';
 import { MulterModule } from '@nestjs/platform-express';
 import { OrganizationSchema } from 'src/management/schemas/organization.schema';
 import { LookupsSchema } from 'src/management/schemas/lookups.schema';
+import { ClasseSchema } from 'src/management/schemas/classe.schema';
 
 @Global()
 @Module({
@@ -37,6 +38,7 @@ import { LookupsSchema } from 'src/management/schemas/lookups.schema';
       { name: 'Filiere', schema: FiliereSchema },
       { name: 'Content', schema: ContentSchema },
       { name: 'Lookups', schema: LookupsSchema },
+      { name: 'Classe', schema: ClasseSchema },
       { name: 'User', schema: UserSchema },
       {
         name: 'Event',
