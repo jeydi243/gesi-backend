@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { log } from 'console';
 import { Model } from 'mongoose';
-import OrganizationDto from '../dto/org.dto';
+import OrganizationDto from '../dto/organization.dto';
 import { Organization } from '../schemas/organization.schema';
 
 @Injectable()

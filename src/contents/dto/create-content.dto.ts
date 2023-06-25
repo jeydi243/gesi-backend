@@ -10,6 +10,10 @@ export class CreateContentDto {
   @IsString()
   description: string;
 
+  @ApiProperty({ default: 'course' })
+  @IsString()
+  type: string;
+
   @ApiProperty()
   @IsNotEmpty()
   @ArrayNotEmpty()
@@ -20,6 +24,7 @@ export class CreateContentDto {
   images: string[];
 
   @ApiProperty()
+  @IsNotEmpty()
   price: Record<string, string>;
 
   @ApiProperty()
@@ -32,8 +37,13 @@ export class CreateContentDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsMongoId({ message: args => `${args.value} is not valid ${args.property}` })
+  //@IsMongoId({ message: args => `${args.value} is not valid ${args.property}` })
   createdBy: string;
+
+  @ApiProperty()
+  //@IsNotEmpty({})
+  //@IsMongoId({ message: args => `${args.value} is not valid ${args.property}` })
+  updatedBy: string;
 
   @ApiProperty()
   @IsString()

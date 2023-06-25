@@ -10,8 +10,8 @@ export class Content extends Document {
   @Prop({ required: false })
   images: Record<string, any>[];
 
-  @Prop({ required: true, type: [TeacherSchema], ref: 'Teacher' })
-  authors: Teacher[];
+  @Prop({ required: true /*,type: [TeacherSchema], ref: 'Teacher' */})
+  authors: [];
 
   @Prop({ required: true, type: String, length: [30, 500] })
   description: string;
