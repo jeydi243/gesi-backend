@@ -1,16 +1,16 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateTeacherDto } from './dto/create-teacher.dto';
-import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { CreateTeacherDTO } from './dto/create-teacher.dto';
+import { UpdateTeacherDTO } from './dto/update-teacher.dto';
 import { Teacher } from './schemas/teacher.schema';
 
 @Injectable()
 export class TeachersService {
   constructor(@InjectModel('Teacher') private teacherModel: Model<Teacher>) {}
-  async create(createProfessorDto: CreateTeacherDto) {
+  async create(createProfessorDTO: CreateTeacherDTO) {
     try {
-      const prof = await new this.teacherModel(createProfessorDto);
+      const prof = await new this.teacherModel(createProfessorDTO);
       return prof.save();
     } catch (error) {
       console.log(error);
@@ -35,19 +35,19 @@ export class TeachersService {
   findById(id: string) {
     return this.teacherModel.findById(id).$where('this.isDeleted == false').exec();
   }
-  findWhere(where: UpdateTeacherDto) {
+  findWhere(where: UpdateTeacherDTO) {
     return this.teacherModel.find(where).$where('this.isDeleted == false').exec();
   }
-  async updateById(id: string, updateProfessorDto: UpdateTeacherDto): Promise<Teacher | null> {
+  async updateById(id: string, updateProfessorDTO: UpdateTeacherDTO): Promise<Teacher | null> {
     try {
       const isNotDeleted: any = await this.teacherModel.exists({ _id: id, isDeleted: false });
-      if (isNotDeleted) return this.teacherModel.findByIdAndUpdate(id, updateProfessorDto);
+      if (isNotDeleted) return this.teacherModel.findByIdAndUpdate(id, updateProfessorDTO);
       return null;
     } catch (error) {
       return null;
     }
   }
-  async updateWhere(where: UpdateTeacherDto, fieldsToUpdate: UpdateTeacherDto): Promise<Teacher | null> {
+  async updateWhere(where: UpdateTeacherDTO, fieldsToUpdate: UpdateTeacherDTO): Promise<Teacher | null> {
     try {
       const isNotDeleted: any = await this.teacherModel.exists({ ...where, isDeleted: false });
       if (isNotDeleted) {
@@ -66,7 +66,7 @@ export class TeachersService {
     return this.teacherModel.findOneAndUpdate({ _id: id }, { isDeleted: true, deletedAt: new Date() });
   }
   //delete where some condition are meet
-  deleteWhere(where: UpdateTeacherDto) {
+  deleteWhere(where: UpdateTeacherDTO) {
     return this.teacherModel.findOneAndUpdate(where, { isDeleted: true, deletedAt: new Date() });
   }
 }

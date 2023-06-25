@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsArray, IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf, IsDate } from 'class-validator';
-import { PersonDto } from '../../config/person.base';
-import ExperienceDto from './experience.dto';
-import ContactDto from './contact.dto';
-import EducationDto from './education.dto';
+import { PersonDTO } from '../../config/person.base';
+import ExperienceDTO from './experience.dto';
+import ContactDTO from './contact.dto';
+import EducationDTO from './education.dto';
 import { Optional } from '@nestjs/common';
 
-export class EmployeeDto extends PersonDto {
+export class EmployeeDTO extends PersonDTO {
   // @ApiProperty()
   // resume_file: File | Blob;
 
@@ -72,17 +72,17 @@ export class EmployeeDto extends PersonDto {
   @ApiProperty({ description: 'List of educations' })
   @Optional()
   // @ArrayMinSize(1)
-  educations: EducationDto[];
+  educations: EducationDTO[];
 
   @ApiProperty({ description: 'List of emergency contacts' })
   @Optional()
   // @ArrayMinSize(1)
-  emergencyContacts: ContactDto[];
+  emergencyContacts: ContactDTO[];
 
   @ApiProperty({ description: 'List of experiences over the time' })
   @Optional()
   // @ArrayMinSize(0)
-  experiences: ExperienceDto[];
+  experiences: ExperienceDTO[];
 
   @ApiProperty({ description: 'List of skills' })
   @Transform(v => v.value.split(','))

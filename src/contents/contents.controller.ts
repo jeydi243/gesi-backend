@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFiles, UseInterceptors, Query } from '@nestjs/common';
 import { ContentsService } from './contents.service';
-import { CreateContentDto } from './dto/create-content.dto';
-import { UpdateContentDto } from './dto/update-content.dto';
+import { CreateContentDTO } from './dto/create-content.dto';
+import { UpdateContentDTO } from './dto/update-content.dto';
 import { Types } from 'mongoose';
 import { ApiConsumes } from '@nestjs/swagger';
 import { ResourceService } from 'src/resource/resource.service';
@@ -15,8 +15,8 @@ export class ContentsController {
   constructor(private readonly contentsService: ContentsService, private readonly resourceService: ResourceService) {}
 
   @Post()
-  create(@Body() createContentDto: CreateContentDto) {
-    return this.contentsService.create(createContentDto);
+  create(@Body() createContentDTO: CreateContentDTO) {
+    return this.contentsService.create(createContentDTO);
   }
 
   @Post('/:contentID/content_image')
@@ -65,8 +65,8 @@ export class ContentsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateContentDto: UpdateContentDto) {
-    return this.contentsService.update(+id, updateContentDto);
+  update(@Param('id') id: string, @Body() updateContentDTO: UpdateContentDTO) {
+    return this.contentsService.update(+id, updateContentDTO);
   }
 
   @Delete(':id')

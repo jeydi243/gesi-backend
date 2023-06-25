@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import OrganizationDto from './dto/organization.dto';
+import OrganizationDTO from './dto/organization.dto';
 import { OrganizationService } from './services/organization.service';
 
 @Controller('organization')
@@ -7,7 +7,7 @@ export default class OrgsController {
   constructor(private readonly orgService: OrganizationService) {}
 
   @Post('')
-  async addOrg(@Body() createOrg: OrganizationDto) {
+  async addOrg(@Body() createOrg: OrganizationDTO) {
     try {
       const result = this.orgService.addOrg(createOrg);
       return result;

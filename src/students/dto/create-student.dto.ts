@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { DocumentOrganisation, ListLevel, ListStatus } from 'src/config/export.type';
-import { PersonDto } from 'src/config/person.base';
+import { PersonDTO } from 'src/config/person.base';
 
-export class CreateStudentDto extends PersonDto {
+export class CreateStudentDTO extends PersonDTO {
   @ApiProperty({
     example: 'CANDIDAT',
     default: 'CANDIDAT',

@@ -1,19 +1,26 @@
 import { Model } from 'mongoose';
 import { Filiere } from '../schemas/filiere.schema';
-import { Employee } from '../schemas/employee.schema';
+import { Lookups } from '../schemas/lookups.schema';
+import { Classe } from '../schemas/classe.schema';
 import { Injectable } from '@nestjs/common';
 import { FiliereDTO } from '../dto/create-filiere.dto';
 import { DocumentOrganisation } from '../schemas/document.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { DocumentOrganisationDTO } from '../dto/document.dto';
-import { UpdateFiliereDto } from '../dto/update-filiere.dto';
-import { UpdateDocumentDto } from '../dto/update-document.dto';
+import { UpdateFiliereDTO } from '../dto/update-filiere.dto';
+import { UpdateDocumentDTO } from '../dto/update-document.dto';
+import ClasseDTO from '../dto/classe.dto';
 @Injectable()
 export class ManagementService {
-  constructor(@InjectModel(DocumentOrganisation.name) private DocumentOrganisationModel: Model<DocumentOrganisation>, @InjectModel('Filiere') private filiereModel: Model<Filiere>) {}
+  constructor(
+    @InjectModel(DocumentOrganisation.name) private DocumentOrganisationModel: Model<DocumentOrganisation>,
+    @InjectModel('Filiere') private filiereModel: Model<Filiere>,
+    @InjectModel('Lookups') private lookupsModel: Model<Lookups>,
+    @InjectModel('Classe') private classeModel: Model<Classe>,
+  ) {}
 
-  async addDocumentSpec(docDto: DocumentOrganisationDTO): Promise<DocumentOrganisation | string | Error> {
-    const createddoc = new this.DocumentOrganisationModel(docDto);
+  async addDocumentSpec(docDTO: DocumentOrganisationDTO): Promise<DocumentOrganisation | string | Error> {
+    const createddoc = new this.DocumentOrganisationModel(docDTO);
     console.log({ createddoc });
 
     try {
@@ -31,10 +38,12 @@ export class ManagementService {
       return Error(error);
     }
   }
-
   async findAllDocuments(): Promise<DocumentOrganisation[] | []> {
     //return all documents that is not marked as deletedAt
     return this.DocumentOrganisationModel.find({ deletedAt: null }).exec();
+  }
+  async findAllLookups(): Promise<Lookups[] | []> {
+    return this.lookupsModel.find({ deletedAt: null }).exec();
   }
   async deleteDocument(code: string): Promise<boolean | object> {
     try {
@@ -46,15 +55,29 @@ export class ManagementService {
       return error;
     }
   }
+  async deleteLookups(code: string): Promise<boolean | object> {
+    try {
+      const doc = await this.lookupsModel.findOne({ code }).exec();
+      doc.deletedAt = new Date();
+      await doc.save();
+      return doc['deletedAt'] != null;
+    } catch (error) {
+      return error;
+    }
+  }
   async remove(code: string): Promise<DocumentOrganisation | void> {
     return this.DocumentOrganisationModel.findOneAndRemove({ code });
   }
-  async updateDocument(code: string, documentUpdate: UpdateDocumentDto): Promise<DocumentOrganisation | null> {
+  async updateDocument(code: string, documentUpdate: UpdateDocumentDTO): Promise<DocumentOrganisation | null> {
     return this.DocumentOrganisationModel.findOneAndUpdate({ code }, { $set: { ...documentUpdate } }).exec();
   }
-  async addFiliere(filiereDto: FiliereDTO): Promise<Filiere | void> {
-    const createdfiliere = new this.filiereModel(filiereDto);
+  async addFiliere(filiereDTO: FiliereDTO): Promise<Filiere | void> {
+    const createdfiliere = new this.filiereModel(filiereDTO);
     return createdfiliere.save();
+  }
+  async addClasse(classeDTO: ClasseDTO): Promise<Classe | void> {
+    const createdclasse = new this.classeModel(classeDTO);
+    return createdclasse.save();
   }
   async softDeleteFiliere(code: string): Promise<Filiere | void> {
     return this.filiereModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });
@@ -62,7 +85,7 @@ export class ManagementService {
   async removeFiliere(code: string): Promise<Filiere | void> {
     return this.filiereModel.findOneAndRemove({ code });
   }
-  async updateFiliere(code: string, filiereUpdate: UpdateFiliereDto): Promise<Filiere | null | string> {
+  async updateFiliere(code: string, filiereUpdate: UpdateFiliereDTO): Promise<Filiere | null | string> {
     const filiere = await this.filiereModel.findOne({ code });
     if (filiere) {
       if (filiereUpdate.manager != filiereUpdate.sub_manager) {

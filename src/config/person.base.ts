@@ -129,7 +129,7 @@ P.virtual('name').get(function () {
   return this.first_name + ' ' + this.middle_name + ' ' + this.last_name;
 });
 export const PersonSchema = P;
-export class addressDto {
+export class addressDTO {
   @ApiProperty()
   @IsString()
   avenue: string;
@@ -153,7 +153,7 @@ export class addressDto {
   @IsNumber({ allowNaN: true })
   zip_code?: number;
 }
-export class PersonDto {
+export class PersonDTO {
   // create data transfer object for Teacher class
 
   @ApiProperty({ type: String, description: 'The first name', example: ['Franck Kessler', 'Paul George'] })
@@ -232,5 +232,5 @@ export class PersonDto {
 
   @ApiProperty({ description: 'Address of person' })
   @IsNotEmpty()
-  address: addressDto;
+  address: addressDTO;
 }

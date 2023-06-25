@@ -22,6 +22,7 @@ import { DocumentOrganisationSchema } from 'src/management/schemas/document.sche
 import { GridFsMulterConfigService } from './storage';
 import { MulterModule } from '@nestjs/platform-express';
 import { OrganizationSchema } from 'src/management/schemas/organization.schema';
+import { LookupsSchema } from 'src/management/schemas/lookups.schema';
 
 @Global()
 @Module({
@@ -35,6 +36,7 @@ import { OrganizationSchema } from 'src/management/schemas/organization.schema';
       { name: 'Responsable', schema: ResponsableSchema },
       { name: 'Filiere', schema: FiliereSchema },
       { name: 'Content', schema: ContentSchema },
+      { name: 'Lookups', schema: LookupsSchema },
       { name: 'User', schema: UserSchema },
       {
         name: 'Event',

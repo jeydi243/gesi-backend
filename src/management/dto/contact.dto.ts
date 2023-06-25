@@ -2,7 +2,7 @@ import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString } from 'class-validator';
 
-export default class ContactDto {
+export default class ContactDTO {
   @ApiProperty({ required: false, type: String })
   // @IsString()
   @Optional()

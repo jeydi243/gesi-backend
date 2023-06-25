@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsDate, IsString, Allow } from 'class-validator';
 
-export default class ExperienceDto {
+export default class ExperienceDTO {
   @Allow()
   @ApiProperty({ description: 'ID of experience' })
   id?: string;

@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { CreateResponsableDto } from './dto/create-responsable.dto';
-import { CreateStudentDto } from './dto/create-student.dto';
-import { UpdateResponsableDto } from './dto/update-responsable.dto';
-import { UpdateStudentDto } from './dto/update-student.dto';
+import { CreateResponsableDTO } from './dto/create-responsable.dto';
+import { CreateStudentDTO } from './dto/create-student.dto';
+import { UpdateResponsableDTO } from './dto/update-responsable.dto';
+import { UpdateStudentDTO } from './dto/update-student.dto';
 import { Responsable } from './schemas/responsable.schema';
 import { Student } from './schemas/student.schema';
 import { moveSync } from 'fs-extra';
@@ -19,10 +19,10 @@ export class StudentsService {
     @InjectModel('Responsable')
     private responsableModel: Model<Responsable>,
   ) {}
-  async add(createStudentDto: CreateStudentDto): Promise<Student | null> {
+  async add(createStudentDTO: CreateStudentDTO): Promise<Student | null> {
     let saved_Student: Student & { _id: Types.ObjectId } = null;
     try {
-      const createdStudent = new this.studentModel(createStudentDto);
+      const createdStudent = new this.studentModel(createStudentDTO);
       saved_Student = await createdStudent.save();
       this.userService.register(saved_Student);
     } catch (error) {
@@ -67,10 +67,10 @@ export class StudentsService {
     // return `This action returns a #${id} student`;
   }
 
-  async updateOne(id: string, updateStudentDto: UpdateStudentDto) {
-    // return this.studentModel.updateOne({ _id: id }, updateStudentDto);
+  async updateOne(id: string, updateStudentDTO: UpdateStudentDTO) {
+    // return this.studentModel.updateOne({ _id: id }, updateStudentDTO);
     try {
-      const student = await this.studentModel.findByIdAndUpdate({ _id: id }, updateStudentDto, {
+      const student = await this.studentModel.findByIdAndUpdate({ _id: id }, updateStudentDTO, {
         new: true,
         returnDocument: 'after',
         lean: true,
@@ -92,8 +92,8 @@ export class StudentsService {
       return true;
     });
   }
-  async addResponsable(idStudent: string, respoDto: CreateResponsableDto) {
-    const createdResponsable = new this.responsableModel(respoDto);
+  async addResponsable(idStudent: string, respoDTO: CreateResponsableDTO) {
+    const createdResponsable = new this.responsableModel(respoDTO);
     // this.studentModel
     //   .findByIdAndUpdate(
     //     { _id: idStudent },
@@ -146,8 +146,8 @@ export class StudentsService {
         return err;
       });
   }
-  async updateResponsable(idResponsable: string, updateResponsableDto: UpdateResponsableDto) {
-    return this.responsableModel.findByIdAndUpdate({ _id: idResponsable }, updateResponsableDto, {
+  async updateResponsable(idResponsable: string, updateResponsableDTO: UpdateResponsableDTO) {
+    return this.responsableModel.findByIdAndUpdate({ _id: idResponsable }, updateResponsableDTO, {
       new: true,
       returnDocument: 'after',
       lean: true,

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { log } from 'console';
 import { Model } from 'mongoose';
-import OrganizationDto from '../dto/organization.dto';
+import OrganizationDTO from '../dto/organization.dto';
 import { Organization } from '../schemas/organization.schema';
 
 @Injectable()
@@ -12,9 +12,9 @@ export class OrganizationService {
     //   log('You add new organization must create also password %s', data);
     // });
   }
-  async addOrg(orgDto: OrganizationDto): Promise<OrganizationDto | null> {
+  async addOrg(orgDTO: OrganizationDTO): Promise<OrganizationDTO | null> {
     try {
-      const createdorg = new this.orgModel(orgDto);
+      const createdorg = new this.orgModel(orgDTO);
       const result = await createdorg.save();
       // const createdUser = new this.userModel({ idOfRole,username, password,salt });
       log({ result });

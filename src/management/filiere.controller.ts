@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
 import { FiliereDTO } from './dto/create-filiere.dto';
-import { UpdateFiliereDto } from './dto/update-filiere.dto';
+import { UpdateFiliereDTO } from './dto/update-filiere.dto';
 import { ManagementService } from './services/management.service';
 @Controller('filiere')
 export class FiliereController {
@@ -19,7 +19,7 @@ export class FiliereController {
     return this.managementService.removeFiliere(code);
   }
   @Patch('filieres/update/:code')
-  updateFiliere(@Query('code') code: string, @Body() body: UpdateFiliereDto) {
+  updateFiliere(@Query('code') code: string, @Body() body: UpdateFiliereDTO) {
     return this.managementService.updateFiliere(code, body);
   }
 }

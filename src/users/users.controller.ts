@@ -5,14 +5,14 @@ import { Student } from 'src/students/schemas/student.schema';
 import { UserRole } from 'src/config/export.type';
 import { RolesGuard } from './guards/roles.guard';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
+import { CreateUserDTO } from './dto/create-user.dto';
+import { LoginUserDTO } from './dto/login-user.dto';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import * as bcrypt from 'bcrypt';
 import { User as UserDec } from './decorators/user.decorator';
 import { StudentsService } from 'src/students/students.service';
 import { TeachersService } from 'src/teachers/teachers.service';
-import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UpdatePasswordDTO } from './dto/update-password.dto';
 
 @Controller('users')
 // * JwtAuthGuard et RolesGuard sont des guards executé a la suite, l'ordre est important
@@ -22,8 +22,8 @@ export class UsersController {
   @Post('register')
   // @UseGuards(JwtAuthGuard, RolesGuard)
   // @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR)
-  register(@Body() createUserDto: CreateUserDto): Promise<string | null | Record<string, unknown>> {
-    return this.usersService.register(createUserDto);
+  register(@Body() createUserDTO: CreateUserDTO): Promise<string | null | Record<string, unknown>> {
+    return this.usersService.register(createUserDTO);
   }
 
   @Post('logout/:idUser')
@@ -34,9 +34,9 @@ export class UsersController {
   }
 
   @Post('login')
-  async login(@Body() loginDto: LoginUserDto): Promise<{ [key: string]: any } | string | any> {
+  async login(@Body() loginDTO: LoginUserDTO): Promise<{ [key: string]: any } | string | any> {
     try {
-      const user: any = await this.usersService.login(loginDto);
+      const user: any = await this.usersService.login(loginDTO);
       return user;
     } catch (err) {
       console.log(err.stack);
@@ -54,7 +54,7 @@ export class UsersController {
   @Patch('update-password')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ACADEMIQUE, UserRole.ADMINISTRATIF, UserRole.ADMINISTRATEUR)
-  async updatePassword(@Body() updatePasswordDto: UpdatePasswordDto, @UserDec() userDec) {
+  async updatePassword(@Body() updatePasswordDTO: UpdatePasswordDTO, @UserDec() userDec) {
     try {
       const user: User | null = await this.usersService.findOne(userDec.username);
 
@@ -68,7 +68,7 @@ export class UsersController {
         );
       }
       const { password: hashedPassword } = user;
-      const { oldPassword: plainTextPassword } = updatePasswordDto;
+      const { oldPassword: plainTextPassword } = updatePasswordDTO;
       const isPassMatch = bcrypt.compareSync(plainTextPassword, hashedPassword);
 
       if (!isPassMatch) {
@@ -81,7 +81,7 @@ export class UsersController {
         );
       }
       // * Si le mot de passe actuel est correct on le changer
-      const isUpdated: boolean = await this.usersService.updatePassword(user.id, updatePasswordDto);
+      const isUpdated: boolean = await this.usersService.updatePassword(user.id, updatePasswordDTO);
       if (!isUpdated) return "Le mot de passe n'a pas été changé";
       return 'Le mot de passe a été changé avec succès';
     } catch (err) {

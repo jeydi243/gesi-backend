@@ -5,13 +5,13 @@ import { Model } from 'mongoose';
 import { Employee } from '../schemas/employee.schema';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { EmployeeDto } from '../dto/employee.dto';
-import { UpdateEmployeeDto } from '../dto/update-employee.dto';
-import { UpdateEducationDto } from '../dto/update-education.dto';
-import { UpdateExperienceDto } from '../dto/update-experience.dto';
-import ContactDto from '../dto/contact.dto';
+import { EmployeeDTO } from '../dto/employee.dto';
+import { UpdateEmployeeDTO } from '../dto/update-employee.dto';
+import { UpdateEducationDTO } from '../dto/update-education.dto';
+import { UpdateExperienceDTO } from '../dto/update-experience.dto';
+import ContactDTO from '../dto/contact.dto';
 import EducationDTO from '../dto/education.dto';
-import ExperienceDto from '../dto/experience.dto';
+import ExperienceDTO from '../dto/experience.dto';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -39,7 +39,7 @@ export class EmployeeService {
     emp.save();
     return {};
   }
-  async updateEducation(employeeID: string, education: UpdateEducationDto): Promise<[] | null | any> {
+  async updateEducation(employeeID: string, education: UpdateEducationDTO): Promise<[] | null | any> {
     try {
       const resp = await this.employeeModel
         .findOneAndUpdate({ id: employeeID, 'educations.id': education.id }, { $set: { 'educations.$': education } })
@@ -52,7 +52,7 @@ export class EmployeeService {
       return er;
     }
   }
-  async updateExperence(employeeID: string, experience: UpdateExperienceDto): Promise<UpdateExperienceDto[] | null | any> {
+  async updateExperence(employeeID: string, experience: UpdateExperienceDTO): Promise<UpdateExperienceDTO[] | null | any> {
     try {
       log('Dans le service %s', experience.id);
       const resp = await this.employeeModel
@@ -65,7 +65,7 @@ export class EmployeeService {
       console.log(error);
     }
   }
-  async employeeBy(id: string): Promise<EmployeeDto | any> {
+  async employeeBy(id: string): Promise<EmployeeDTO | any> {
     return this.employeeModel.findOne({ id }).exec();
   }
   async getEmployees(): Promise<Employee[] | null | any> {
@@ -83,20 +83,20 @@ export class EmployeeService {
     email = email + '@' + this.organisationDomain;
     return [email];
   }
-  getUsername(employeeDto: EmployeeDto): string {
-    const { last_name, middle_name, first_name } = employeeDto;
+  getUsername(employeeDTO: EmployeeDTO): string {
+    const { last_name, middle_name, first_name } = employeeDTO;
 
     return last_name[0] + middle_name[0] + first_name[0] + 2022;
   }
-  async addEmployee(employeeDto: EmployeeDto): Promise<Record<string, unknown> | null> {
-    // console.log(employeeDto);
+  async addEmployee(employeeDTO: EmployeeDTO): Promise<Record<string, unknown> | null> {
+    // console.log(employeeDTO);
 
-    employeeDto['email'] = this.createEmail(employeeDto.first_name, employeeDto.last_name, employeeDto.middle_name);
+    employeeDTO['email'] = this.createEmail(employeeDTO.first_name, employeeDTO.last_name, employeeDTO.middle_name);
     try {
-      const createdemployee = new this.employeeModel(employeeDto);
+      const createdemployee = new this.employeeModel(employeeDTO);
       const result = await createdemployee.save();
       log({ result });
-      return await this.userService.register({ role_id: result.id, username: this.getUsername(employeeDto), roles: ['EMPLOYEE'] });
+      return await this.userService.register({ role_id: result.id, username: this.getUsername(employeeDTO), roles: ['EMPLOYEE'] });
       // return result.toObject();
     } catch (er) {
       log(er);
@@ -129,12 +129,12 @@ export class EmployeeService {
     }
     return;
   }
-  async add_experience(employeeID: string, experience: ExperienceDto): Promise<Employee | void> {
+  async add_experience(employeeID: string, experience: ExperienceDTO): Promise<Employee | void> {
     experience.id = uniqid();
     log('BUZE2: ', JSON.stringify(experience));
     return await this.employeeModel.findByIdAndUpdate(employeeID, { $push: { experiences: JSON.parse(JSON.stringify(experience)) } }).exec();
   }
-  async add_contact(employeeID: string, contact: ContactDto): Promise<ContactDto | null> {
+  async add_contact(employeeID: string, contact: ContactDTO): Promise<ContactDTO | null> {
     contact.id = uniqid();
     log({ contact });
     try {
@@ -249,7 +249,7 @@ export class EmployeeService {
   async removeEmployee(code: string): Promise<Employee | void> {
     return this.employeeModel.findOneAndRemove({ code });
   }
-  async updateEmployee(employeeID: string, employeeUpdate: UpdateEmployeeDto): Promise<Employee | null | string> {
+  async updateEmployee(employeeID: string, employeeUpdate: UpdateEmployeeDTO): Promise<Employee | null | string> {
     const employee = await this.employeeModel.findOne({ _id: employeeID });
     if (employee) {
       return this.employeeModel.findOneAndUpdate({ employeeID }, { $set: { ...employeeUpdate } }).exec();

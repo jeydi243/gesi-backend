@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, Allow } from 'class-validator';
 
-export default class LookupsDto {
+export default class LookupsDTO {
   @Allow()
   @ApiProperty({ description: 'ID of Lookups' })
   id?: string;
@@ -14,9 +14,9 @@ export default class LookupsDto {
   @IsString()
   name: string;
 
-  @ApiProperty({ description: 'Classe of Lookups' })
+  @ApiProperty({ description: 'Classe of Lookups', required: true })
   @IsString()
-  classe: string;
+  classe?: string;
 
   @ApiProperty({ description: 'Description of Lookups' })
   @IsString()
@@ -24,5 +24,5 @@ export default class LookupsDto {
 
   @ApiProperty({ description: 'Parent of lookups' })
   @IsString()
-  parent_lookups_id: string;
+  parent_lookups_id?: string;
 }

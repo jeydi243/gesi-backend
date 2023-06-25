@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsMongoId } from 'class-validator';
 import { UserRole } from 'src/config/export.type';
 
-export class CreateUserDto {
+export class CreateUserDTO {
   @IsNotEmpty()
   @ApiProperty({ required: true, minLength: 4, maxLength: 20, type: String })
   username: string;

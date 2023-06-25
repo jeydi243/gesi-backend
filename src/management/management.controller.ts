@@ -1,9 +1,10 @@
 import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DocumentOrganisationDTO } from './dto/document.dto';
-import { UpdateDocumentDto } from './dto/update-document.dto';
+import { UpdateDocumentDTO } from './dto/update-document.dto';
 import { ManagementService } from './services/management.service';
 import { DocumentOrganisation } from './schemas/document.schema';
+import LookupsDTO from './dto/lookups.dto';
 
 @Controller('management')
 export class ManagementController {
@@ -46,7 +47,7 @@ export class ManagementController {
   }
 
   @Patch('documents/update/:code')
-  async updateDocument(@Param('code') code: string, @Body() body: UpdateDocumentDto) {
+  async updateDocument(@Param('code') code: string, @Body() body: UpdateDocumentDTO) {
     console.log('Try to update this document: ', code, body);
 
     try {
@@ -72,6 +73,27 @@ export class ManagementController {
         return true;
       } else {
         throw new NotFoundException(`Can't delete document with code ${code}`);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Get('lookups')
+  async findAllLookups(): Promise<LookupsDTO[] | []> {
+    return this.managementService.findAllLookups();
+  }
+
+  @Delete('lookups')
+  async deleteLookups(@Body('code') code: string) {
+    try {
+      const res: boolean | any = await this.managementService.deleteLookups(code);
+      console.log({ res });
+
+      if (res === true) {
+        return true;
+      } else {
+        throw new NotFoundException(`Can't delete lookups with code ${code}`);
       }
     } catch (error) {
       throw error;

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, ValidateIf, isDate, IsMongoId } from 'class-validator';
 
-export default class OrganizationDto {
+export default class OrganizationDTO {
   @ApiProperty({ description: 'Name of the organization' })
   @IsString()
   name: string;

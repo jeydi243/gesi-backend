@@ -20,17 +20,17 @@ import { log } from 'console';
 import { Request } from 'express';
 import { Employee } from './schemas/employee.schema';
 import { moveSync } from 'fs-extra';
-import { EmployeeDto } from './dto/employee.dto';
+import { EmployeeDTO } from './dto/employee.dto';
 import { EmployeeService } from './services/employee.service';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { UpdateEducationDto } from './dto/update-education.dto';
-import { UpdateExperienceDto } from './dto/update-experience.dto';
+import { UpdateEmployeeDTO } from './dto/update-employee.dto';
+import { UpdateEducationDTO } from './dto/update-education.dto';
+import { UpdateExperienceDTO } from './dto/update-experience.dto';
 import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiCreatedResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import buildLink from 'src/config/utils';
-import ContactDto from './dto/contact.dto';
+import ContactDTO from './dto/contact.dto';
 import EducationDTO from './dto/education.dto';
-import ExperienceDto from './dto/experience.dto';
+import ExperienceDTO from './dto/experience.dto';
 @Controller('employees')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
@@ -54,9 +54,9 @@ export class EmployeeController {
   @ApiOperation({ summary: 'Register new employee', description: 'Register a new employee' })
   @ApiCreatedResponse({
     description: 'The employee has been successfully created.',
-    type: EmployeeDto,
+    type: EmployeeDTO,
   })
-  async addEmployee(@Body() employee): Promise<EmployeeDto | null | Record<string, unknown>> {
+  async addEmployee(@Body() employee): Promise<EmployeeDTO | null | Record<string, unknown>> {
     log(employee);
     try {
       const res: Record<string, unknown> | null = await this.employeeService.addEmployee(employee);
@@ -113,7 +113,7 @@ export class EmployeeController {
 
   @Patch('/:employeeID')
   @ApiOperation({ summary: 'Update employee', description: 'Update an employee' })
-  async updateEmployee(@Param('employeeID') employeeID: string, @Body() employee: UpdateEmployeeDto) {
+  async updateEmployee(@Param('employeeID') employeeID: string, @Body() employee: UpdateEmployeeDTO) {
     const res: string | Employee = await this.employeeService.updateEmployee(employeeID, employee);
     if (typeof res !== 'string') {
       return res;
@@ -144,10 +144,10 @@ export class EmployeeController {
   })
   @ApiResponse({ status: 201, description: 'The contact has been successfully added.' })
   @ApiResponse({ status: 200, description: 'The contact has been successfully added.' })
-  async add_contact(@Param('employeeID') employeeID: string, @Body() contact: ContactDto): Promise<ContactDto | null> {
+  async add_contact(@Param('employeeID') employeeID: string, @Body() contact: ContactDTO): Promise<ContactDTO | null> {
     log('Add contact for employee: ', employeeID, contact);
     try {
-      const res: ContactDto | null = await this.employeeService.add_contact(employeeID, contact);
+      const res: ContactDTO | null = await this.employeeService.add_contact(employeeID, contact);
       if (res) {
         return res;
       }
@@ -164,10 +164,10 @@ export class EmployeeController {
   })
   @ApiResponse({ status: 201, description: 'The experience has been successfully added.' })
   @ApiResponse({ status: 200, description: 'The experience has been successfully added.' })
-  async add_experience(@Param('employeeID') employeeID: string, @Body() experience: ExperienceDto): Promise<ExperienceDto | null> {
+  async add_experience(@Param('employeeID') employeeID: string, @Body() experience: ExperienceDTO): Promise<ExperienceDTO | null> {
     log('Add experience to employee: ', employeeID, experience);
     try {
-      const res: ExperienceDto | any = await this.employeeService.add_experience(employeeID, experience);
+      const res: ExperienceDTO | any = await this.employeeService.add_experience(employeeID, experience);
       if (res != null) {
         return res;
       } else {
@@ -254,7 +254,7 @@ export class EmployeeController {
 
   @Patch('/:employeeID/update_experience')
   @ApiOperation({ summary: 'Update experience for employee', description: 'Update an employee' })
-  async updateExperience(@Param('employeeID') employeeID: string, @Body() experience: UpdateExperienceDto) {
+  async updateExperience(@Param('employeeID') employeeID: string, @Body() experience: UpdateExperienceDTO) {
     try {
       const res: [] = await this.employeeService.updateExperence(employeeID, experience);
       if (res && Array.isArray(res)) {
@@ -269,7 +269,7 @@ export class EmployeeController {
 
   @Patch('/:employeeID/update_education?:educationID')
   @ApiOperation({ summary: 'Update education for employee', description: 'Update employee by changing education' })
-  async updateEducation(@Param('employeeID') employeeID: string, @Body() education: UpdateEducationDto) {
+  async updateEducation(@Param('employeeID') employeeID: string, @Body() education: UpdateEducationDTO) {
     try {
       const res: [] = await this.employeeService.updateEducation(employeeID, education);
       log({ res });

@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, BadRequestException, UploadedFiles } from '@nestjs/common';
 import { StudentsService } from './students.service';
-import { CreateStudentDto } from './dto/create-student.dto';
-import { UpdateStudentDto } from './dto/update-student.dto';
-import { CreateResponsableDto } from './dto/create-responsable.dto';
-import { UpdateResponsableDto } from './dto/update-responsable.dto';
+import { CreateStudentDTO } from './dto/create-student.dto';
+import { UpdateStudentDTO } from './dto/update-student.dto';
+import { CreateResponsableDTO } from './dto/create-responsable.dto';
+import { UpdateResponsableDTO } from './dto/update-responsable.dto';
 import { Student } from './schemas/student.schema';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express/multer';
 import { moveSync } from 'fs-extra';
@@ -15,9 +15,9 @@ export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
   @Post()
-  async create(@Body() createStudentDto: CreateStudentDto) {
+  async create(@Body() createStudentDTO: CreateStudentDTO) {
     try {
-      const student: Student | void = await this.studentsService.add(createStudentDto);
+      const student: Student | void = await this.studentsService.add(createStudentDTO);
       return { student };
     } catch (err) {
       return err.message;
@@ -50,8 +50,8 @@ export class StudentsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
-    return this.studentsService.updateOne(id, updateStudentDto);
+  update(@Param('id') id: string, @Body() updateStudentDTO: UpdateStudentDTO) {
+    return this.studentsService.updateOne(id, updateStudentDTO);
   }
 
   @Delete(':id')
@@ -61,9 +61,9 @@ export class StudentsController {
 
   //section des responsables
   @Post('/:id/responsables')
-  async addResponsable(@Param('id') idStudent: string, @Body() respoDto: CreateResponsableDto) {
+  async addResponsable(@Param('id') idStudent: string, @Body() respoDTO: CreateResponsableDTO) {
     return this.studentsService
-      .addResponsable(idStudent, respoDto)
+      .addResponsable(idStudent, respoDTO)
       .then(result => {
         console.log(`add responsable to student with id ${idStudent}, result: `, result);
         return result;
@@ -83,8 +83,8 @@ export class StudentsController {
     return this.studentsService.getResponsable(idStudent, idResponsable);
   }
   @Patch('/:id/responsables/:idResponsable')
-  async updateResponsable(@Param('id') idStudent: string, @Param('idResponsable') idResponsable: string, @Body() updateResponsableDto: UpdateResponsableDto) {
-    return this.studentsService.updateResponsable(idResponsable, updateResponsableDto);
+  async updateResponsable(@Param('id') idStudent: string, @Param('idResponsable') idResponsable: string, @Body() updateResponsableDTO: UpdateResponsableDTO) {
+    return this.studentsService.updateResponsable(idResponsable, updateResponsableDTO);
   }
 
   @Patch('/:id/documents/:code')

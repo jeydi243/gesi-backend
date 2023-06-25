@@ -6,7 +6,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class CreateResponsableDto {
+export class CreateResponsableDTO {
   @IsNotEmpty()
   @MinLength(6)
   @ApiProperty({ type: String, required: true, minLength: 6, maxLength: 20 })

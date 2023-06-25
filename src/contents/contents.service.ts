@@ -1,5 +1,5 @@
-import { CreateContentDto } from './dto/create-content.dto';
-import { UpdateContentDto } from './dto/update-content.dto';
+import { CreateContentDTO } from './dto/create-content.dto';
+import { UpdateContentDTO } from './dto/update-content.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { Content } from './schemas/content.schema';
@@ -8,8 +8,8 @@ import { Model, Types } from 'mongoose';
 @Injectable()
 export class ContentsService {
   constructor(@InjectModel(Content.name) private contentModel: Model<Content>) {}
-  async create(createContentDto: CreateContentDto) {
-    const student = new this.contentModel(createContentDto);
+  async create(createContentDTO: CreateContentDTO) {
+    const student = new this.contentModel(createContentDTO);
     return student.save();
   }
 
@@ -63,8 +63,8 @@ export class ContentsService {
     return this.contentModel.find({ author: author });
   }
 
-  update(id: number, updateContentDto: UpdateContentDto) {
-    return this.contentModel.findOneAndUpdate({ id }, updateContentDto);
+  update(id: number, updateContentDTO: UpdateContentDTO) {
+    return this.contentModel.findOneAndUpdate({ id }, updateContentDTO);
   }
 
   remove(id: number) {

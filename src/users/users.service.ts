@@ -1,46 +1,46 @@
 import { Model, Types as T } from 'mongoose';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDTO } from './dto/create-user.dto';
+import { UpdateUserDTO } from './dto/update-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { User } from './schemas/user.schema';
 import * as bcrypt from 'bcrypt';
 import * as generatepass from 'password-generator';
-import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { TokenInterface } from './dto/token.interface';
-import { LoginUserDto } from './dto/login-user.dto';
+import { LoginUserDTO } from './dto/login-user.dto';
 
 @Injectable()
 export class UsersService {
   // userModel: any = '22';
   constructor(@InjectModel('User') private readonly userModel: Model<User>, private jwtService: JwtService) {}
 
-  async register(userDto: CreateUserDto | any): Promise<Record<string, unknown> | null> {
+  async register(userDTO: CreateUserDTO | any): Promise<Record<string, unknown> | null> {
     try {
-      const createdUser = new this.userModel(userDto);
-      createdUser.password = generatepass(12, true, null, `${userDto.__t}`);
+      const createdUser = new this.userModel(userDTO);
+      createdUser.password = generatepass(12, true, null, `${userDTO.__t}`);
       createdUser.salt = await bcrypt.genSalt();
-      const hashedPassword: string = await bcrypt.hash(userDto.password, createdUser.salt);
+      const hashedPassword: string = await bcrypt.hash(userDTO.password, createdUser.salt);
       createdUser.password = hashedPassword;
       createdUser.save();
-      // const user = this.userModel.findOne({ username: userDto.username });
-      return { username: userDto.username, password: createdUser.password };
+      // const user = this.userModel.findOne({ username: userDTO.username });
+      return { username: userDTO.username, password: createdUser.password };
       // return this.jwtService.sign({ user }, { secret: process.env.JWT_SECRET });
     } catch (error) {
       console.log('Une erreur a été détectée : ' + error + '\n \n');
       return error;
     }
   }
-  async registerRoot(userDto: CreateUserDto): Promise<User | any> {
-    const createdUser = new this.userModel(userDto);
+  async registerRoot(userDTO: CreateUserDTO): Promise<User | any> {
+    const createdUser = new this.userModel(userDTO);
 
     return bcrypt
       .genSalt()
       .then((salt: string) => {
         console.log('Salt created for root: ' + salt);
         createdUser.salt = salt;
-        return bcrypt.hash(userDto.password, createdUser.salt);
+        return bcrypt.hash(userDTO.password, createdUser.salt);
       })
       .then((hashedPassword: string) => {
         createdUser.password = hashedPassword;
@@ -58,7 +58,7 @@ export class UsersService {
       });
   }
 
-  async login(loginuserDTO: LoginUserDto): Promise<TokenInterface & any> {
+  async login(loginuserDTO: LoginUserDTO): Promise<TokenInterface & any> {
     const user: any = await this.userModel.findOne({ username: loginuserDTO.username }).exec();
     if (!user) {
       throw new HttpException(
@@ -132,14 +132,14 @@ export class UsersService {
         return err.message;
       });
   }
-  removeBy(updatedUserDto: UpdateUserDto) {
-    return this.userModel.remove(updatedUserDto).exec();
+  removeBy(updatedUserDTO: UpdateUserDTO) {
+    return this.userModel.remove(updatedUserDTO).exec();
     // return `This action removes user #${{id}} `;
   }
-  async updatePassword(idUser: number, updatePasswordDto: UpdatePasswordDto): Promise<boolean> {
+  async updatePassword(idUser: number, updatePasswordDTO: UpdatePasswordDTO): Promise<boolean> {
     try {
       const salt = bcrypt.genSaltSync();
-      const hashedPassword = bcrypt.hashSync(updatePasswordDto.newPassword, salt);
+      const hashedPassword = bcrypt.hashSync(updatePasswordDTO.newPassword, salt);
       await this.userModel.findOneAndUpdate({ _id: idUser }, { $set: { password: hashedPassword, salt } }).exec();
       return true;
     } catch (err) {

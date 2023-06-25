@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { TeachersService } from './teachers.service';
-import { CreateTeacherDto } from './dto/create-teacher.dto';
-import { UpdateTeacherDto } from './dto/update-teacher.dto';
+import { CreateTeacherDTO } from './dto/create-teacher.dto';
+import { UpdateTeacherDTO } from './dto/update-teacher.dto';
 import { Roles } from 'src/users/decorators/role.decorator';
 import { RolesGuard } from 'src/users/guards/roles.guard';
 import { JwtAuthGuard } from 'src/users/guards/jwt.guard';
@@ -17,8 +17,8 @@ export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {}
 
   @Post()
-  async create(@Body() createProfessorDto: CreateTeacherDto) {
-    return this.teachersService.create(createProfessorDto);
+  async create(@Body() createProfessorDTO: CreateTeacherDTO) {
+    return this.teachersService.create(createProfessorDTO);
   }
 
   @Post('/:teacherID/content_image')
@@ -49,13 +49,13 @@ export class TeachersController {
   }
 
   @Patch(':id')
-  async updateById(@Query('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto) {
-    return this.teachersService.updateById(id, updateTeacherDto);
+  async updateById(@Query('id') id: string, @Body() updateTeacherDTO: UpdateTeacherDTO) {
+    return this.teachersService.updateById(id, updateTeacherDTO);
   }
 
   @Patch('where')
-  async updateWhere(@Body() body, @Body() updateTeacherDto: UpdateTeacherDto) {
-    return this.teachersService.updateWhere(body.where, updateTeacherDto);
+  async updateWhere(@Body() body, @Body() updateTeacherDTO: UpdateTeacherDTO) {
+    return this.teachersService.updateWhere(body.where, updateTeacherDTO);
   }
 
   @Delete(':id')
