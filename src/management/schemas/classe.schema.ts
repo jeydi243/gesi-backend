@@ -14,6 +14,11 @@ export class Classe extends Document {
 
   @Prop({ type: String, default: null })
   deletedAt: Date | null;
+
+  @Prop({
+    type: [{ type: S.Types.ObjectId, ref: 'Person' }],
+  })
+  createdBy?: string;
 }
 
 export const ClasseSchema: S = SchemaFactory.createForClass<Classe>(Classe);

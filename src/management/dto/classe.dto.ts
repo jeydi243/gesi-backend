@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, Allow } from 'class-validator';
+import { IsString, Allow, IsMongoId } from 'class-validator';
 
 export default class ClasseDTO {
   @Allow()
@@ -21,4 +21,8 @@ export default class ClasseDTO {
   @ApiProperty({ description: 'Parent of Classe' })
   @IsString()
   parent_classe_id?: string;
+
+  @ApiProperty({ description: 'Created by' })
+  @IsMongoId()
+  createdBy?: string;
 }

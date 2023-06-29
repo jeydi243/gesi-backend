@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, Allow } from 'class-validator';
+import { IsString, Allow, IsDate, IsMongoId } from 'class-validator';
 
 export default class LookupsDTO {
   @Allow()
@@ -25,4 +25,8 @@ export default class LookupsDTO {
   @ApiProperty({ description: 'Parent of lookups' })
   @IsString()
   parent_lookups_id?: string;
+
+  @ApiProperty({ description: 'Created by' })
+  @IsMongoId()
+  createdBy?: string;
 }

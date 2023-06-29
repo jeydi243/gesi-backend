@@ -9,15 +9,19 @@ export class Lookups extends Document {
   @Prop({ required: true, type: String })
   name: string;
 
+  @Prop({ type: S.Types.ObjectId, ref: 'Classe' })
+  classe: string;
+
   @Prop({ type: String, required: true })
   description: string;
 
   @Prop({ type: String, default: null })
   deletedAt: Date | null;
+
+  @Prop({
+    type: { type: S.Types.ObjectId, ref: 'Person' },
+  })
+  createdBy?: string;
 }
 
 export const LookupsSchema: S = SchemaFactory.createForClass<Lookups>(Lookups);
-
-// DocumentOrgSchema.pre('save', () => {
-//   // console.log('Pre-save DocumentOrg is : ', this);
-// });

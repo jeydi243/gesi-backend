@@ -54,6 +54,9 @@ export class Employee extends Document {
   @Prop({ type: Array, required: false })
   skills: string[];
 
+  @Prop({ type: Array, required: false })
+  roles: string[];
+
   @Prop({ type: String, default: null })
   deletedAt: Date | null;
 }

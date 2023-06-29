@@ -89,7 +89,14 @@ export class EmployeeDTO extends PersonDTO {
   @Optional()
   @IsArray()
   // @ArrayMinSize(2)
+
   skills: string[];
+  @ApiProperty({ description: 'List of Employee role or function' })
+  @Transform(v => v.value.split(','))
+  @Optional()
+  @IsArray()
+  // @ArrayMinSize(2)
+  roles: string[];
 
   @ApiProperty({ description: 'Onboardings state of user' })
   @Optional()
