@@ -11,13 +11,12 @@ import { JwtAuthGuard } from './guards/jwt.guard';
 import * as bcrypt from 'bcrypt';
 import { User as UserDec } from './decorators/user.decorator';
 import { StudentsService } from 'src/students/students.service';
-import { TeachersService } from 'src/teachers/teachers.service';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 
 @Controller('users')
 // * JwtAuthGuard et RolesGuard sont des guards executé a la suite, l'ordre est important
 export class UsersController {
-  constructor(private readonly usersService: UsersService, private readonly studentService: StudentsService, private readonly professorService: TeachersService) {}
+  constructor(private readonly usersService: UsersService, private readonly studentService: StudentsService) {}
 
   @Post('register')
   // @UseGuards(JwtAuthGuard, RolesGuard)
@@ -125,11 +124,6 @@ export class UsersController {
           );
         }
         return res;
-
-        break;
-      case 'Professor':
-        return this.professorService.findById(id);
-        break;
       default:
         break;
     }

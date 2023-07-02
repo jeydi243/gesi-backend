@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Schema as S, Document } from 'mongoose';
-import { Teacher, TeacherSchema } from 'src/teachers/schemas/teacher.schema';
 
 @Schema({ _id: true, timestamps: true, autoIndex: true })
 export class Content extends Document {
@@ -10,7 +9,7 @@ export class Content extends Document {
   @Prop({ required: false })
   images: Record<string, any>[];
 
-  @Prop({ required: true /*,type: [TeacherSchema], ref: 'Teacher' */})
+  @Prop({ required: true /*,type: [TeacherSchema], ref: 'Teacher' */ })
   authors: [];
 
   @Prop({ required: true, type: String, length: [30, 500] })

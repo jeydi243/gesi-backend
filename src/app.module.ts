@@ -1,3 +1,4 @@
+import * as helmet from 'helmet';
 import { join } from 'path';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
@@ -6,8 +7,6 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ContentsModule } from './contents/contents.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { StudentsModule } from './students/students.module';
-import { TeachersModule } from './teachers/teachers.module';
-import * as helmet from 'helmet';
 import { ManagementModule } from './management/management.module';
 import { ResourceDbModule } from './resource/resource.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -25,7 +24,6 @@ require('dotenv').config();
 
     UsersModule,
     ContentsModule,
-    TeachersModule,
     StudentsModule,
     ManagementModule,
     ResourceDbModule,

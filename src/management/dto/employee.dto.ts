@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsArray, IsEmail, isString, IsString, MaxLength, MinLength, ValidateIf, IsDate } from 'class-validator';
+import { IsArray, isString, IsString, MaxLength, MinLength, ValidateIf, IsDate } from 'class-validator';
 import { PersonDTO } from '../../config/person.base';
 import ExperienceDTO from './experience.dto';
 import ContactDTO from './contact.dto';
