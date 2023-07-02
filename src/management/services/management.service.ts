@@ -43,6 +43,10 @@ export class ManagementService {
     //return all documents that is not marked as deletedAt
     return this.DocumentOrganisationModel.find({ deletedAt: null }).exec();
   }
+  async getAllClasses(): Promise<Classe[] | []> {
+    //return all documents that is not marked as deletedAt
+    return this.classeModel.find({ deletedAt: null }).exec();
+  }
   async findAllLookups(): Promise<Lookups[] | []> {
     return this.lookupsModel.find({ deletedAt: null }).exec();
   }
@@ -76,7 +80,7 @@ export class ManagementService {
     const createdfiliere = new this.filiereModel(filiereDTO);
     return createdfiliere.save();
   }
-  async addClasse(classeDTO: ClasseDTO): Promise<Classe | void> {
+  async addClasse(classeDTO: ClasseDTO): Promise<ClasseDTO | null> {
     const createdclasse = new this.classeModel(classeDTO);
     return createdclasse.save();
   }

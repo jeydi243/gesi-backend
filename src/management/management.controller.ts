@@ -4,8 +4,6 @@ import { DocumentOrganisationDTO } from './dto/document.dto';
 import { UpdateDocumentDTO } from './dto/update-document.dto';
 import { ManagementService } from './services/management.service';
 import { DocumentOrganisation } from './schemas/document.schema';
-import LookupsDTO from './dto/lookups.dto';
-import { Lookups } from './schemas/lookups.schema';
 
 @Controller('management')
 export class ManagementController {
@@ -80,42 +78,5 @@ export class ManagementController {
     }
   }
 
-  @Get('lookups')
-  async findAllLookups(): Promise<LookupsDTO[] | []> {
-    return this.managementService.findAllLookups();
-  }
-  @Post('lookups')
-  async addLookups(@Body() lookups: LookupsDTO) {
-    try {
-      console.log({ lookups });
 
-      const res: Lookups | string | Error = await this.managementService.addLookups(lookups);
-      console.log({ res });
-      console.log('Type of res is ', typeof res);
-      console.log('Instanceof of res is Error', res instanceof Error);
-      console.log('Keys of res ', Object.keys(res));
-      console.log('Key _doc of res ', res['_doc']);
-      console.log('res hasOwnProperty _doc == ', res?.hasOwnProperty('_doc'));
-
-      if (!(res instanceof Error)) return res;
-      else throw new BadRequestException(res, res['messagge']);
-    } catch (error) {
-      throw error;
-    }
-  }
-  @Delete('lookups')
-  async deleteLookups(@Body('code') code: string) {
-    try {
-      const res: boolean | any = await this.managementService.deleteLookups(code);
-      console.log({ res });
-
-      if (res === true) {
-        return true;
-      } else {
-        throw new NotFoundException(`Can't delete lookups with code ${code}`);
-      }
-    } catch (error) {
-      throw error;
-    }
-  }
 }

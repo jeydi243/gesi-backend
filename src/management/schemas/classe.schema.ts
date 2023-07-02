@@ -13,7 +13,7 @@ export class Classe extends Document {
   description: string;
 
   @Prop({ type: String, default: null })
-  deletedAt: Date | null;
+  deletedAt?: Date | null;
 
   @Prop({
     type: [{ type: S.Types.ObjectId, ref: 'Person' }],

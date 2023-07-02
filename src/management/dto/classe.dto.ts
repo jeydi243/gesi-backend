@@ -18,10 +18,6 @@ export default class ClasseDTO {
   @IsString()
   description: string;
 
-  @ApiProperty({ description: 'Parent of Classe' })
-  @IsString()
-  parent_classe_id?: string;
-
   @ApiProperty({ description: 'Created by' })
   @IsMongoId()
   createdBy?: string;
