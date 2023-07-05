@@ -85,8 +85,14 @@ export class ManagementService {
     return createdclasse.save();
   }
   async addLookups(lookupsDTO: LookupsDTO): Promise<Lookups> {
-    const createdlookups = new this.lookupsModel(lookupsDTO);
-    return createdlookups.save();
+    try {
+      const createdlookups = new this.lookupsModel(lookupsDTO);
+      const result = await createdlookups.save();
+      return result;
+    } catch (error) {
+      console.log(error.errors);
+      throw error;
+    }
   }
   async softDeleteFiliere(code: string): Promise<Filiere | void> {
     return this.filiereModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });

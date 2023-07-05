@@ -10,9 +10,9 @@ export class Lookups extends Document {
   name: string;
 
   @Prop({ type: S.Types.ObjectId, ref: 'Classe' })
-  classe: string;
+  classe_id: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: true, maxlength: 10 })
   description: string;
 
   @Prop({ type: String, default: null })

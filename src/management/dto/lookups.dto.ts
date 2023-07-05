@@ -16,7 +16,7 @@ export default class LookupsDTO {
 
   @ApiProperty({ description: 'Classe of Lookups', required: true })
   @IsString()
-  classe?: string;
+  classe_id?: string;
 
   @ApiProperty({ description: 'Description of Lookups' })
   @IsString()
