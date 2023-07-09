@@ -30,20 +30,26 @@ export const defaultOnboarding = [
   { field: 'work_space', state: false, description: 'Nulla tempor voluptate excepteur culpa dolore aliquip tempor.' },
   { field: 'office_tour', state: false, description: 'Duis quis excepteur nulla aliqua amet fugiat do dolor dolor minim exercitation minim veniam.' },
 ];
-export enum UserRole {
-  ADMINISTRATIF = 'ADMINISTRATIF',
-  ACADEMIQUE = 'ACADEMIQUE',
-  ADMINISTRATEUR = 'ADMINISTRATEUR',
-  ADMINISTRATEURBUDGET = 'ADMINISTRATEURBUDGET',
-  CAISSIER = 'CAISSIER',
-  ETUDIANT = 'ETUDIANT',
-  PROFESSEUR = 'PROFESSEUR',
-  RESPONSABLEBIBLIOTHEQUE = 'RESPONSABLEBIBLIOTHEQUE',
-  SUPERADMINISTRATEUR = 'SUPERADMINISTRATEUR',
-}
 export enum MyStrategy {
   MY_JWT_STRATEGY = 'MY_JWT_STRATEGY',
 }
 
+export enum UserRole {
+  ETUDIANT = 'ETUDIANT',
+  CAISSIER = 'CAISSIER',
+  PROFESSEUR = 'PROFESSEUR',
+  ACADEMIQUE = 'ACADEMIQUE',
+  ADMINISTRATIF = 'ADMINISTRATIF',
+  ADMINISTRATEUR = 'ADMINISTRATEUR',
+  SUPERADMINISTRATEUR = 'SUPERADMINISTRATEUR',
+  ADMINISTRATEURBUDGET = 'ADMINISTRATEUR_BUDGET',
+  RESPONSABLEBIBLIOTHEQUE = 'RESPONSABLE_BIBLIOTHEQUE',
+}
+
+const genre = ['M', 'F'];
+const statut = ['En ligne', 'Deconnecté', 'Session finis'];
+const type_organisation = ['Ecole', 'Classe', 'Magasin'];
+
+export { genre, statut, type_organisation };
 
 // MyStrategy.MY_JWT_STRATEGY

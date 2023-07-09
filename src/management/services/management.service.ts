@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Error } from 'mongoose';
 import { Filiere } from '../schemas/filiere.schema';
 import { Lookups } from '../schemas/lookups.schema';
 import { Classe } from '../schemas/classe.schema';
@@ -36,7 +36,7 @@ export class ManagementService {
         console.log('MongoServer error');
         error['message'] = `There is duplicate key in fields ${Object.keys(error.keyValue)}`;
       }
-      return Error(error);
+      return new Error(error);
     }
   }
   async findAllDocuments(): Promise<DocumentOrganisation[] | []> {
@@ -84,15 +84,36 @@ export class ManagementService {
     const createdclasse = new this.classeModel(classeDTO);
     return createdclasse.save();
   }
-  async addLookups(lookupsDTO: LookupsDTO): Promise<Lookups> {
+  async addLookups(lookupsDTO: LookupsDTO): Promise<Lookups | Record<string, any>> {
     try {
       const createdlookups = new this.lookupsModel(lookupsDTO);
       const result = await createdlookups.save();
       return result;
-    } catch (error) {
-      console.log(error.errors);
-      throw error;
+    } catch (leka: any) {
+      return this.constructValidationError(leka, 'lookups');
     }
+  }
+  constructValidationError(error: any, schema: string): Record<string, any> {
+    // eslint-disable-next-line prefer-const
+    let obj: Record<string, any> = {};
+    console.log(error);
+
+    console.log(`Instance of Error ValidationError is ${error instanceof Error.ValidationError} `);
+
+    if (error instanceof Error.ValidationError) {
+      const firstKeyName = Object.keys(error.errors)[0];
+      console.log(`first key name found is ${firstKeyName}`);
+      console.log(`And contain: ${error.errors[firstKeyName]}`);
+
+      obj.schema = schema;
+      obj.validationerror = true;
+      obj.field = firstKeyName;
+      obj.value = error.errors[firstKeyName]['value'];
+      obj.message = error.errors[firstKeyName]['properties']['type'];
+    }
+    console.log('The final Object is %o', obj);
+
+    return obj;
   }
   async softDeleteFiliere(code: string): Promise<Filiere | void> {
     return this.filiereModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });

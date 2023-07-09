@@ -12,7 +12,7 @@ export class Lookups extends Document {
   @Prop({ type: S.Types.ObjectId, ref: 'Classe' })
   classe_id: string;
 
-  @Prop({ type: String, required: true, maxlength: 10 })
+  @Prop({ type: String, required: true, maxlength: 100 })
   description: string;
 
   @Prop({ type: String, default: null })

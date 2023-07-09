@@ -31,6 +31,8 @@ import buildLink from 'src/config/utils';
 import ContactDTO from './dto/contact.dto';
 import EducationDTO from './dto/education.dto';
 import ExperienceDTO from './dto/experience.dto';
+
+
 @Controller('employees')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
@@ -197,8 +199,7 @@ export class EmployeeController {
     summary: 'Update employee by adding education',
     description: 'Update an employee by adding education',
   })
-  // @ApiResponse({ status: 201, description: 'The education has been successfully deleted.' })
-  // @ApiResponse({ status: 200, description: 'The education has been successfully deleted.' })
+  @ApiResponse({ status: 200, description: 'The education has been successfully deleted.' })
   async delete_education(@Param('employeeID') employeeID: string, @Body('educationID') educationID: string) {
     try {
       const res: boolean | any = await this.employeeService.delete_education(employeeID, educationID);
@@ -219,7 +220,6 @@ export class EmployeeController {
     summary: 'Update employee by deleting contact',
     description: 'Update an employee by deleting contact',
   })
-  @ApiResponse({ status: 201, description: 'The contact has been successfully deleted.' })
   @ApiResponse({ status: 200, description: 'The contact has been successfully deleted.' })
   async delete_contact(@Param('employeeID') employeeID: string, @Body('contactID') contactID: string) {
     try {

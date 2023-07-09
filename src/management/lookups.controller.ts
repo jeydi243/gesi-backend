@@ -1,9 +1,8 @@
-import { ValidationError } from 'class-validator';
 import ClasseDTO from './dto/classe.dto';
 import LookupsDTO from './dto/lookups.dto';
 import { Lookups } from './schemas/lookups.schema';
 import { ManagementService } from './services/management.service';
-import { Body, Controller, Post, Get, BadRequestException, NotFoundException, Delete, HttpException } from '@nestjs/common';
+import { Body, Controller, Post, Get, BadRequestException, NotFoundException, Delete } from '@nestjs/common';
 
 @Controller('management')
 export default class LookupsController {
@@ -31,21 +30,13 @@ export default class LookupsController {
   @Post('lookups')
   async addLookups(@Body() lookups: LookupsDTO): Promise<LookupsDTO> {
     try {
-      const res: Lookups | string | Error = await this.managementService.addLookups(lookups);
-
-      if (!(res instanceof Error)) return res;
-      else throw new BadRequestException(res, res['messagge']);
-    } catch (error) {
-      throw new BadRequestException(this.createErrorObj(error));
-      if (error instanceof ValidationError) {
-      }
+      const res: Lookups | Record<string, any> = await this.managementService.addLookups(lookups);
+      if (res instanceof Lookups) return res;
+      else throw res;
+    } catch (error: any) {
+      console.log(error);
+      throw new BadRequestException('KOL', { cause: error });
     }
-  }
-  createErrorObj(eb: ValidationError) {
-    const obj = {};
-    obj['field'] = eb.property;
-    obj['value'] = eb.value;
-    return obj;
   }
 
   @Delete('lookups')
