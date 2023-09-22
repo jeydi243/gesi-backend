@@ -7,9 +7,9 @@ import { HttpAdapterHost } from '@nestjs/core';
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx: HttpArgumentsHost = host.switchToHttp();
-    const response: Response = ctx.getResponse<Response>();
-    const request: Request = ctx.getRequest<Request>();
     const status: number = exception.getStatus();
+    const request: Request = ctx.getRequest<Request>();
+    const response: Response = ctx.getResponse<Response>();
 
     console.log('HTTP-EXCEPTION %o', exception);
     console.log('Keys: ', Object.keys(exception));
@@ -19,7 +19,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       statusName: exception.name,
       ok: false,
       path: request.url,
-      error: exception['cause'],
+      error: exception['response'],
       // ...exception['response'],
     });
   }

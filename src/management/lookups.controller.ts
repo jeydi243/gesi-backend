@@ -1,3 +1,4 @@
+import { ApiResponse } from '@nestjs/swagger';
 import ClasseDTO from './dto/classe.dto';
 import LookupsDTO from './dto/lookups.dto';
 import { Lookups } from './schemas/lookups.schema';
@@ -27,6 +28,7 @@ export default class LookupsController {
   async findAllLookups(): Promise<LookupsDTO[] | []> {
     return this.managementService.findAllLookups();
   }
+
   @Post('lookups')
   async addLookups(@Body() lookups: LookupsDTO): Promise<LookupsDTO> {
     try {
@@ -34,21 +36,23 @@ export default class LookupsController {
       if (res instanceof Lookups) return res;
       else throw res;
     } catch (error: any) {
-      console.log(error);
-      throw new BadRequestException('KOL', { cause: error });
+      console.log('On arrive ici au moins: ', error);
+      throw new BadRequestException(error);
     }
   }
 
   @Delete('lookups')
-  async deleteLookups(@Body('code') code: string) {
+  async deleteLookups(@Body('code') code?: string, @Body('_id') _id?: string) {
     try {
-      const res: boolean | any = await this.managementService.deleteLookups(code);
+      console.log({ code, _id });
+
+      const res: Record<string, any> = await this.managementService.deleteLookups(_id);
       console.log({ res });
 
-      if (res === true) {
-        return true;
+      if (res['state'] == 'Ok') {
+        return res;
       } else {
-        throw new NotFoundException(`Can't delete lookups with code ${code}`);
+        throw new NotFoundException(`Can't delete lookups with id ${_id}`);
       }
     } catch (error) {
       throw error;

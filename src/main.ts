@@ -12,7 +12,7 @@ async function bootstrap() {
   // const httpAdapter = app.get(HttpAdapterHost);
   app.use(cookieParser());
   app.enableCors();
-  app.useGlobalFilters(new HttpExceptionFilter());
+  // app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalFilters(new OtherException());
   // app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   // app.useGlobalInterceptors(new InterceptorHTTP());
@@ -22,29 +22,29 @@ async function bootstrap() {
       whitelist: true,
       enableDebugMessages: true,
       disableErrorMessages: false,
-      exceptionFactory: (errors: ValidationError[]) => {
-        // eslint-disable-next-line prefer-const
-        let obje = {};
-        errors.forEach(el => {
-          console.log(el.constraints);
+      // exceptionFactory: (errors: ValidationError[]) => {
+      //   // eslint-disable-next-line prefer-const
+      //   let obje = {};
+      //   errors.forEach(el => {
+      //     console.log(el.constraints);
 
-          const messages = [];
-          for (const key in el.constraints) {
-            messages.unshift(el.constraints[key]);
-          }
-          console.log({ messages });
-          if (obje.hasOwnProperty(el.property)) {
-            obje[el.property] = [...obje[el.property], ...messages];
-          } else {
-            obje[el.property] = [...messages];
-          }
-        });
-        // const dto_validation_error = errors.map(el => {
-        //   // return { `${el.property}`:  };
-        // });
+      //     const messages = [];
+      //     for (const key in el.constraints) {
+      //       messages.unshift(el.constraints[key]);
+      //     }
+      //     console.log({ messages });
+      //     if (obje.hasOwnProperty(el.property)) {
+      //       obje[el.property] = [...obje[el.property], ...messages];
+      //     } else {
+      //       obje[el.property] = [...messages];
+      //     }
+      //   });
+      //   // const dto_validation_error = errors.map(el => {
+      //   //   // return { `${el.property}`:  };
+      //   // });
 
-        return new HttpException({ dto_validation_error: obje }, HttpStatus.BAD_REQUEST);
-      },
+      //   return new HttpException({ dto_validation_error: obje }, HttpStatus.BAD_REQUEST);
+      // },
       validationError: { value: true, target: true },
       forbidNonWhitelisted: true,
     }),

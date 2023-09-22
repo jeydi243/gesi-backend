@@ -1,4 +1,4 @@
-import { Model, Error } from 'mongoose';
+import { Model, Error, Types } from 'mongoose';
 import { Filiere } from '../schemas/filiere.schema';
 import { Lookups } from '../schemas/lookups.schema';
 import { Classe } from '../schemas/classe.schema';
@@ -60,17 +60,30 @@ export class ManagementService {
       return error;
     }
   }
-  async deleteLookups(code: string): Promise<boolean | object> {
+  async deleteLookups(id: string): Promise<Record<string, any>> {
     try {
-      const doc = await this.lookupsModel.findOne({ code }).exec();
-      doc.deletedAt = new Date();
-      await doc.save();
-      return doc['deletedAt'] != null;
+      const deletedAt: Date = new Date();
+      console.log(deletedAt);
+
+      const lookups = await this.lookupsModel.findOneAndUpdate({ _id: new Types.ObjectId(id) }, { deletedAt }).exec();
+      // if (doc.id) {
+      //   doc.deletedAt = new Date();
+      //   await doc.save();
+      //   console.log({ doc });
+      // } else {
+      //   console.log("Can't find this lookups");
+      // }
+      // return doc['deletedAt'] != null;
+      console.log({ lookups });
+      console.log({ deletedAt });
+      // console.log(instanceof doc.deletedAt);
+
+      return { state: 'Ok', message: `Lookups with id ${id}, successfully deleted.`, payload: { lookups } };
     } catch (error) {
       return error;
     }
   }
-  async remove(code: string): Promise<DocumentOrganisation | void> {
+  async removeOrganisation(code: string): Promise<DocumentOrganisation | void> {
     return this.DocumentOrganisationModel.findOneAndRemove({ code });
   }
   async updateDocument(code: string, documentUpdate: UpdateDocumentDTO): Promise<DocumentOrganisation | null> {
@@ -89,15 +102,18 @@ export class ManagementService {
       const createdlookups = new this.lookupsModel(lookupsDTO);
       const result = await createdlookups.save();
       return result;
-    } catch (leka: any) {
-      return this.constructValidationError(leka, 'lookups');
+    } catch (error: any) {
+      return this.constructValidationError(error, 'lookups');
     }
   }
   constructValidationError(error: any, schema: string): Record<string, any> {
     // eslint-disable-next-line prefer-const
     let obj: Record<string, any> = {};
-    console.log(error);
-
+    console.log({ errors: error.errors });
+    const meanings = {
+      unique: 'Cet valeur existe deja.',
+      require: 'Ce champ est obligatoire',
+    };
     console.log(`Instance of Error ValidationError is ${error instanceof Error.ValidationError} `);
 
     if (error instanceof Error.ValidationError) {
@@ -106,10 +122,10 @@ export class ManagementService {
       console.log(`And contain: ${error.errors[firstKeyName]}`);
 
       obj.schema = schema;
-      obj.validationerror = true;
       obj.field = firstKeyName;
+      obj.validationerror = true;
       obj.value = error.errors[firstKeyName]['value'];
-      obj.message = error.errors[firstKeyName]['properties']['type'];
+      obj.message = meanings[error.errors[firstKeyName]['properties']['type']];
     }
     console.log('The final Object is %o', obj);
 
