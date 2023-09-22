@@ -9,8 +9,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { DocumentOrganisationDTO } from '../dto/document.dto';
 import { UpdateFiliereDTO } from '../dto/update-filiere.dto';
 import { UpdateDocumentDTO } from '../dto/update-document.dto';
-import ClasseDTO from '../dto/classe.dto';
-import LookupsDTO from '../dto/lookups.dto';
+
 @Injectable()
 export class ManagementService {
   constructor(
@@ -43,13 +42,7 @@ export class ManagementService {
     //return all documents that is not marked as deletedAt
     return this.DocumentOrganisationModel.find({ deletedAt: null }).exec();
   }
-  async getAllClasses(): Promise<Classe[] | []> {
-    //return all documents that is not marked as deletedAt
-    return this.classeModel.find({ deletedAt: null }).exec();
-  }
-  async findAllLookups(): Promise<Lookups[] | []> {
-    return this.lookupsModel.find({ deletedAt: null }).exec();
-  }
+
   async deleteDocument(code: string): Promise<boolean | object> {
     try {
       const doc = await this.DocumentOrganisationModel.findOne({ code }).exec();
@@ -92,19 +85,6 @@ export class ManagementService {
   async addFiliere(filiereDTO: FiliereDTO): Promise<Filiere | void> {
     const createdfiliere = new this.filiereModel(filiereDTO);
     return createdfiliere.save();
-  }
-  async addClasse(classeDTO: ClasseDTO): Promise<ClasseDTO | null> {
-    const createdclasse = new this.classeModel(classeDTO);
-    return createdclasse.save();
-  }
-  async addLookups(lookupsDTO: LookupsDTO): Promise<Lookups | Record<string, any>> {
-    try {
-      const createdlookups = new this.lookupsModel(lookupsDTO);
-      const result = await createdlookups.save();
-      return result;
-    } catch (error: any) {
-      return this.constructValidationError(error, 'lookups');
-    }
   }
   constructValidationError(error: any, schema: string): Record<string, any> {
     // eslint-disable-next-line prefer-const

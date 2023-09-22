@@ -4,15 +4,16 @@ import LookupsDTO from './dto/lookups.dto';
 import { Lookups } from './schemas/lookups.schema';
 import { ManagementService } from './services/management.service';
 import { Body, Controller, Post, Get, BadRequestException, NotFoundException, Delete } from '@nestjs/common';
+import { LookupsService } from './services/lookups.service';
 
 @Controller('management')
 export default class LookupsController {
-  constructor(private readonly managementService: ManagementService) {}
+  constructor(private readonly managementService: ManagementService, private readonly lookupsservice: LookupsService) {}
 
   @Post('classes')
   async addClasse(@Body() classesDTO: ClasseDTO): Promise<ClasseDTO> {
     try {
-      const result: null | ClasseDTO = await this.managementService.addClasse(classesDTO);
+      const result: null | ClasseDTO = await this.lookupsservice.addClasse(classesDTO);
       return result;
     } catch (error) {
       console.log(error);
@@ -21,18 +22,18 @@ export default class LookupsController {
 
   @Get('classes')
   async findAllDocuments(): Promise<ClasseDTO[] | []> {
-    return this.managementService.getAllClasses();
+    return this.lookupsservice.getAllClasses();
   }
 
   @Get('lookups')
   async findAllLookups(): Promise<LookupsDTO[] | []> {
-    return this.managementService.findAllLookups();
+    return this.lookupsservice.findAllLookups();
   }
 
   @Post('lookups')
   async addLookups(@Body() lookups: LookupsDTO): Promise<LookupsDTO> {
     try {
-      const res: Lookups | Record<string, any> = await this.managementService.addLookups(lookups);
+      const res: Lookups | Record<string, any> = await this.lookupsservice.addLookups(lookups);
       if (res instanceof Lookups) return res;
       else throw res;
     } catch (error: any) {
