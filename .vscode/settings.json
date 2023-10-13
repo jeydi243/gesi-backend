@@ -2,6 +2,7 @@
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 300,
   "bracketSameLine": false,
+  "window.title": "${folderName}",
   "editor.quickSuggestions": {
     "strings": true
   },
