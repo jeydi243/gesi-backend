@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: gesi-backend
+    runtime: node
+    plan: free
+    autoDeploy: false
+    buildCommand: npm install && npm run build
+    startCommand: npm run sd
