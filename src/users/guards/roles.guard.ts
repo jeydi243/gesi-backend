@@ -18,8 +18,6 @@ export class RolesGuard implements CanActivate {
     if (roles.includes(currentUserRole)) {
       return true;
     }
-    throw new UnauthorizedException(
-      `En tant que ${currentUserRole}, vous ne pouvez pas accèder à cette route. \n Permissions acces to: ${roles}`,
-    );
+    throw new UnauthorizedException(`En tant que ${currentUserRole}, vous ne pouvez pas accèder à cette route. \n Permissions acces to: ${roles}`);
   }
 }

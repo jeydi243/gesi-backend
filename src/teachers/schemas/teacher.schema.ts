@@ -4,7 +4,7 @@ import { Document, Schema as S } from 'mongoose';
 // export type TeacherDocument = Teacher & Document;
 
 @Schema()
-export class Teacher extends Document{
+export class Teacher extends Document {
   @Prop({ required: false, type: S.Types.ObjectId, unique: true })
   matricule: S.Types.ObjectId;
 

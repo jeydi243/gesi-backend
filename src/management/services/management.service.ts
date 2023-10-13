@@ -10,7 +10,10 @@ import { UpdateFiliereDto } from '../dto/update-filiere.dto';
 import { UpdateDocumentDto } from '../dto/update-document.dto';
 @Injectable()
 export class ManagementService {
-  constructor(@InjectModel(DocumentOrganisation.name) private DocumentOrganisationModel: Model<DocumentOrganisation>, @InjectModel('Filiere') private filiereModel: Model<Filiere>) {}
+  constructor(
+    @InjectModel(DocumentOrganisation.name) private DocumentOrganisationModel: Model<DocumentOrganisation>,
+    @InjectModel('Filiere') private filiereModel: Model<Filiere>,
+  ) {}
 
   async addDocumentSpec(docDto: DocumentOrganisationDTO): Promise<DocumentOrganisation | string | Error> {
     const createddoc = new this.DocumentOrganisationModel(docDto);
