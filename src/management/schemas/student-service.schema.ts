@@ -1,6 +1,7 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
-@Schema({ autoIndex: true, timestamps: true, _id: true })
+
+@Schema({ timestamps: true, _id: true })
 export class StudentService extends Document {
   @Prop({ required: true, type: String, unique: true, immutable: true })
   code: string;

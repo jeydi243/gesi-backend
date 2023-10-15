@@ -6,6 +6,7 @@
   "editor.quickSuggestions": {
     "strings": true
   },
+  "[typescript]": { "editor.wordWrapColumn": 300, },
   "window.autoDetectColorScheme": true,
   "workbench.preferredLightColorTheme": "GitHub Light Default",
   "workbench.preferredDarkColorTheme": "Bearded Theme Monokai Black",

@@ -21,6 +21,8 @@ import { CourseSessionSchema } from 'src/management/schemas/course_session.schem
 import { DocumentOrganisationSchema } from 'src/management/schemas/document.schema';
 import { GridFsMulterConfigService } from './storage';
 import { MulterModule } from '@nestjs/platform-express';
+import { StudentService, StudentServiceSchema } from 'src/management/schemas/student-service.schema';
+import { StudentServiceRequestSchema } from 'src/management/schemas/StudentServiceRequests.schema';
 // import { MulterModule } from '@nestjs/platform-express';
 
 @Global()
@@ -33,6 +35,8 @@ import { MulterModule } from '@nestjs/platform-express';
       { name: 'DocumentOrganisation', schema: DocumentOrganisationSchema },
       { name: 'Filiere', schema: FiliereSchema },
       { name: 'Responsable', schema: ResponsableSchema },
+      { name: 'StudentService', schema: StudentServiceSchema },
+      { name: 'StudentServiceRequest', schema: StudentServiceRequestSchema },
       { name: 'Course', schema: CourseSchema },
       { name: 'User', schema: UserSchema },
       {
@@ -52,7 +56,18 @@ import { MulterModule } from '@nestjs/platform-express';
     ]),
   ],
   controllers: [ResourceController],
-  providers: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService, GridFsMulterConfigService],
-  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService],
+  providers: [
+    TeachersService,
+    ManagementService,
+    StudentsService,
+    EmployeeService,
+    UsersService,
+    UsersService,
+    CoursesService,
+    ResourceService,
+    GridFsMulterConfigService,
+    StudentService,
+  ],
+  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService, StudentService],
 })
 export class ResourceDbModule {}
