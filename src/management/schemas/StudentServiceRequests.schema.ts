@@ -17,8 +17,8 @@ export class StudentServiceRequests extends Document {
   @Prop({ required: true, type: Date })
   completion_date: Date;
 
-  @Prop({ required: true, type: S.Types.ObjectId, ref: 'Resource' })
-  attachments: string;
+  @Prop({ required: true, type: [S.Types.ObjectId], ref: 'Resource' })
+  attachments: string[];
 
   @Prop({ type: String })
   request_status: string;
