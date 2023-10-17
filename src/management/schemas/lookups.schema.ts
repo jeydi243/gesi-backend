@@ -1,5 +1,5 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as S } from 'mongoose';
 
 export class Lookups extends Document {
   @Prop({ required: true })
@@ -11,7 +11,7 @@ export class Lookups extends Document {
   @Prop({ required: true })
   description: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: S.Types.ObjectId, ref: 'Classe' })
   classe_id: string;
 
   @Prop({ type: String, default: null })

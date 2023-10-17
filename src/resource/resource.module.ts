@@ -28,6 +28,7 @@ import { OrganizationService } from 'src/management/services/organization.servic
 import { OrganizationSchema } from 'src/management/schemas/organization.schema';
 import { ClasseSchema } from 'src/management/schemas/classe.schema';
 import { ClasseService } from 'src/management/services/classe.service';
+import { LookupsSchema } from 'src/management/schemas/lookups.schema';
 // import { MulterModule } from '@nestjs/platform-express';
 
 @Global()
@@ -42,6 +43,7 @@ import { ClasseService } from 'src/management/services/classe.service';
       { name: 'Responsable', schema: ResponsableSchema },
       { name: 'Organization', schema: OrganizationSchema },
       { name: 'Classe', schema: ClasseSchema },
+      { name: 'Lookups', schema: LookupsSchema },
       { name: 'StudentService', schema: StudentServiceSchema },
       { name: 'ServiceRequest', schema: ServiceRequestSchema },
       { name: 'Content', schema: ContentSchema },

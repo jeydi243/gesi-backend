@@ -26,11 +26,11 @@ export class OrganizationService {
   }
 
   async allOrg(): Promise<Organization[] | Record<string, any>> {
-    return this.orgModel.find({ deletedAt: null });
+    return this.orgModel.find({ deletedAt: null }, { populate: true });
   }
 
   async findOneOrg(id: string): Promise<OrganizationDto> {
-    return this.orgModel.findOne({ id, deletedAt: null }).exec();
+    return await this.orgModel.findOne({ id, deletedAt: null }, { populate: true }).exec();
   }
 
   async deleteOrg(filter: Record<string, any>) {

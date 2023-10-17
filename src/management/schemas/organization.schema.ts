@@ -12,6 +12,9 @@ export class Organization extends Document {
   @Prop({ type: String, maxlength: 500 })
   description: string;
 
+  @Prop({ type: S.Types.ObjectId, ref: 'Lookups' })
+  lookups_id: string;
+
   @Prop({ type: Date, required: false })
   date_desactivation: Date | null;
 

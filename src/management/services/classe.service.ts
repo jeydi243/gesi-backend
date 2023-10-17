@@ -6,24 +6,25 @@ import { LookupsDTO } from '../dto/lookups.dto';
 import { Lookups } from '../schemas/lookups.schema';
 
 export class ClasseService {
-  constructor(@InjectModel('Classe') private classeModel: Model<Classe>, @InjectModel('Classe') private lookupsModel: Model<Lookups>) {}
+  constructor(@InjectModel('Classe') private classeModel: Model<Classe>, @InjectModel('Lookups') private lookupsModel: Model<Lookups>) {}
   addLookups(createLookups: LookupsDTO) {
-    throw new Error('Method not implemented.');
+    const result = new this.lookupsModel(createLookups);
+    return result.save();
   }
   allLookups() {
     throw new Error('Method not implemented.');
   }
   findOneLookups(id: string) {
-    throw new Error('Method not implemented.');
+    return this.lookupsModel.findOne({ id, deletedAt: null }).exec();
   }
-  updateLookups(arg0: { id: string }, updatedLookups: any) {
-    throw new Error('Method not implemented.');
+  updateLookups(filter, updatedLookups: any) {
+    return this.lookupsModel.findOneAndUpdate(filter, updatedLookups).exec();
   }
   deleteLookups(id: string) {
-    throw new Error('Method not implemented.');
+    return this.lookupsModel.findOneAndRemove({ id }, { deletedAt: new Date() }).exec();
   }
   softdeleteLookups(id: string) {
-    throw new Error('Method not implemented.');
+    return this.lookupsModel.findOneAndUpdate({ id }, { deletedAt: new Date() }).exec();
   }
 
   addClasse(createClasse: ClasseDTO) {
@@ -31,7 +32,7 @@ export class ClasseService {
     return result.save();
   }
   allClasse() {
-    return this.classeModel.find().exec();
+    return this.classeModel.find({ deletedAt: null }).exec();
   }
   findOneClasse(id: string) {
     return this.classeModel.findOne({ id, deletedAt: null }).exec();
@@ -44,6 +45,5 @@ export class ClasseService {
   }
   softdeleteClasse(id: string) {
     return this.classeModel.findOneAndUpdate({ id }, { deletedAt: new Date() }).exec();
-    throw new Error('Method not implemented.');
   }
 }
