@@ -6,21 +6,23 @@ import { InjectModel } from '@nestjs/mongoose';
 export class ClasseService {
   constructor(@InjectModel('Classe') private classeModel: Model<Classe>) {}
   addClasse(createClasse: ClasseDTO) {
-    throw new Error('Method not implemented.');
+    const result = new this.classeModel(createClasse);
+    return result.save();
   }
   allClasse() {
-    throw new Error('Method not implemented.');
+    return this.classeModel.find().exec();
   }
   findOneClasse(id: string) {
-    throw new Error('Method not implemented.');
+    return this.classeModel.findOne({ id, deletedAt: null }).exec();
   }
-  updateClasse(arg0: { id: string }, updatedClasse: any) {
-    throw new Error('Method not implemented.');
+  updateClasse(filter, updatedClasse: any) {
+    return this.classeModel.findOneAndUpdate(filter, updatedClasse).exec();
   }
-  deleteClasse(arg0: { id: string }) {
-    throw new Error('Method not implemented.');
+  deleteClasse(id: string) {
+    return this.classeModel.findOneAndRemove({ id }, { deletedAt: new Date() }).exec();
   }
-  softdeleteClasse(arg0: { id: string }) {
+  softdeleteClasse(id: string) {
+    return this.classeModel.findOneAndUpdate({ id }, { deletedAt: new Date() }).exec();
     throw new Error('Method not implemented.');
   }
 }

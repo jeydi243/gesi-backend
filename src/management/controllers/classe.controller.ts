@@ -44,7 +44,7 @@ export class ClasseController {
   @Delete(':id')
   async deleteOne(@Param('id') id: string) {
     try {
-      return await this.classeService.deleteClasse({ id });
+      return await this.classeService.deleteClasse(id);
     } catch (error) {
       console.log(error);
     }
@@ -53,7 +53,7 @@ export class ClasseController {
   @Delete('softdelete/:id')
   async softdeleteOne(@Param('id') id: string) {
     try {
-      return await this.classeService.softdeleteClasse({ id });
+      return await this.classeService.softdeleteClasse(id);
     } catch (error) {}
   }
 }
