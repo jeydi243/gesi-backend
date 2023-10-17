@@ -1,7 +1,7 @@
 import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { Allow, IsDate, IsString } from 'class-validator';
+import { Allow, IsDate, IsObject, IsString, Validate } from 'class-validator';
 
 export default class StudentServiceDTO {
   @ApiProperty({ required: false, type: String })
@@ -29,6 +29,6 @@ export default class StudentServiceDTO {
   availability: string;
 
   @ApiProperty({ type: Map<string, string>, required: true })
-  @IsString()
+  @IsObject()
   contact: Record<string, string>;
 }

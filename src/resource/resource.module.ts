@@ -21,8 +21,9 @@ import { CourseSessionSchema } from 'src/management/schemas/course_session.schem
 import { DocumentOrganisationSchema } from 'src/management/schemas/document.schema';
 import { GridFsMulterConfigService } from './storage';
 import { MulterModule } from '@nestjs/platform-express';
-import { StudentService, StudentServiceSchema } from 'src/management/schemas/student-service.schema';
-import { StudentServiceRequestSchema } from 'src/management/schemas/StudentServiceRequests.schema';
+import { StudentServiceSchema } from 'src/management/schemas/student-service.schema';
+import { ServiceRequestSchema } from 'src/management/schemas/StudentServiceRequests.schema';
+import { StudentService } from 'src/management/services/student-services.service';
 // import { MulterModule } from '@nestjs/platform-express';
 
 @Global()
@@ -36,7 +37,7 @@ import { StudentServiceRequestSchema } from 'src/management/schemas/StudentServi
       { name: 'Filiere', schema: FiliereSchema },
       { name: 'Responsable', schema: ResponsableSchema },
       { name: 'StudentService', schema: StudentServiceSchema },
-      { name: 'StudentServiceRequest', schema: StudentServiceRequestSchema },
+      { name: 'ServiceRequest', schema: ServiceRequestSchema },
       { name: 'Course', schema: CourseSchema },
       { name: 'User', schema: UserSchema },
       {

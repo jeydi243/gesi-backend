@@ -1,12 +1,12 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
 
-@Schema({ timestamps: true, _id: true })
+@Schema({ timestamps: true, _id: true, id: true })
 export class StudentService extends Document {
   @Prop({ required: true, type: String, unique: true, immutable: true })
   code: string;
 
-  @Prop({ required: true, type: S.Types.ObjectId, ref: 'Student' })
+  @Prop({ required: true, type: String })
   name: string;
 
   @Prop({ required: true, type: String })
@@ -26,7 +26,3 @@ export class StudentService extends Document {
 }
 
 export const StudentServiceSchema: S = SchemaFactory.createForClass<StudentService>(StudentService);
-
-// DocumentOrgSchema.pre('save', () => {
-//   // console.log('Pre-save DocumentOrg is : ', this);
-// });
