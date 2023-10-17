@@ -21,12 +21,12 @@ export class TeachersController {
     return this.teachersService.create(createProfessorDto);
   }
 
-  @Post('/:teacherID/course_image')
+  @Post('/:teacherID/content_image')
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FilesInterceptor('course_image'))
-  async setDefaultCourseImage(@UploadedFiles() profile_image: Express.Multer.File | Array<Express.Multer.File>, @Param('teacherID') teacherID: string) {
+  @UseInterceptors(FilesInterceptor('content_image'))
+  async setDefaultContentImage(@UploadedFiles() profile_image: Express.Multer.File | Array<Express.Multer.File>, @Param('teacherID') teacherID: string) {
     try {
-      console.log('Change default image for course id %s', teacherID);
+      console.log('Change default image for content id %s', teacherID);
       console.log({ profile_image });
 
       const response: boolean | string = await this.teachersService.updateProfileImage(teacherID, profile_image[0].id);

@@ -1,6 +1,6 @@
 import { UserSchema } from 'src/users/schemas/user.schema';
 import { EventSchema } from 'src/management/schemas/event.schema';
-import { CourseSchema } from 'src/courses/schemas/course.schema';
+import { ContentSchema } from 'src/courses/schemas/content.schema';
 import { UsersService } from 'src/users/users.service';
 import { PersonSchema } from 'src/person.base';
 import { FiliereSchema } from 'src/management/schemas/filiere.schema';
@@ -8,7 +8,7 @@ import { StudentSchema } from 'src/students/schemas/student.schema';
 import { TeacherSchema } from 'src/teachers/schemas/teacher.schema';
 import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CoursesService } from 'src/courses/courses.service';
+import { ContentsService } from 'src/courses/contents.service';
 import { EmployeeSchema } from 'src/management/schemas/employee.schema';
 import { EmployeeService } from 'src/management/services/employee.service';
 import { StudentsService } from 'src/students/students.service';
@@ -17,7 +17,7 @@ import { ResourceService } from './resource.service';
 import { ManagementService } from 'src/management/services/management.service';
 import { ResponsableSchema } from 'src/students/schemas/responsable.schema';
 import { ResourceController } from './resource.controller';
-import { CourseSessionSchema } from 'src/management/schemas/course_session.schema';
+import { ContentSessionSchema } from 'src/management/schemas/content_session.schema';
 import { DocumentOrganisationSchema } from 'src/management/schemas/document.schema';
 import { GridFsMulterConfigService } from './storage';
 import { MulterModule } from '@nestjs/platform-express';
@@ -38,12 +38,12 @@ import { StudentService } from 'src/management/services/student-services.service
       { name: 'Responsable', schema: ResponsableSchema },
       { name: 'StudentService', schema: StudentServiceSchema },
       { name: 'ServiceRequest', schema: ServiceRequestSchema },
-      { name: 'Course', schema: CourseSchema },
+      { name: 'Content', schema: ContentSchema },
       { name: 'User', schema: UserSchema },
       {
         name: 'Event',
         schema: EventSchema,
-        discriminators: [{ name: 'CourseSession', schema: CourseSessionSchema }],
+        discriminators: [{ name: 'ContentSession', schema: ContentSessionSchema }],
       },
       {
         name: 'Person',
@@ -64,11 +64,11 @@ import { StudentService } from 'src/management/services/student-services.service
     EmployeeService,
     UsersService,
     UsersService,
-    CoursesService,
+    ContentsService,
     ResourceService,
     GridFsMulterConfigService,
     StudentService,
   ],
-  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, CoursesService, ResourceService, StudentService],
+  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, ContentsService, ResourceService, StudentService],
 })
 export class ResourceDbModule {}

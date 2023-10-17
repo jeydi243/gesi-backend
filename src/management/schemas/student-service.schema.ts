@@ -15,6 +15,9 @@ export class StudentService extends Document {
   @Prop({ type: String })
   website: string;
 
+  @Prop({ required: true, type: String })
+  organization_id: string;
+
   @Prop({ type: Map<string, string> })
   contact: Record<string, string>;
 
