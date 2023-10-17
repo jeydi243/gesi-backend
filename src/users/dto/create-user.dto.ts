@@ -1,6 +1,6 @@
 import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsMongoId } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 import { UserRole } from 'src/export.type';
 
 export class CreateUserDto {

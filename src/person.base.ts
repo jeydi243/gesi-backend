@@ -197,7 +197,7 @@ export class PersonDto {
   @IsDateString({}, { message: ({ value, property }) => `${value} for ${property} is not valid date string` })
   @ApiProperty({ type: Date, description: 'Birthday' })
   @ValidateIf(o => differenceInYears(new Date(), o.birthay) <= 23, {
-    message: pr => 'Apparement vous avez moins de 23 ans',
+    message: pr => 'Apparement vous avez moins de 23 ans' + pr,
   })
   birthday: Date;
 

@@ -36,7 +36,6 @@ export class ManagementService {
   }
 
   async findAllDocuments(): Promise<DocumentOrganisation[] | []> {
-    //return all documents that is not marked as deletedAt
     return this.DocumentOrganisationModel.find({ deletedAt: null }).exec();
   }
   async deleteDocument(code: string): Promise<boolean | object> {

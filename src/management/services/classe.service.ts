@@ -1,9 +1,9 @@
 import { Model } from 'mongoose';
-import { ClasseDTO } from '../dto/classe.dto';
 import { Classe } from '../schemas/classe.schema';
-import { InjectModel } from '@nestjs/mongoose';
-import { LookupsDTO } from '../dto/lookups.dto';
 import { Lookups } from '../schemas/lookups.schema';
+import { ClasseDTO } from '../dto/classe.dto';
+import { LookupsDTO } from '../dto/lookups.dto';
+import { InjectModel } from '@nestjs/mongoose';
 
 export class ClasseService {
   constructor(@InjectModel('Classe') private classeModel: Model<Classe>, @InjectModel('Lookups') private lookupsModel: Model<Lookups>) {}
@@ -12,7 +12,7 @@ export class ClasseService {
     return result.save();
   }
   allLookups() {
-    throw new Error('Method not implemented.');
+    return this.lookupsModel.find({ deletedAt: null }).exec();
   }
   findOneLookups(id: string) {
     return this.lookupsModel.findOne({ id, deletedAt: null }).exec();
