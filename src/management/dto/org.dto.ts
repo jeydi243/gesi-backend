@@ -15,6 +15,7 @@ export default class OrganizationDto {
   description: string;
 
   @ApiProperty({ description: 'Date of desactivation' })
+  @ValidateIf((obj, value) => isDate(new Date(value)))
   date_desactivation: Date | null;
 
   @ApiProperty({ description: 'Date of creation' })

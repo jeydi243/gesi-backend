@@ -8,9 +8,9 @@ import { Organization } from '../schemas/organization.schema';
 @Injectable()
 export class OrganizationService {
   constructor(@InjectModel('Organization') private orgModel: Model<Organization>) {
-    orgModel.watch().on('change', function (data) {
-      log('You add new organization must create also password %s', data);
-    });
+    // orgModel.watch().on('change', function (data) {
+    //   log('You add new organization must create also password %s', data);
+    // });
   }
   async addOrg(orgDto: OrganizationDto): Promise<OrganizationDto | null> {
     try {
@@ -29,8 +29,16 @@ export class OrganizationService {
     return this.orgModel.find({ deletedAt: null });
   }
 
+  async findOneOrg(id: string): Promise<OrganizationDto> {
+    return this.orgModel.findOne({ id, deletedAt: null }).exec();
+  }
+
   async deleteOrg(filter: Record<string, any>) {
     return await this.orgModel.findOneAndRemove(filter).exec();
+  }
+
+  async softdeleteOrg(filter: Record<string, any>) {
+    return await this.orgModel.findOneAndUpdate(filter, { deletedAt: new Date() }).exec();
   }
 
   async updateOrg(filter, updateValues): Promise<Organization | Record<string, any>> {

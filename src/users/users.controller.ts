@@ -95,6 +95,10 @@ export class UsersController {
   async findAll() {
     return this.usersService.findAll();
   }
+  @Get('mongoid')
+  async getmongoid() {
+    return this.usersService.getmongoid();
+  }
 
   @Patch('update-password')
   @UseGuards(JwtAuthGuard, RolesGuard)

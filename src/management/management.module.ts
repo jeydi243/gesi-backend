@@ -6,6 +6,7 @@ import { join } from 'path';
 import { GridFsMulterConfigService } from 'src/resource/storage';
 import { MulterModule } from '@nestjs/platform-express';
 import { StudentServiceController } from './student-services.controller';
+import OrgsController from './orgs.controller';
 @Module({
   imports: [
     MulterModule.registerAsync({
@@ -15,7 +16,7 @@ import { StudentServiceController } from './student-services.controller';
       rootPath: join(__dirname, '..', 'client'),
     }),
   ],
-  controllers: [ManagementController, EmployeeController, StudentServiceController],
+  controllers: [ManagementController, EmployeeController, StudentServiceController, OrgsController],
   providers: [GridFsMulterConfigService],
 })
 export class ManagementModule {}

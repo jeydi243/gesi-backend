@@ -75,6 +75,9 @@ export class UsersService {
   async deleteOne(idUser: string): Promise<User | null> {
     return this.userModel.findOneAndUpdate({ _id: idUser }, { $set: { deleteAt: Date.now() } }).exec();
   }
+  async getmongoid(){
+    return new T.ObjectId()
+  }
   async findAll(): Promise<User[] | any> {
     return this.userModel
       .find()

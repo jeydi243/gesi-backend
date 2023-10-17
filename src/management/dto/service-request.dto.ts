@@ -1,7 +1,7 @@
 import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { Allow, IsDate, IsString } from 'class-validator';
+import { Allow, IsDate, IsMongoId, IsString } from 'class-validator';
 
 export default class ServiceRequestDTO {
   @ApiProperty({ type: String, required: true })
@@ -9,11 +9,11 @@ export default class ServiceRequestDTO {
   name: string;
 
   @ApiProperty({ type: String, required: true })
-  @IsString()
+  @IsMongoId()
   service_id: string;
 
   @ApiProperty({ type: String, required: true })
-  @IsString()
+  @IsMongoId()
   student_id: string;
 
   @ApiProperty({ type: Date, required: true })
@@ -33,6 +33,6 @@ export default class ServiceRequestDTO {
   priority: string;
 
   @ApiProperty({ type: String, required: false })
-  @IsString()
+  @IsMongoId()
   assigned_staff: string;
 }

@@ -24,6 +24,8 @@ import { MulterModule } from '@nestjs/platform-express';
 import { StudentServiceSchema } from 'src/management/schemas/student-service.schema';
 import { ServiceRequestSchema } from 'src/management/schemas/StudentServiceRequests.schema';
 import { StudentService } from 'src/management/services/student-services.service';
+import { OrganizationService } from 'src/management/services/organization.service';
+import { OrganizationSchema } from 'src/management/schemas/organization.schema';
 // import { MulterModule } from '@nestjs/platform-express';
 
 @Global()
@@ -36,6 +38,7 @@ import { StudentService } from 'src/management/services/student-services.service
       { name: 'DocumentOrganisation', schema: DocumentOrganisationSchema },
       { name: 'Filiere', schema: FiliereSchema },
       { name: 'Responsable', schema: ResponsableSchema },
+      { name: 'Organization', schema: OrganizationSchema },
       { name: 'StudentService', schema: StudentServiceSchema },
       { name: 'ServiceRequest', schema: ServiceRequestSchema },
       { name: 'Content', schema: ContentSchema },
@@ -68,7 +71,19 @@ import { StudentService } from 'src/management/services/student-services.service
     ResourceService,
     GridFsMulterConfigService,
     StudentService,
+    OrganizationService,
   ],
-  exports: [TeachersService, ManagementService, StudentsService, EmployeeService, UsersService, UsersService, ContentsService, ResourceService, StudentService],
+  exports: [
+    TeachersService,
+    ManagementService,
+    StudentsService,
+    EmployeeService,
+    UsersService,
+    OrganizationService,
+    UsersService,
+    ContentsService,
+    ResourceService,
+    StudentService,
+  ],
 })
 export class ResourceDbModule {}
