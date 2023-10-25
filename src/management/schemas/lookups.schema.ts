@@ -1,6 +1,7 @@
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
 
+@Schema({ timestamps: true, _id: true, autoIndex: true })
 export class Lookups extends Document {
   @Prop({ required: true })
   code: string;

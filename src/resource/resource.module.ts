@@ -22,7 +22,7 @@ import { DocumentOrganisationSchema } from 'src/management/schemas/document.sche
 import { GridFsMulterConfigService } from './storage';
 import { MulterModule } from '@nestjs/platform-express';
 import { StudentServiceSchema } from 'src/management/schemas/student-service.schema';
-import { ServiceRequestSchema } from 'src/management/schemas/StudentServiceRequests.schema';
+import { ServiceRequestSchema } from 'src/management/schemas/serviceRequests.schema';
 import { StudentService } from 'src/management/services/student-services.service';
 import { OrganizationService } from 'src/management/services/organization.service';
 import { OrganizationSchema } from 'src/management/schemas/organization.schema';
