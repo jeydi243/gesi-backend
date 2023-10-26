@@ -113,6 +113,7 @@
     "testEnvironment": "node"
   },
   "engines":{
-    "node":"18"
+    "node":"18",
+    "npm":"10.2.1"
   }
 }
