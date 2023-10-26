@@ -6,7 +6,6 @@ import { CreateResponsableDto } from './dto/create-responsable.dto';
 import { UpdateResponsableDto } from './dto/update-responsable.dto';
 import { Student } from './schemas/student.schema';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express/multer';
-import { moveSync } from 'fs-extra';
 import * as tempDirectory from 'temp-dir';
 import { ApiConsumes } from '@nestjs/swagger';
 
@@ -106,7 +105,7 @@ export class StudentsController {
     const destinationPath = this.buildLink(idStudent, file, codeDocument);
     console.log(tempDirectory, file.path);
 
-    moveSync(file.path, destinationPath, { overwrite: true }); //move file to specific student storage
+    // moveSync(file.path, destinationPath, { overwrite: true }); //move file to specific student storage
 
     console.log(`The file successful move to ${destinationPath}`);
     try {

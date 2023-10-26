@@ -127,7 +127,7 @@ export class StudentsService {
     return this.studentModel
       .findOne({ _id: idStudent }, { responsables: 1 })
       .then((student: Student) => {
-        console.log('Get responsable with id: ', idResponsable);
+        console.log(`Get responsable with ${student} id: `, idResponsable);
 
         return this.responsableModel.findOne({
           _id: idResponsable,

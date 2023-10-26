@@ -19,7 +19,6 @@ import {
 import { log } from 'console';
 import { Request } from 'express';
 import { Employee } from '../schemas/employee.schema';
-import { moveSync } from 'fs-extra';
 import { EmployeeDto } from '../dto/employee.dto';
 import { EmployeeService } from '../services/employee.service';
 import { UpdateEmployeeDto } from '../dto/update-employee.dto';
@@ -104,7 +103,7 @@ export class EmployeeController {
 
       const destinationPath: string | null = buildLink(employeeID, file[0], key);
       if (destinationPath) {
-        moveSync(files.profile_img.path, destinationPath, { overwrite: true });
+        // moveSync(files.profile_img.path, destinationPath, { overwrite: true });
       } else {
         log('Destination path return null');
       }
@@ -328,7 +327,7 @@ export class EmployeeController {
   async updateDocument(@Param('employeeID') employeeID: string, @UploadedFile() file: Express.Multer.File) {
     try {
       const link = buildLink(employeeID, file, 'resume');
-      moveSync(file.path, link, { overwrite: true });
+      // moveSync(file.path, link, { overwrite: true });
       await this.employeeService.updateDocument(employeeID, 'resume', link);
       return link;
     } catch (error) {
