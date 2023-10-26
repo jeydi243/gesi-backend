@@ -6,7 +6,7 @@ import { LoginDto } from './dto/login-user.dto';
 import { User as UserDec } from './decorators/user.decorator';
 import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from './guards/jwt.guard';
-import * as bcrypt from 'bcrypt';
+import  bcrypt from 'bcrypt';
 import { TokenInterface } from './dto/token.interface';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { RolesGuard } from './guards/roles.guard';
