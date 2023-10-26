@@ -7,8 +7,6 @@ import { UpdateResponsableDto } from './dto/update-responsable.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { Responsable } from './schemas/responsable.schema';
 import { Student } from './schemas/student.schema';
-import { moveSync } from 'fs-extra';
-import { OrganizationService } from 'src/management/services/organization.service';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -182,19 +180,13 @@ export class StudentsService {
       if (!foundStudent) {
         return new BadRequestException("Cet utilisateur n'existe pas, Impossible d'ajouter le document");
       }
-      const link = this.buildLink(idStudent, file, code);
-      moveSync(file.path, link, { overwrite: true }); // move the file to the destination path
-      foundStudent.documents.push({ code, link });
+      // move the file to the destination path
+      // foundStudent.documents.push({ code });
 
       return foundStudent.save();
     } catch (e) {
       console.log(e);
       return e;
     }
-  }
-
-  buildLink(studentID: string, doc: Express.Multer.File, code: string): string {
-    const ext = doc.mimetype.split('/')[1];
-    return `../STORAGE/Students/${studentID}/Documents/${code}.${ext}`;
   }
 }

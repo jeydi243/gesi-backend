@@ -15,7 +15,7 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
-    "heroku-prebuild":"npm cache clean --force && npm i --force",
+    "heroku-prebuild": "npm cache clean --force && npm i --force",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -36,7 +36,6 @@
     "@nestjs/swagger": "^7.1.14",
     "@nestjs/websockets": "^10.2.7",
     "@types/bcrypt": "^5.0.1",
-    "@types/fs-extra": "^9.0.13",
     "@types/morgan": "^1.9.3",
     "@types/multer-gridfs-storage": "^4.0.5",
     "amqp-connection-manager": "^4.1.1",
@@ -112,8 +111,8 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
-  "engines":{
-    "node":"20.8.0",
-    "npm":"10.1.0"
+  "engines": {
+    "node": "20.8.0",
+    "npm": "10.1.0"
   }
 }
