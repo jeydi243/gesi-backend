@@ -14,7 +14,8 @@ require('dotenv').config();
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot(process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_ATLAS_URI, { directConnection: true, replicaSet: 'foo' }),
+    // MongooseModule.forRoot(process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_ATLAS_URI, { directConnection: true, replicaSet: 'foo' }),
+    MongooseModule.forRoot(process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_ATLAS_URI ),
     UsersModule,
     ContentsModule,
     TeachersModule,
