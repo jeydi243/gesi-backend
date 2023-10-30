@@ -11,4 +11,4 @@ COPY . .
 RUN npm install --force && npm run build
 EXPOSE 9000/tcp
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/main"]
