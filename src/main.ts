@@ -6,14 +6,18 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { OtherException } from './filters/other-exception.filter';
 import * as morganBody from 'morgan-body';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { logger: ['error', 'warn', 'log'] });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { logger: ['error', 'warn', 'log'] });
   // const httpAdapter = app.get(HttpAdapterHost);
   app.use(cookieParser());
   app.enableCors();
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalFilters(new OtherException());
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  app.setViewEngine('hbs');
   // app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   // app.useGlobalInterceptors(new InterceptorHTTP());
   app.useGlobalPipes(
