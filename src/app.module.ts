@@ -1,6 +1,7 @@
 import * as helmet from 'helmet';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
+import { AppController } from './app.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { StudentsModule } from './students/students.module';
 import { TeachersModule } from './teachers/teachers.module';
@@ -8,7 +9,6 @@ import { ContentsModule } from './courses/contents.module';
 import { ManagementModule } from './management/management.module';
 import { ResourceDbModule } from './resource/resource.module';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { AppController } from './app.controller';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();

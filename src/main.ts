@@ -16,10 +16,8 @@ async function bootstrap() {
   app.enableCors();
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalFilters(new OtherException());
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  app.setBaseViewsDir(join(__dirname, '.', 'views'));
   app.setViewEngine('hbs');
-  // app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
-  // app.useGlobalInterceptors(new InterceptorHTTP());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -67,7 +65,7 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(process.env.PORT || 9000);
+  await app.listen(9000);
 }
 
 
