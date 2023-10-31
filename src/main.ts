@@ -16,7 +16,7 @@ async function bootstrap() {
   app.enableCors();
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalFilters(new OtherException());
-  app.setBaseViewsDir(join(__dirname, '.', 'views'));
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
   app.useGlobalPipes(
     new ValidationPipe({
@@ -64,10 +64,10 @@ async function bootstrap() {
       },
     },
   });
-  console.log('NODE_ENV = %s \n MONGO_URI_DEV = %s \nMONGO_ATLAS_URI = %s', process.env.NODE_ENV,process.env.MONGO_URI_DEV,process.env.MONGO_ATLAS_URI);
 
   await app.listen(9000);
+  console.log('NODE_ENV = %s \nMONGO_URI_DEV = %s \nMONGO_ATLAS_URI = %s', process.env.NODE_ENV, process.env.MONGO_URI_DEV, process.env.MONGO_ATLAS_URI);
+  console.log('App listen on port 9000');
 }
-
 
 bootstrap();

@@ -3,7 +3,6 @@ import { ManagementController } from './management.controller';
 import { EmployeeController } from './controllers/employee.controller';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { MulterModule } from '@nestjs/platform-express';
 import { StudentServiceController } from './controllers/student-services.controller';
 import OrgsController from './controllers/orgs.controller';
 import { ClasseController } from './controllers/classe.controller';
