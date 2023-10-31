@@ -11,7 +11,8 @@ import { ResourceDbModule } from './resource/resource.module';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-require('dotenv').config();
+// require('dotenv').config();
+import 'dotenv/config'
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),

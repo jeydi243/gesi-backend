@@ -3,7 +3,8 @@ import { MulterModuleOptions, MulterOptionsFactory } from '@nestjs/platform-expr
 import { GridFsStorage } from 'multer-gridfs-storage';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-require('dotenv').config();
+// require('dotenv').config();
+import 'dotenv/config'
 
 @Injectable()
 export class GridFsMulterConfigService implements MulterOptionsFactory {

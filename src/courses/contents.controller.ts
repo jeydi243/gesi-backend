@@ -7,8 +7,6 @@ import { ApiConsumes } from '@nestjs/swagger';
 import { ResourceService } from 'src/resource/resource.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-//require('dotenv').config();
 
 @Controller('contents')
 export class ContentsController {
