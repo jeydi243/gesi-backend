@@ -64,6 +64,7 @@ async function bootstrap() {
       },
     },
   });
+  console.log('NODE_ENV = %s \n MONGO_URI_DEV = %s \nMONGO_ATLAS_URI = %s', process.env.NODE_ENV,process.env.MONGO_URI_DEV,process.env.MONGO_ATLAS_URI);
 
   await app.listen(9000);
 }

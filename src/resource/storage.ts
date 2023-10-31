@@ -9,7 +9,8 @@ require('dotenv').config();
 export class GridFsMulterConfigService implements MulterOptionsFactory {
   gridFsStorage: any;
   constructor() {
-    console.log('Initialise GridFsMulterConfigService ... NODE_ENV = %s \n MONGO_URI_DEV = %s \nMONGO_ATLAS_URI = %s', process.env.NODE_ENV,process.env.MONGO_URI_DEV,process.env.MONGO_ATLAS_URI);
+    console.log('Initialise GridFsMulterConfigService ');
+
     this.gridFsStorage = new GridFsStorage({
       url: process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_ATLAS_URI,
       file: function (req, file) {
@@ -20,7 +21,7 @@ export class GridFsMulterConfigService implements MulterOptionsFactory {
           const filename = file.originalname.trim();
           const fileInfo = {
             filename: filename,
-            epa: 'epa',
+            state: 'epa',
           };
           resolve(fileInfo);
         });
