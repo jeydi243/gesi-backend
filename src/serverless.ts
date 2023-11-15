@@ -8,7 +8,10 @@ import * as morganBody from 'morgan-body';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import { Handler } from 'aws-lambda';
+import { configure } from '@vendia/serverless-express';
 
+let server: Handler;
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, { logger: ['error', 'warn', 'log'] });
   // const httpAdapter = app.get(HttpAdapterHost);
@@ -65,10 +68,16 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(9000);
+  await app.init();
+  const expApp = app.getHttpAdapter().getInstance();
   console.log('NODE_ENV = %s \nMONGO_URI_DEV = %s \nMONGO_ATLAS_URI = %s', process.env.NODE_ENV, process.env.MONGO_URI_DEV, process.env.MONGO_ATLAS_URI);
   console.log('App listen on port 9000');
+  // return serverlessExpress({ app: expApp });
+  return configure({ app: expApp });
 }
 
-bootstrap();
+export const handler: Handler = async (event, context, callback) => {
+  server = server ?? (await bootstrap());
 
+  return server(event, context, callback);
+};
