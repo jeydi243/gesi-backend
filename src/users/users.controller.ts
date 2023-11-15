@@ -14,7 +14,7 @@ import { Roles } from './decorators/role.decorator';
 import { StudentsService } from 'src/students/students.service';
 import { TeachersService } from 'src/teachers/teachers.service';
 import { UserRole } from 'src/export.type';
-import { Student } from 'src/students/schemas/student.schema';
+// import { Student } from 'src/students/schemas/student.schema';
 
 @Controller('users')
 // * JwtAuthGuard et RolesGuard sont des guards executé a la suite, l'ordre est important
@@ -159,15 +159,15 @@ export class UsersController {
     switch (role) {
       case 'Etudiant':
         const res: any = this.studentService.findOne(id);
-        if (!(res instanceof Student)) {
-          throw new HttpException(
-            {
-              status: HttpStatus.NOT_FOUND,
-              error: `The ${role} associeted to this user does not exist`,
-            },
-            HttpStatus.NOT_FOUND,
-          );
-        }
+        // if (!(res instanceof Student)) {
+        //   throw new HttpException(
+        //     {
+        //       status: HttpStatus.NOT_FOUND,
+        //       error: `The ${role} associeted to this user does not exist`,
+        //     },
+        //     HttpStatus.NOT_FOUND,
+        //   );
+        // }
         return res;
 
         break;
