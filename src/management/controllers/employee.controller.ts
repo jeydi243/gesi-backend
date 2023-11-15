@@ -26,7 +26,7 @@ import { UpdateEducationDto } from '../dto/update-education.dto';
 import { UpdateExperienceDto } from '../dto/update-experience.dto';
 import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiCreatedResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import buildLink from 'src/utils';
+import buildLink from '../../utils';
 import ContactDto from '../dto/contact.dto';
 import EducationDTO from '../dto/education.dto';
 import ExperienceDto from '../dto/experience.dto';
