@@ -1,4 +1,4 @@
-import { UserSchema } from 'src/users/schemas/user.schema';
+import { UserSchema } from '../users/schemas/user.schema';
 import { EventSchema } from 'src/management/schemas/event.schema';
 import { ContentSchema } from 'src/courses/schemas/content.schema';
 import { UsersService } from 'src/users/users.service';
