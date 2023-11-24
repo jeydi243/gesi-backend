@@ -17,4 +17,12 @@ export class LookupsDTO {
   @ApiProperty()
   @IsMongoId()
   classe_id: string;
+
+  @ApiProperty()
+  @IsMongoId({always:false})
+  parent_lookup_id?: string;
+
+  @ApiProperty()
+  @IsMongoId()
+  createdBy?: string;
 }

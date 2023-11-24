@@ -29,6 +29,7 @@ export class ClasseController {
   @Get(':id')
   async findOneClasse(@Param('id') id: string) {
     try {
+      console.log({ okli: true });
       const result = this.classeService.findOneClasse(id);
       return result;
     } catch (error) {
@@ -72,7 +73,9 @@ export class ClasseController {
   @Get('lookups')
   async findAllLookupss() {
     try {
+      console.log({ ok: true });
       const result = this.classeService.allLookups();
+
       return result;
     } catch (error) {
       console.log(error);

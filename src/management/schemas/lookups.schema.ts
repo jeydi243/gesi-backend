@@ -15,6 +15,12 @@ export class Lookups extends Document {
   @Prop({ required: true, type: S.Types.ObjectId, ref: 'Classe' })
   classe_id: string;
 
+  @Prop({ required: true, type: S.Types.ObjectId, ref: 'Lookup' })
+  parent_lookup_id: string;
+
+  @Prop({ required: true, type: S.Types.ObjectId, ref: 'Employee' })
+  createdBy: string;
+
   @Prop({ type: String, default: null })
   deletedAt: Date | null;
 }

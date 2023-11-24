@@ -6,6 +6,7 @@ import { join } from 'path';
 import { StudentServiceController } from './controllers/student-services.controller';
 import OrgsController from './controllers/orgs.controller';
 import { ClasseController } from './controllers/classe.controller';
+import { LookupsController } from './controllers/lookups.controller';
 @Module({
   imports: [
 
@@ -13,7 +14,7 @@ import { ClasseController } from './controllers/classe.controller';
       rootPath: join(__dirname, '..', 'client'),
     }),
   ],
-  controllers: [ManagementController, EmployeeController, StudentServiceController, OrgsController, ClasseController],
+  controllers: [ManagementController, EmployeeController, StudentServiceController, OrgsController, ClasseController,LookupsController],
   providers: [],
 })
 export class ManagementModule {}

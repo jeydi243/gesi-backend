@@ -11,13 +11,13 @@ import { ResourceDbModule } from './resource/resource.module';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// require('dotenv').config();
-import 'dotenv/config'
+require('dotenv').config();
+// import 'dotenv/config'
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     // MongooseModule.forRoot(process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_ATLAS_URI, { directConnection: true, replicaSet: 'foo' }),
-    MongooseModule.forRoot(process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_ATLAS_URI),
+    MongooseModule.forRoot(process.env.NODE_ENV == 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD),
     UsersModule,
     ContentsModule,
     TeachersModule,
@@ -30,6 +30,6 @@ import 'dotenv/config'
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // consumer.apply().forRoutes().apply(helmet());
+    consumer.apply().forRoutes().apply(helmet());
   }
 }

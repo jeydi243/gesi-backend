@@ -5,7 +5,12 @@ import { ClasseDTO } from '../dto/classe.dto';
 import { LookupsDTO } from '../dto/lookups.dto';
 import { InjectModel } from '@nestjs/mongoose';
 
+import { Types as S } from 'mongoose';
+
 export class ClasseService {
+  lookupsByClasseID(classeID: string) {
+    return this.lookupsModel.find({ classe_id: new S.ObjectId(classeID), deletedAt: null }).exec();
+  }
   constructor(@InjectModel('Classe') private classeModel: Model<Classe>, @InjectModel('Lookups') private lookupsModel: Model<Lookups>) {}
   addLookups(createLookups: LookupsDTO) {
     const result = new this.lookupsModel(createLookups);

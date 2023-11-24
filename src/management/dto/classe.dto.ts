@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsMongoId, IsString } from 'class-validator';
 
 export class ClasseDTO {
   @ApiProperty()
@@ -13,4 +13,9 @@ export class ClasseDTO {
   @ApiProperty()
   @IsString()
   description: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsMongoId()
+  createdBy: string;
 }
