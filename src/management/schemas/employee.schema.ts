@@ -3,7 +3,7 @@ import { Transform } from 'class-transformer';
 import { Document, Schema as S } from 'mongoose';
 import { defaultOnboarding } from 'src/export.type';
 
-@Schema()
+@Schema({ autoIndex: true, id: true, _id: true, timestamps: true })
 export class Employee extends Document {
   @Prop({ type: String, default: '63bfbca56318d5cde41f2fc8' }) //ID of default resource for profile picture
   profile_image: string | null;

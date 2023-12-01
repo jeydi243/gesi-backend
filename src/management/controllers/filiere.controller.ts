@@ -12,7 +12,7 @@ export class FiliereController {
   }
   @Post('filieres')
   addFiliere(@Body() body: FiliereDTO) {
-    return this.managementService.addFiliere(body);
+    // return this.managementService.addFiliere(body);
   }
   @Delete('filieres/:code')
   removeFiliere(@Query('code') code: string) {
@@ -20,6 +20,6 @@ export class FiliereController {
   }
   @Patch('filieres/update/:code')
   updateFiliere(@Query('code') code: string, @Body() body: UpdateFiliereDto) {
-    return this.managementService.updateFiliere(code, body);
+    // return this.managementService.updateFiliere(code, body);
   }
 }

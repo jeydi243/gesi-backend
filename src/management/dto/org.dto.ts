@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { IsEmail, IsString, ValidateIf, isDate, IsMongoId } from 'class-validator';
 
 export default class OrganizationDto {
@@ -10,17 +11,21 @@ export default class OrganizationDto {
   @IsString()
   code: string;
 
+  @ApiProperty({ description: 'Lookup ID' })
+  @IsString()
+  lookup_id: string;
+
   @ApiProperty({ description: 'Description of the organization' })
   @IsString()
   description: string;
 
   @ApiProperty({ description: 'Date of desactivation' })
-  @ValidateIf((obj, value) => isDate(new Date(value)))
-  date_desactivation: Date | null;
+  // @ValidateIf((obj, value) => isDate(new Date(value)))
+  end_date: Date | null;
 
   @ApiProperty({ description: 'Date of creation' })
-  @ValidateIf((obj, value) => isDate(new Date(value)))
-  date_creation: Date;
+  @Transform(({}) => new Date(), {})
+  created?: Date | null;
 
   @ValidateIf((obj, value) => isDate(new Date(value)))
   @ApiProperty({ description: 'ID of experience' })

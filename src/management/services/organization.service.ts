@@ -14,6 +14,7 @@ export class OrganizationService {
   }
   async addOrg(orgDto: OrganizationDto): Promise<OrganizationDto | null> {
     try {
+      log({ orgDto });
       const createdorg = new this.orgModel(orgDto);
       const result = await createdorg.save();
       // const createdUser = new this.userModel({ idOfRole,username, password,salt });
@@ -26,7 +27,7 @@ export class OrganizationService {
   }
 
   async allOrg(): Promise<Organization[] | Record<string, any>> {
-    return this.orgModel.find({ deletedAt: null }, { populate: true });
+    return this.orgModel.find({ deletedAt: null }).populate(['lookup_id', 'organization_parent_id']).exec();
   }
 
   async findOneOrg(id: string): Promise<OrganizationDto> {

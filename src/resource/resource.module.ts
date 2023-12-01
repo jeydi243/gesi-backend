@@ -3,7 +3,6 @@ import { EventSchema } from '../management/schemas/event.schema';
 import { ContentSchema } from '../courses/schemas/content.schema';
 import { UsersService } from '../users/users.service';
 import { PersonSchema } from '../person.base';
-import { FiliereSchema } from '../management/schemas/filiere.schema';
 import { StudentSchema } from '../students/schemas/student.schema';
 import { TeacherSchema } from '../teachers/schemas/teacher.schema';
 import { Global, Module } from '@nestjs/common';
@@ -39,7 +38,6 @@ import { LookupsSchema } from '../management/schemas/lookups.schema';
     }),
     MongooseModule.forFeature([
       { name: 'DocumentOrganisation', schema: DocumentOrganisationSchema },
-      { name: 'Filiere', schema: FiliereSchema },
       { name: 'Responsable', schema: ResponsableSchema },
       { name: 'Organization', schema: OrganizationSchema },
       { name: 'Classe', schema: ClasseSchema },

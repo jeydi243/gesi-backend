@@ -1,7 +1,7 @@
 import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
 import { Document, Schema as S } from 'mongoose';
 
-@Schema({ timestamps: true, _id: true, autoIndex: true })
+@Schema({ timestamps: true, _id: true, autoIndex: true, id: true })
 export class Organization extends Document {
   @Prop({ type: String })
   name: string;
@@ -13,13 +13,13 @@ export class Organization extends Document {
   description: string;
 
   @Prop({ type: S.Types.ObjectId, ref: 'Lookups' })
-  lookups_id: string;
+  lookup_id: string;
 
   @Prop({ type: Date, required: false })
-  date_desactivation: Date | null;
+  end_date: Date | null;
 
-  @Prop({ type: Date, required: true })
-  date_creation: Date;
+  @Prop({ type: Date, required: false })
+  created: Date;
 
   @Prop({ type: String, required: false, default: null })
   organization_parent_id: string | null;

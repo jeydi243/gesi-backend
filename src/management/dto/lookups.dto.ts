@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsMongoId, IsString } from 'class-validator';
+import { IsMongoId, IsString, ValidateIf, isMongoId } from 'class-validator';
 
 export class LookupsDTO {
   @ApiProperty()
@@ -15,12 +15,12 @@ export class LookupsDTO {
   description: string;
 
   @ApiProperty()
-  @IsMongoId()
+  @IsString()
   classe_id: string;
 
   @ApiProperty()
-  @IsMongoId({always:false})
-  parent_lookup_id?: string;
+  @ValidateIf((o,value)=> value ? isMongoId(value) : false)
+  parent_lookup_id?: string | null;
 
   @ApiProperty()
   @IsMongoId()

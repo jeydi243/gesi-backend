@@ -42,7 +42,7 @@ async function bootstrap() {
           }
         });
         // const dto_validation_error = errors.map(el => {
-        //   // return { `${el.property}`:  };
+        //   return { `${el.property}`:  };
         // });
 
         return new HttpException({ dto_validation_error: obje }, HttpStatus.BAD_REQUEST);

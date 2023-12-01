@@ -84,7 +84,7 @@ export class ResourceController {
 
   @Get('file/:id')
   async getResourceFile(@Param('id') id: string, @Res() res) {
-    console.log('Want to get resource file');
+    console.log('Want to get resource file', id);
     const file = await this.resourceService.findResourceInfo(id);
     const filestream = await this.resourceService.readStream(id);
     if (!filestream) {

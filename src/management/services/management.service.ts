@@ -1,18 +1,17 @@
 import { Model } from 'mongoose';
-import { Filiere } from '../schemas/filiere.schema';
 import { Employee } from '../schemas/employee.schema';
 import { Injectable } from '@nestjs/common';
-import { FiliereDTO } from '../dto/create-filiere.dto';
 import { DocumentOrganisation } from '../schemas/document.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { DocumentOrganisationDTO } from '../dto/document.dto';
-import { UpdateFiliereDto } from '../dto/update-filiere.dto';
 import { UpdateDocumentDto } from '../dto/update-document.dto';
+import { Organization } from '../schemas/organization.schema';
+import OrganizationDto from '../dto/org.dto';
 @Injectable()
 export class ManagementService {
   constructor(
     @InjectModel(DocumentOrganisation.name) private DocumentOrganisationModel: Model<DocumentOrganisation>,
-    @InjectModel('Filiere') private filiereModel: Model<Filiere>,
+    @InjectModel('Organization') private orgModel: Model<Organization>,
   ) {}
 
   async addDocumentSpec(docDto: DocumentOrganisationDTO): Promise<DocumentOrganisation | string | Error> {
@@ -54,31 +53,31 @@ export class ManagementService {
   async updateDocument(code: string, documentUpdate: UpdateDocumentDto): Promise<DocumentOrganisation | null> {
     return this.DocumentOrganisationModel.findOneAndUpdate({ code }, { $set: { ...documentUpdate } }).exec();
   }
-  async addFiliere(filiereDto: FiliereDTO): Promise<Filiere | void> {
-    const createdfiliere = new this.filiereModel(filiereDto);
+  async addFiliere(filiereDto: OrganizationDto): Promise<Organization | void> {
+    const createdfiliere = new this.orgModel(filiereDto);
     return createdfiliere.save();
   }
-  async softDeleteFiliere(code: string): Promise<Filiere | void> {
-    return this.filiereModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });
+  async softDeleteFiliere(code: string): Promise<Organization | void> {
+    return this.orgModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });
   }
-  async removeFiliere(code: string): Promise<Filiere | void> {
-    return this.filiereModel.findOneAndRemove({ code });
+  async removeFiliere(code: string): Promise<Organization | void> {
+    return this.orgModel.findOneAndRemove({ code });
   }
-  async updateFiliere(code: string, filiereUpdate: UpdateFiliereDto): Promise<Filiere | null | string> {
-    const filiere = await this.filiereModel.findOne({ code });
-    if (filiere) {
-      if (filiereUpdate.manager != filiereUpdate.sub_manager) {
-        return this.filiereModel.findOneAndUpdate({ code }, { $set: { ...filiereUpdate } }).exec();
-        // filiere.save();
-      } else {
-        return 'Le manager et le sub_manager semble correspondre a la meme personne';
-      }
-    }
+  async updateFiliere(code: string, orgUpdate: OrganizationDto): Promise<Organization | null | string> {
+    const filiere = await this.orgModel.findOne({ code });
+    // if (filiere) {
+    //   if (orgUpdate.manager != orgUpdate.sub_manager) {
+    //     return this.orgModel.findOneAndUpdate({ code }, { $set: { ...orgUpdate } }).exec();
+    //     // filiere.save();
+    //   } else {
+    //     return 'Le manager et le sub_manager semble correspondre a la meme personne';
+    //   }
+    // }
 
     return;
   }
-  async findAllFiliere(): Promise<Filiere[] | void> {
+  async findAllFiliere(): Promise<Organization[] | void> {
     //return all filiere that is not marked as deletedAt
-    return this.filiereModel.find({ deletedAt: null });
+    return this.orgModel.find({ deletedAt: null });
   }
 }
