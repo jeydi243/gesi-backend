@@ -7,11 +7,14 @@ import { DocumentOrganisationDTO } from '../dto/document.dto';
 import { UpdateDocumentDto } from '../dto/update-document.dto';
 import { Organization } from '../schemas/organization.schema';
 import OrganizationDto from '../dto/org.dto';
+import { Position } from '../schemas/position.schema';
+import { PositionDTO } from '../dto/position.dto';
 @Injectable()
 export class ManagementService {
   constructor(
     @InjectModel(DocumentOrganisation.name) private DocumentOrganisationModel: Model<DocumentOrganisation>,
     @InjectModel('Organization') private orgModel: Model<Organization>,
+    @InjectModel('Position') private positionModel: Model<Position>,
   ) {}
 
   async addDocumentSpec(docDto: DocumentOrganisationDTO): Promise<DocumentOrganisation | string | Error> {
@@ -57,6 +60,7 @@ export class ManagementService {
     const createdfiliere = new this.orgModel(filiereDto);
     return createdfiliere.save();
   }
+
   async softDeleteFiliere(code: string): Promise<Organization | void> {
     return this.orgModel.findByIdAndUpdate({ code }, { $set: { deletedAt: new Date().toISOString() } });
   }
@@ -79,5 +83,17 @@ export class ManagementService {
   async findAllFiliere(): Promise<Organization[] | void> {
     //return all filiere that is not marked as deletedAt
     return this.orgModel.find({ deletedAt: null });
+  }
+
+  async findAllPosition() {
+    return this.positionModel.find({ deletedAt: null }).populate(['org_id', 'employment_type']).exec();
+  }
+
+  async addPosition(positionDto: PositionDTO): Promise<Position | void> {
+    const createdposition = new this.positionModel(positionDto);
+    return createdposition.save();
+  }
+  async removePosition(code: string): Promise<Organization | void> {
+    return this.positionModel.findOneAndRemove({ code });
   }
 }
