@@ -15,9 +15,9 @@ export class PositionController {
   addPosition(@Body() body: PositionDTO) {
     return this.managementService.addPosition(body);
   }
-  @Delete('positions/:code')
-  removePosition(@Query('code') code: string) {
-    return this.managementService.removePosition(code);
+  @Delete('')
+  removePosition(@Body('positionID') positionID: string) {
+    return this.managementService.removePosition(positionID);
   }
   @Patch('positions/update/:code')
   updatePosition(@Query('code') code: string, @Body() body: UpdatePositionDto) {

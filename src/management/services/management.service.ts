@@ -9,12 +9,15 @@ import { Organization } from '../schemas/organization.schema';
 import OrganizationDto from '../dto/org.dto';
 import { Position } from '../schemas/position.schema';
 import { PositionDTO } from '../dto/position.dto';
+import { Assignment } from '../schemas/assignment.schema';
+import { AssignmentDTO } from '../dto/assigment.sto';
 @Injectable()
 export class ManagementService {
   constructor(
     @InjectModel(DocumentOrganisation.name) private DocumentOrganisationModel: Model<DocumentOrganisation>,
     @InjectModel('Organization') private orgModel: Model<Organization>,
     @InjectModel('Position') private positionModel: Model<Position>,
+    @InjectModel('Assignment') private assignmentModel: Model<Assignment>,
   ) {}
 
   async addDocumentSpec(docDto: DocumentOrganisationDTO): Promise<DocumentOrganisation | string | Error> {
@@ -86,14 +89,29 @@ export class ManagementService {
   }
 
   async findAllPosition() {
-    return this.positionModel.find({ deletedAt: null }).populate(['org_id', 'employment_type']).exec();
+    return this.positionModel.find({ deletedAt: null }).populate(['org_id']).exec();
   }
-
+  removeEmptyKeys(obj) {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key) && obj[key] === '') {
+        delete obj[key];
+      }
+    }
+    return obj;
+  }
   async addPosition(positionDto: PositionDTO): Promise<Position | void> {
-    const createdposition = new this.positionModel(positionDto);
+    const createdposition = new this.positionModel(this.removeEmptyKeys(positionDto));
     return createdposition.save();
   }
-  async removePosition(code: string): Promise<Organization | void> {
-    return this.positionModel.findOneAndRemove({ code });
+  async removePosition(positionID: string): Promise<Organization | void> {
+    this.positionModel.findOneAndRemove({ id: positionID }).exec(); //findOneAndRemove({ code });
+  }
+
+  async addAssignment(assignmentDTO: AssignmentDTO): Promise<Assignment | void> {
+    const createdassignment = new this.assignmentModel(assignmentDTO);
+    return createdassignment.save();
+  }
+  async allAssignments() {
+    return this.assignmentModel.find({ deletedAt: null }).populate(['employee_id', 'position_id']).exec();
   }
 }

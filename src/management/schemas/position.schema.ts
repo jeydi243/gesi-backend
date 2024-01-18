@@ -6,13 +6,13 @@ export class Position extends Document {
   @Prop({ required: true })
   title: string;
 
-  @Prop({ required: false, type: S.Types.ObjectId, ref: 'Organization' })
+  @Prop({ required: true, type: S.Types.ObjectId, ref: 'Organization' })
   org_id: string;
 
   @Prop({ required: true })
   job_description: string;
 
-  @Prop({ required: false, type: S.Types.ObjectId, ref: 'Position' })
+  @Prop({ required: false, type: S.Types.ObjectId, ref: 'Position', })
   report_to: string;
 
   @Prop({ required: false, type: S.Types.ObjectId, ref: 'Lookup' })
