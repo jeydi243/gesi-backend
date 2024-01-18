@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ManagementService } from '../services/management.service';
-import { AssignmentDTO } from '../dto/assigment.sto';
+import { AssignmentDTO } from '../dto/assigment.dto';
 
 @Controller('assignments')
 class AssignmentController {
@@ -54,7 +54,7 @@ class AssignmentController {
   @Delete('softdelete/:id')
   async softdeleteOne(@Param('id') id: string) {
     try {
-      return await this.mgtService.softdeleteOrg({ id });
+      return await this.mgtService.softdeleteAssignment({ id });
     } catch (error) {}
   }
 }

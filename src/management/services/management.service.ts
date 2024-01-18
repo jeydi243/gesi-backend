@@ -10,9 +10,21 @@ import OrganizationDto from '../dto/org.dto';
 import { Position } from '../schemas/position.schema';
 import { PositionDTO } from '../dto/position.dto';
 import { Assignment } from '../schemas/assignment.schema';
-import { AssignmentDTO } from '../dto/assigment.sto';
+import { AssignmentDTO } from '../dto/assigment.dto';
 @Injectable()
 export class ManagementService {
+  softdeleteAssignment(arg0: { id: string; }) {
+      throw new Error('Method not implemented.');
+  }
+  deleteAssignment(arg0: { id: string; }) {
+      throw new Error('Method not implemented.');
+  }
+  updateAssignment(arg0: { id: string; }, updatedOrg: any) {
+      throw new Error('Method not implemented.');
+  }
+  findOneAssignment(id: string) {
+      throw new Error('Method not implemented.');
+  }
   constructor(
     @InjectModel(DocumentOrganisation.name) private DocumentOrganisationModel: Model<DocumentOrganisation>,
     @InjectModel('Organization') private orgModel: Model<Organization>,
