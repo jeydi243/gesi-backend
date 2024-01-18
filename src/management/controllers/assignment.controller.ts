@@ -3,7 +3,7 @@ import { ManagementService } from '../services/management.service';
 import { AssignmentDTO } from '../dto/assigment.dto';
 
 @Controller('assignments')
-class AssignmentController {
+export class AssignmentController {
   constructor(private readonly mgtService: ManagementService) {}
 
   @Post('')
